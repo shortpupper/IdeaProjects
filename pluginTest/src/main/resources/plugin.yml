@@ -1,0 +1,4 @@
+name: WOKS
+version: 'v2.3.12.87-SNAPSHOT'
+main: woks.woks.WOKS
+api-version: 1.19

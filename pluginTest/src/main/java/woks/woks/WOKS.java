@@ -1,0 +1,203 @@
+package woks.woks;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.plugin.java.JavaPlugin;
+import woks.woks.commands.*;
+import woks.woks.handlers.*;
+import woks.woks.items.*;
+
+import static woks.woks.items.EnchantedCrying_Obsidian.EnchantedCrying_Obsidian;
+import static woks.woks.items.EnchantedDiamond.EnchantedDiamond;
+import static woks.woks.items.EnchantedEmerald.EnchantedEmerald;
+import static woks.woks.items.EnchantedEnder_Chest.EnchantedEnder_Chest;
+import static woks.woks.items.EnchantedEnder_Pearl.EnchantedEnder_Pearl;
+import static woks.woks.items.EnchantedLeather.EnchantedLeather;
+
+public final class WOKS extends JavaPlugin implements Listener {
+    private static WOKS instance;
+    FileConfiguration config = this.getConfig();
+
+    public static WOKS getInstance() {
+        return instance;
+    }
+
+    @Override
+    public void onEnable() {
+        instance = this;
+        // Plugin startup logic
+        Bukkit.getLogger().info("Starting, ShortPuppy14484 plugin.");
+
+        config.addDefault("PlayerWalkPath", true);
+        config.addDefault("GoodDayMSG", true);
+
+        config.options().copyDefaults(true);
+        saveConfig();
+
+//        new Feed();
+        new SaveEXP();
+        new CustomExpBottle();
+        new PlayerInteractEventHandler(this);
+        new TestGetName();
+        new BackPack();
+        new ItemDropped(this);
+        new TestingPlugin();
+//        new AccessBackPack(); // deprecated
+        new GiveBackPack();
+        new InventoryEventHandler(this);
+
+        if (config.getBoolean("PlayerWalkPath")) {
+            new PlayerWalkPath(this);
+        }
+
+        new PlayerDeath(this);
+        new PayingUSers();
+
+        new EnchantedLeather();
+        new EnchantedEnder_Pearl();
+        new EnchantedDiamond();
+        new EnchantedEmerald();
+        new EnchantedCrying_Obsidian();
+        new EnchantedEnder_Chest();
+        new InventoryMoveItemEventHandler(this);
+        new SetLore();
+
+        Recipes();
+        getServer().getPluginManager().registerEvents(this, this);
+    }
+
+    public void Recipes() {
+        // recipe
+        //leather
+        ShapedRecipe EnchantedLeather = new ShapedRecipe(new NamespacedKey(this, "EnchantedLeather"), EnchantedLeather());
+        EnchantedLeather.shape("***", "*B*", "***");
+        EnchantedLeather.setIngredient('*', Material.LEATHER);
+        EnchantedLeather.setIngredient('B', Material.LAPIS_BLOCK);
+
+        // diamond
+        ShapedRecipe EnchantedDiamond = new ShapedRecipe(new NamespacedKey(this, "EnchantedDiamond"), EnchantedDiamond());
+        EnchantedDiamond.shape("*%*", "BBB", "*%*");
+        EnchantedDiamond.setIngredient('B', Material.DIAMOND);
+        EnchantedDiamond.setIngredient('*', Material.COPPER_BLOCK);
+        EnchantedDiamond.setIngredient('%', Material.DIAMOND_BLOCK);
+
+        // EnchantedCrying_Obsidian
+        ShapedRecipe EnchantedCrying_Obsidian = new ShapedRecipe(new NamespacedKey(this, "EnchantedCrying_Obsidian"), EnchantedCrying_Obsidian());
+        EnchantedCrying_Obsidian.shape("*%*", "%*%", "*%*");
+        EnchantedCrying_Obsidian.setIngredient('*', Material.OBSIDIAN);
+        EnchantedCrying_Obsidian.setIngredient('%', Material.CRYING_OBSIDIAN);
+
+        // EnchantedEnder_Pearl
+        ShapedRecipe EnchantedEnder_Pearl = new ShapedRecipe(new NamespacedKey(this, "EnchantedEnder_Pearl"), EnchantedEnder_Pearl());
+        EnchantedEnder_Pearl.shape("*%*", "%B%", "*%*");
+        EnchantedEnder_Pearl.setIngredient('B', Material.ENDER_PEARL);
+        EnchantedEnder_Pearl.setIngredient('*', Material.ENDER_EYE);
+        EnchantedEnder_Pearl.setIngredient('%', Material.DIAMOND);
+
+        // EnchantedEmerald
+        ShapedRecipe EnchantedEmerald = new ShapedRecipe(new NamespacedKey(this, "EnchantedEmerald"), EnchantedEmerald());
+        EnchantedEmerald.shape("BDA", "%C%", "ADB");
+        EnchantedEmerald.setIngredient('A', new RecipeChoice.ExactChoice(EnchantedLeather()));
+        EnchantedEmerald.setIngredient('B', Material.EMERALD_BLOCK);
+        EnchantedEmerald.setIngredient('C', Material.EMERALD);
+        EnchantedEmerald.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedEnder_Pearl()));
+        EnchantedEmerald.setIngredient('D', new RecipeChoice.ExactChoice(EnchantedDiamond()));
+
+        // EnchantedEnder_Chest
+        ShapedRecipe EnchantedEnder_Chest = new ShapedRecipe(new NamespacedKey(this, "EnchantedEnder_Chest"), EnchantedEnder_Chest());
+        EnchantedEnder_Chest.shape("#$#", "$C$", "#$#");
+        EnchantedEnder_Chest.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedCrying_Obsidian()));
+        EnchantedEnder_Chest.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedEnder_Pearl()));
+        EnchantedEnder_Chest.setIngredient('#', Material.ENDER_CHEST);
+
+        // BackPack9
+        ShapedRecipe BackPack9 = new ShapedRecipe(new NamespacedKey(this, "BackPack9"), BackPack.BackPack(9));
+        BackPack9.shape("!@#", "$C$", "#@!");
+        BackPack9.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedEnder_Chest()));
+        BackPack9.setIngredient('!', new RecipeChoice.ExactChoice(EnchantedEmerald()));
+        BackPack9.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedDiamond()));
+        BackPack9.setIngredient('#', Material.DIAMOND_BLOCK);
+        BackPack9.setIngredient('@', Material.CHEST);
+
+        // BackPack18
+        ShapedRecipe BackPack18 = new ShapedRecipe(new NamespacedKey(this, "BackPack18"), BackPack.BackPack(18));
+        BackPack18.shape("!@#", "$C$", "#@!");
+        BackPack18.setIngredient('C', new RecipeChoice.ExactChoice(BackPack.BackPack(9)));
+        BackPack18.setIngredient('!', Material.LEATHER);
+        BackPack18.setIngredient('$', Material.ENDER_CHEST);
+        BackPack18.setIngredient('#', new RecipeChoice.ExactChoice(EnchantedLeather()));
+        BackPack18.setIngredient('@', new RecipeChoice.ExactChoice(EnchantedCrying_Obsidian()));
+
+        // BackPack27
+        ShapedRecipe BackPack27 = new ShapedRecipe(new NamespacedKey(this, "BackPack27"), BackPack.BackPack(27));
+        BackPack27.shape("###", "$C$", "###");
+        BackPack27.setIngredient('C', new RecipeChoice.ExactChoice(BackPack.BackPack(18)));
+        BackPack27.setIngredient('#', new RecipeChoice.ExactChoice(EnchantedLeather()));
+        BackPack27.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedCrying_Obsidian()));
+
+        // BackPack36
+        ShapedRecipe BackPack36 = new ShapedRecipe(new NamespacedKey(this, "BackPack36"), BackPack.BackPack(36));
+        BackPack36.shape("##%", "$C$", "%##");
+        BackPack36.setIngredient('C', new RecipeChoice.ExactChoice(BackPack.BackPack(27)));
+        BackPack36.setIngredient('#', new RecipeChoice.ExactChoice(EnchantedLeather()));
+        BackPack36.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedCrying_Obsidian()));
+        BackPack36.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedDiamond()));
+
+        // BackPack45
+        ShapedRecipe BackPack45 = new ShapedRecipe(new NamespacedKey(this, "BackPack45"), BackPack.BackPack(45));
+        BackPack45.shape("@&%", "#C#", "%&@");
+        BackPack45.setIngredient('C', new RecipeChoice.ExactChoice(BackPack.BackPack(36)));
+        BackPack45.setIngredient('#', new RecipeChoice.ExactChoice(EnchantedLeather()));
+        BackPack45.setIngredient('@', new RecipeChoice.ExactChoice(EnchantedEmerald()));
+        BackPack45.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedDiamond()));
+        BackPack45.setIngredient('&', new RecipeChoice.ExactChoice(EnchantedEnder_Pearl()));
+
+        // BackPack54
+        ShapedRecipe BackPack54 = new ShapedRecipe(new NamespacedKey(this, "BackPack54"), BackPack.BackPack(54));
+        BackPack54.shape("#@%", "$C$", "%@#");
+        BackPack54.setIngredient('C', new RecipeChoice.ExactChoice(BackPack.BackPack(45)));
+        BackPack54.setIngredient('#', new RecipeChoice.ExactChoice(EnchantedLeather()));
+        BackPack54.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedEnder_Chest()));
+        BackPack54.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedEnder_Pearl()));
+        BackPack54.setIngredient('@', new RecipeChoice.ExactChoice(EnchantedDiamond()));
+
+
+        // add recipes
+        getServer().addRecipe(EnchantedLeather);
+        getServer().addRecipe(EnchantedDiamond);
+        getServer().addRecipe(EnchantedCrying_Obsidian);
+        getServer().addRecipe(EnchantedEnder_Pearl);
+        getServer().addRecipe(EnchantedEmerald);
+        getServer().addRecipe(EnchantedEnder_Chest);
+        getServer().addRecipe(BackPack9);
+        getServer().addRecipe(BackPack18);
+        getServer().addRecipe(BackPack27);
+        getServer().addRecipe(BackPack36);
+        getServer().addRecipe(BackPack45);
+        getServer().addRecipe(BackPack54);
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+        Bukkit.getLogger().info("Shutting down, ShortPuppy14484 plugin.");
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        if (config.getBoolean("GoodDayMSG")) {
+            Msg.send(player, "Good day.");
+        } else {
+            Msg.send(player, "Hellos.");
+        }
+    }
+}
