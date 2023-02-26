@@ -195,12 +195,53 @@ public final class WOKS extends JavaPlugin implements Listener {
     public final Enchantment THROWDOWN = new Enchantment(new NamespacedKey(this, "throw_down")) {
         @Override
         public String getName() {
-            return "throw_down";
+            return "Throw Down";
         }
 
         @Override
         public int getMaxLevel() {
             return 14;
+        }
+
+        @Override
+        public int getStartLevel() {
+            return 1;
+        }
+
+        @Override
+        public EnchantmentTarget getItemTarget() {
+            return null;
+        }
+
+        @Override
+        public boolean isTreasure() {
+            return false;
+        }
+
+        @Override
+        public boolean isCursed() {
+            return false;
+        }
+
+        @Override
+        public boolean conflictsWith(Enchantment enchantment) {
+            return false;
+        }
+
+        @Override
+        public boolean canEnchantItem(ItemStack itemStack) {
+            return true;
+        }
+    };
+    public final Enchantment AUTOPUT = new Enchantment(new NamespacedKey(this, "auto_put")) {
+        @Override
+        public String getName() {
+            return "Auto Put";
+        }
+
+        @Override
+        public int getMaxLevel() {
+            return 1;
         }
 
         @Override
@@ -244,6 +285,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             e.printStackTrace();
         }
         try {
+            Enchantment.registerEnchantment(AUTOPUT);
             Enchantment.registerEnchantment(THROWDOWN);
         }
         catch (IllegalArgumentException ignored){

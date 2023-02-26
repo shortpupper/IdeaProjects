@@ -1,10 +1,13 @@
 package woks.woks.commands;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
 import woks.woks.items.BackPack;
+
+import java.util.List;
 
 public class GiveBackPack {
     public GiveBackPack() {
@@ -23,6 +26,11 @@ public class GiveBackPack {
             @Override
             public String getUsage() {
                 return "/GiveBackPack <int:count>";
+            }
+
+            @Override
+            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+                return null;
             }
         };
     }

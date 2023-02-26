@@ -1,10 +1,7 @@
 package woks.woks;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.*;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.SimplePluginManager;
@@ -13,12 +10,15 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CommandBase extends BukkitCommand implements CommandExecutor {
+public abstract class CommandBase extends BukkitCommand implements CommandExecutor, TabExecutor, TabCompleter {
     private final int minAguments;
     private final int maxArguments;
     private final boolean playerOnly;
     private List<String> delayedPlayers = null;
     private int delay = 0;
+
+
+
 
     public CommandBase(String command) {
         this(command, 0);
@@ -126,4 +126,20 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
     public abstract boolean onCommand(CommandSender sender, String[] arguments);
 
     public abstract String getUsage();
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args ) {
+        if (args.length == 1) {
+            List<String> completions = new ArrayList<>();
+            // Add tab completions for the first argument here
+            completions.add("cats");
+            return completions;
+        } else if (args.length == 2) {
+            List<String> completions = new ArrayList<>();
+            // Add tab completions for the second argument here
+            completions.add("cats");
+            return completions;
+        }
+        return null;
+    }
 }

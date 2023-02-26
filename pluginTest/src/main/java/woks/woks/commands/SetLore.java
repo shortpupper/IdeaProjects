@@ -1,5 +1,6 @@
 package woks.woks.commands;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -8,6 +9,7 @@ import woks.woks.CommandBase;
 import woks.woks.Msg;
 
 import java.util.Collections;
+import java.util.List;
 
 public class SetLore {
     public SetLore() {
@@ -31,6 +33,11 @@ public class SetLore {
             @Override
             public String getUsage() {
                 return "/setlore <string:line1>";
+            }
+
+            @Override
+            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+                return null;
             }
         };
     }

@@ -1,7 +1,10 @@
 package woks.woks.commands;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import woks.woks.CommandBase;
+
+import java.util.List;
 
 public class EnchantMe {
     public EnchantMe() {
@@ -48,6 +51,11 @@ public class EnchantMe {
             @Override
             public String getUsage() {
                 return "/enchantme";
+            }
+
+            @Override
+            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+                return null;
             }
         };
     }

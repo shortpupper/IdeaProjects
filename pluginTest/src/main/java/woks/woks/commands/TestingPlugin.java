@@ -1,11 +1,14 @@
 package woks.woks.commands;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
+
+import java.util.List;
 
 public class TestingPlugin {
     public TestingPlugin() {
@@ -40,6 +43,11 @@ public class TestingPlugin {
             @Override
             public String getUsage() {
                 return "/TestingPlugin <str:thing> <thing> <thing> <thing>";
+            }
+
+            @Override
+            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+                return null;
             }
         };
     }

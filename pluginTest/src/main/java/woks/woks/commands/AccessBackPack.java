@@ -2,6 +2,7 @@ package woks.woks.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import woks.woks.BackPackGUI;
@@ -49,6 +50,11 @@ public class AccessBackPack {
             @Override
             public String getUsage() {
                 return "/AccessBackPack";
+            }
+
+            @Override
+            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+                return null;
             }
         };
     }

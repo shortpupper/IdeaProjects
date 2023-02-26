@@ -1,36 +1,53 @@
 package woks.woks.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import woks.woks.CommandBase;
-import woks.woks.romanNumbers;
 import woks.woks.Msg;
 import woks.woks.WOKS;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 import static woks.woks.romanNumbers.integerToRoman;
 
 public class EnchantTest {
     public EnchantTest() {
-        new CommandBase("enchanttest", 0, 1, true) {
+        new CommandBase("enchanttest", 2, 2, true) {
             @Override
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 Player player = (Player) sender;
                 ItemStack itemStack = player.getInventory().getItemInMainHand();
-                if (itemStack.getType() == Material.DIAMOND_SHOVEL) {
+                if (itemStack.getType() != Material.AIR) {
+                    Enchantment enchantment;
+                    if (Objects.equals(arguments[0], "throw_down")) {
+                        enchantment = WOKS.getInstance().THROWDOWN;
+                    } else if (Objects.equals(arguments[0], "auto_put")) {
+                        enchantment = WOKS.getInstance().AUTOPUT;
+                    }
+                    else {
+                        Msg.send(player, "Unexpected value: " + arguments[0]);
+                        throw new IllegalStateException("Unexpected value: " + arguments[0]);
+                    }
                     ItemMeta itemMeta = itemStack.getItemMeta();
-                    final int EnchantmentLevel = Integer.parseInt(arguments[0]);
-                    itemMeta.addEnchant(WOKS.getInstance().THROWDOWN, EnchantmentLevel, true);
+                    final int EnchantmentLevel = Integer.parseInt(arguments[1]);
+                    itemMeta.addEnchant(enchantment, EnchantmentLevel, true);
                     if (itemMeta.hasLore()) {
-                        itemMeta.getLore().add(ChatColor.GRAY + "Throw Down " + integerToRoman(EnchantmentLevel));
-
+                        List<String> lores = itemMeta.getLore();
+                        lores.add(ChatColor.GRAY + enchantment.getName() + ' ' + integerToRoman(EnchantmentLevel));
+                        itemMeta.setLore(lores);
                     } else {
-                        itemMeta.setLore(Collections.singletonList(ChatColor.GRAY + "Throw Down " + integerToRoman(EnchantmentLevel)));
+                        itemMeta.setLore(Collections.singletonList(ChatColor.GRAY + enchantment.getName() + ' ' + integerToRoman(EnchantmentLevel)));
                     }
                     itemStack.setItemMeta(itemMeta);
                     player.getInventory().setItemInMainHand(itemStack);
@@ -42,8 +59,9 @@ public class EnchantTest {
 
             @Override
             public String getUsage() {
-                return "/enchanttest <int:level>";
+                return "/enchanttest <string:name> <int:level>";
             }
+
         };
     }
 }
