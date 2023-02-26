@@ -66,7 +66,8 @@ public class PlayerInteractEventHandler implements Listener {
                 } else {
                     return false;
                 }
-            } else if (ItemType == Material.CHEST) {
+            }
+            else if (ItemType == Material.CHEST) {
                 ItemStack Item = new ItemStack(event.getItem());
                 NBTItem nbtItem = new NBTItem(Item);
                 if ((nbtItem.getBoolean("Using"))) {
@@ -151,13 +152,18 @@ public class PlayerInteractEventHandler implements Listener {
                     // Don't want to place it, eh?
                     event.setCancelled(true);
                 }
-            } else if (ItemType == Material.ENDER_CHEST || ItemType == Material.ENDER_PEARL || ItemType == Material.CRYING_OBSIDIAN) {
+            }
+            else if (ItemType == Material.ENDER_CHEST || ItemType == Material.ENDER_PEARL || ItemType == Material.CRYING_OBSIDIAN) {
                 NBTItem nbtItem = new NBTItem(event.getItem());
 
                 if (nbtItem.getBoolean("Disable")) {
                     event.setCancelled(true);
                 }
-            } else {
+            }
+            else if (ItemType == Material.DIAMOND_SHOVEL) {
+
+            }
+            else {
                 return false;
             }
         } else {

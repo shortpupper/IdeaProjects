@@ -4,16 +4,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import woks.woks.commands.*;
 import woks.woks.handlers.*;
 import woks.woks.items.*;
+
+import java.lang.reflect.Field;
 
 import static woks.woks.items.EnchantedCrying_Obsidian.EnchantedCrying_Obsidian;
 import static woks.woks.items.EnchantedDiamond.EnchantedDiamond;
@@ -69,8 +74,10 @@ public final class WOKS extends JavaPlugin implements Listener {
         new EnchantedEnder_Chest();
         new InventoryMoveItemEventHandler(this);
         new SetLore();
+        new EnchantTest();
 
         Recipes();
+        Enchants();
         getServer().getPluginManager().registerEvents(this, this);
     }
 
@@ -183,6 +190,67 @@ public final class WOKS extends JavaPlugin implements Listener {
         getServer().addRecipe(BackPack36);
         getServer().addRecipe(BackPack45);
         getServer().addRecipe(BackPack54);
+    }
+
+    public final Enchantment THROWDOWN = new Enchantment(new NamespacedKey(this, "throw_down")) {
+        @Override
+        public String getName() {
+            return "throw_down";
+        }
+
+        @Override
+        public int getMaxLevel() {
+            return 14;
+        }
+
+        @Override
+        public int getStartLevel() {
+            return 1;
+        }
+
+        @Override
+        public EnchantmentTarget getItemTarget() {
+            return null;
+        }
+
+        @Override
+        public boolean isTreasure() {
+            return false;
+        }
+
+        @Override
+        public boolean isCursed() {
+            return false;
+        }
+
+        @Override
+        public boolean conflictsWith(Enchantment enchantment) {
+            return false;
+        }
+
+        @Override
+        public boolean canEnchantItem(ItemStack itemStack) {
+            return true;
+        }
+    };
+    public void Enchants() {
+
+        try {
+            Field f = Enchantment.class.getDeclaredField("acceptingNew");
+            f.setAccessible(true);
+            f.set(null, true);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            Enchantment.registerEnchantment(THROWDOWN);
+        }
+        catch (IllegalArgumentException ignored){
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
