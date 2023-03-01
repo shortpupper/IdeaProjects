@@ -348,6 +348,18 @@ public final class WOKS extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        player.discoverRecipe(new NamespacedKey(this, "EnchantedLeather"));
+        player.discoverRecipe(new NamespacedKey(this, "EnchantedDiamond"));
+        player.discoverRecipe(new NamespacedKey(this, "EnchantedCrying_Obsidian"));
+        player.discoverRecipe(new NamespacedKey(this, "EnchantedEnder_Pearl"));
+        player.discoverRecipe(new NamespacedKey(this, "EnchantedEmerald"));
+        player.discoverRecipe(new NamespacedKey(this, "EnchantedEnder_Chest"));
+        player.discoverRecipe(new NamespacedKey(this, "BackPack9"));
+        player.discoverRecipe(new NamespacedKey(this, "BackPack18"));
+        player.discoverRecipe(new NamespacedKey(this, "BackPack27"));
+        player.discoverRecipe(new NamespacedKey(this, "BackPack36"));
+        player.discoverRecipe(new NamespacedKey(this, "BackPack45"));
+        player.discoverRecipe(new NamespacedKey(this, "BackPack54"));
         if (config.getBoolean("GoodDayMSG")) {
             Msg.send(player, "Good day.");
         } else {

