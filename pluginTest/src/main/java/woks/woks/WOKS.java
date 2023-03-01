@@ -76,6 +76,9 @@ public final class WOKS extends JavaPlugin implements Listener {
         new SetLore();
         new EnchantTest();
 
+        new OpenPlayerEnderChest();
+        new OpenPlayerInv();
+
         Recipes();
         Enchants();
         getServer().getPluginManager().registerEvents(this, this);
