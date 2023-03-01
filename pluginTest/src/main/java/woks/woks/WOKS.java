@@ -94,7 +94,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         EnchantedDiamond.shape("*%*", "BBB", "*%*");
         EnchantedDiamond.setIngredient('B', Material.DIAMOND);
         EnchantedDiamond.setIngredient('*', Material.COPPER_BLOCK);
-        EnchantedDiamond.setIngredient('%', Material.DIAMOND_BLOCK);
+        EnchantedDiamond.setIngredient('%', Material.DIAMOND);
 
         // EnchantedCrying_Obsidian
         ShapedRecipe EnchantedCrying_Obsidian = new ShapedRecipe(new NamespacedKey(this, "EnchantedCrying_Obsidian"), EnchantedCrying_Obsidian());
@@ -111,12 +111,9 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         // EnchantedEmerald
         ShapedRecipe EnchantedEmerald = new ShapedRecipe(new NamespacedKey(this, "EnchantedEmerald"), EnchantedEmerald());
-        EnchantedEmerald.shape("BDA", "%C%", "ADB");
-        EnchantedEmerald.setIngredient('A', new RecipeChoice.ExactChoice(EnchantedLeather()));
-        EnchantedEmerald.setIngredient('B', Material.EMERALD_BLOCK);
-        EnchantedEmerald.setIngredient('C', Material.EMERALD);
-        EnchantedEmerald.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedEnder_Pearl()));
-        EnchantedEmerald.setIngredient('D', new RecipeChoice.ExactChoice(EnchantedDiamond()));
+        EnchantedEmerald.shape("%%%", "%C%", "%%%");
+        EnchantedEmerald.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedLeather()));
+        EnchantedEmerald.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedDiamond()));
 
         // EnchantedEnder_Chest
         ShapedRecipe EnchantedEnder_Chest = new ShapedRecipe(new NamespacedKey(this, "EnchantedEnder_Chest"), EnchantedEnder_Chest());
@@ -274,6 +271,49 @@ public final class WOKS extends JavaPlugin implements Listener {
             return true;
         }
     };
+
+    public final Enchantment FALK = new Enchantment(new NamespacedKey(this, "falk")) {
+        @Override
+        public String getName() {
+            return "Flak";
+        }
+
+        @Override
+        public int getMaxLevel() {
+            return 1;
+        }
+
+        @Override
+        public int getStartLevel() {
+            return 1;
+        }
+
+        @Override
+        public EnchantmentTarget getItemTarget() {
+            return null;
+        }
+
+        @Override
+        public boolean isTreasure() {
+            return false;
+        }
+
+        @Override
+        public boolean isCursed() {
+            return false;
+        }
+
+        @Override
+        public boolean conflictsWith(Enchantment enchantment) {
+            return false;
+        }
+
+        @Override
+        public boolean canEnchantItem(ItemStack itemStack) {
+            return true;
+        }
+    };
+
     public void Enchants() {
 
         try {
@@ -287,6 +327,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         try {
             Enchantment.registerEnchantment(AUTOPUT);
             Enchantment.registerEnchantment(THROWDOWN);
+            Enchantment.registerEnchantment(FALK);
         }
         catch (IllegalArgumentException ignored){
         }

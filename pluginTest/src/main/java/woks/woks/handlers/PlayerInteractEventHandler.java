@@ -18,24 +18,6 @@ public class PlayerInteractEventHandler implements Listener {
     public PlayerInteractEventHandler(WOKS plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
-
-    //    @EventHandler
-//    public boolean onPlayerItemHeldEvent(PlayerSwapHandItemsEvent event) {
-//        Player player = event.getPlayer();
-////        NBTItem nbtItemOffHand = new NBTItem(Objects.requireNonNull(event.getOffHandItem()));
-////        NBTItem nbtItemMainHand = new NBTItem(Objects.requireNonNull(event.getMainHandItem()));
-////        if (nbtItemOffHand.getBoolean("Using") || nbtItemMainHand.getBoolean("Using")) {
-////            event.setCancelled(true);
-////            // maybe close inventory
-////        }
-//        if ((event.getMainHandItem() == null || event.getMainHandItem().getType() == Material.AIR)) {
-//            if (player.getOpenInventory().getTitle().equals("BackPack")) {
-//                player.getInventory().setItemInMainHand(player.getInventory().getItemInOffHand());
-//                player.getInventory().setItemInOffHand(null);
-//            }
-//        }
-//        return true;
-//    }
     @EventHandler(priority = EventPriority.LOW)
     public boolean onRightClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -161,7 +143,9 @@ public class PlayerInteractEventHandler implements Listener {
                 }
             }
             else if (ItemType == Material.DIAMOND_SHOVEL) {
+                if (event.getItem().containsEnchantment(WOKS.getInstance().THROWDOWN)) {
 
+                }
             }
             else {
                 return false;

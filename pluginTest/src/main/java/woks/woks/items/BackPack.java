@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import woks.woks.WOKS;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -36,7 +37,7 @@ public class BackPack {
 //        item.getItemMeta().setLore(Collections.singletonList((id).toString()));
 
         // add a glint to show it's a backpack
-//        item.addUnsafeEnchantment(Enchantment.PROTECTION_PROJECTILE, 1);
+        item.addUnsafeEnchantment(WOKS.getInstance().FALK, 1);
 
         return item;
     }
