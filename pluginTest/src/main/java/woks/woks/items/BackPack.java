@@ -10,19 +10,21 @@ import java.util.Collections;
 import java.util.UUID;
 
 public class BackPack {
-    public static ItemStack BackPack(int Space) {
-        UUID id = UUID.randomUUID();
-
+    public static ItemStack BackPack(int Space, boolean uuid) {
         ItemStack item = new ItemStack(Material.CHEST);
-
-        ItemMeta mete = item.getItemMeta();
-
-        mete.setLore(Collections.singletonList(String.valueOf(id)));
-
-        item.setItemMeta(mete);
-
         NBTItem nbti = new NBTItem(item);
         ItemStack[] LMODE = new ItemStack[]{};
+
+//        if (!uuid) {
+//            ItemMeta mete = item.getItemMeta();
+//            UUID id = UUID.randomUUID();
+//            nbti.setString("UUIDToPreventDuping", String.valueOf(id));
+//            assert mete != null;
+//            mete.setLore(Collections.singletonList(String.valueOf(id)));
+//            item.setItemMeta(mete);
+//        }
+
+
 
 
         // add custom data
@@ -30,14 +32,13 @@ public class BackPack {
         nbti.setItemStackArray("ItemsE", LMODE);
         nbti.setBoolean("BackPack", true);
         nbti.setBoolean("Using", false);
-        nbti.setString("UUIDToPreventDuping", String.valueOf(id));
 
-        // make it back to ItemStack / save it
-        item = nbti.getItem();
+            // make it back to ItemStack / save it
+            item = nbti.getItem();
 //        item.getItemMeta().setLore(Collections.singletonList((id).toString()));
 
         // add a glint to show it's a backpack
-        item.addUnsafeEnchantment(WOKS.getInstance().FALK, 1);
+        item.addEnchantment(WOKS.getInstance().FALK, 1);
 
         return item;
     }

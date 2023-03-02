@@ -30,14 +30,23 @@ public class EnchantTest {
                 ItemStack itemStack = player.getInventory().getItemInMainHand();
                 if (itemStack.getType() != Material.AIR) {
                     Enchantment enchantment;
-                    if (Objects.equals(arguments[0], "throw_down")) {
-                        enchantment = WOKS.getInstance().THROWDOWN;
-                    } else if (Objects.equals(arguments[0], "auto_put")) {
-                        enchantment = WOKS.getInstance().AUTOPUT;
-                    }
-                    else {
-                        Msg.send(player, "Unexpected value: " + arguments[0]);
-                        throw new IllegalStateException("Unexpected value: " + arguments[0]);
+                    switch (arguments[0]) {
+                        case "throw_down": {
+                            enchantment = WOKS.getInstance().THROWDOWN;
+                            break;
+                        }
+                        case "auto_put": {
+                            enchantment = WOKS.getInstance().AUTOPUT;
+                            break;
+                        }
+                        case "falk": {
+                            enchantment = WOKS.getInstance().FALK;
+                            break;
+                        }
+                        default: {
+                            Msg.send(player, "Unexpected value: " + arguments[0]);
+                            throw new IllegalStateException("Unexpected value: " + arguments[0]);
+                        }
                     }
                     ItemMeta itemMeta = itemStack.getItemMeta();
                     final int EnchantmentLevel = Integer.parseInt(arguments[1]);
