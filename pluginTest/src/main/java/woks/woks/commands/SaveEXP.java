@@ -38,8 +38,9 @@ public class SaveEXP {
 //                        player.setExp(player.getExp() - ExpCount);
                         ExperienceManager.setTotalExperience(player, ExperienceManager.getTotalExperience(player) - ExpCount);
 
-                        // add it to a item lore and then give it to the player
-                        player.getInventory().setItemInMainHand(CustomExpBottle.customExpBottle(ExpCount));
+                        // add it to an item lore and then give it to the player
+                        player.getInventory().addItem(CustomExpBottle.customExpBottle(ExpCount));
+//                        player.getInventory().setItemInMainHand(CustomExpBottle.customExpBottle(ExpCount));
 
                         Bukkit.getLogger().info("exp item dones.");
                     } else if (item.getType() == Material.EXPERIENCE_BOTTLE) {
@@ -64,7 +65,7 @@ public class SaveEXP {
 
             @Override
             public String getUsage() {
-                return "/savexp <int|all> <level>";
+                return "/savexp <int:amount|all> <level>";
             }
 
             @Override

@@ -29,6 +29,7 @@ import static woks.woks.items.EnchantedLeather.EnchantedLeather;
 
 public final class WOKS extends JavaPlugin implements Listener {
     private static WOKS instance;
+    public static boolean AFC = false;
     FileConfiguration config = this.getConfig();
 
     public static WOKS getInstance() {
@@ -43,6 +44,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         config.addDefault("PlayerWalkPath", true);
         config.addDefault("GoodDayMSG", true);
+        config.addDefault("UnsafeEnchanting", true);
 
         config.options().copyDefaults(true);
         saveConfig();
@@ -76,8 +78,16 @@ public final class WOKS extends JavaPlugin implements Listener {
         new SetLore();
         new EnchantTest();
 
+        /*
+        deprecated
         new OpenPlayerEnderChest();
         new OpenPlayerInv();
+         */
+        new PlayerInv();
+        if (config.getBoolean("UnsafeEnchanting")) {
+            new EnchantTesting();
+        }
+        new AutoAim(this);
 
         Recipes();
         Enchants();
@@ -363,7 +373,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         player.discoverRecipe(new NamespacedKey(this, "BackPack54"));
         Msg.send(player, "Hello " + player.getName() + ", to keep my plugin alive");
         Msg.send(player, "or to request me to add something, please visit my github repo");
-        Msg.send(player, "https://github.com/shortpupper/Pronto-Prism-Vortex-Code");
+        Msg.send(player, "https://github.com/shortpupper/IdeaProjects");
         if (config.getBoolean("GoodDayMSG")) {
             Msg.send(player, "Good day.");
         } else {

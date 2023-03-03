@@ -6,6 +6,7 @@ import woks.woks.CommandBase;
 
 import java.util.List;
 
+// deprecated, might come back to
 public class EnchantMe {
     public EnchantMe() {
         new CommandBase("enchantme", 0, 1, true) {

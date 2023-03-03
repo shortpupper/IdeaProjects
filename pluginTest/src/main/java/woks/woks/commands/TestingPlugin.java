@@ -7,6 +7,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
+import woks.woks.WOKS;
 
 import java.util.List;
 
@@ -18,21 +19,24 @@ public class TestingPlugin {
                 Player player = (Player) sender;
                 if (player.getName().equals("ShortPuppy14484")) {
                     if ("effect".equals(arguments[0])) {
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 255, true));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 1000000, 255, true));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 1000000, 255, true));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 1000000, 255, true));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 1000000, 255, true));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 1000000, 255, true));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER, 1000000, 255, true));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 1000000, 255, true));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 1000000, 10, true));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 1000000, 10, true));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 1000000, 255, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 2100000000, 255, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 2100000000, 255, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 2100000000, 255, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2100000000, 255, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 2100000000, 255, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 2100000000, 255, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER, 2100000000, 255, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 2100000000, 255, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 2100000000, 10, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2100000000, 10, true));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 2100000000, 255, true));
                     } else if ("no".equals(arguments[0])) {
                         ((Player) sender).setInvulnerable(true);
                     } else if ("yes".equals(arguments[0])) {
                         ((Player) sender).setInvulnerable(false);
+                    } else if ("arrow".equals(arguments[0])) {
+                        WOKS.AFC = !WOKS.AFC;
+                        Msg.send(player, String.valueOf(WOKS.AFC));
                     }
                 } else {
                     Msg.send(player, "You are not allowed to use this command, please contact you admin.");

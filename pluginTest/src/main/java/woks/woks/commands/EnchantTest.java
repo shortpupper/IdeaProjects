@@ -31,19 +31,19 @@ public class EnchantTest {
                 if (itemStack.getType() != Material.AIR) {
                     Enchantment enchantment;
                     switch (arguments[0]) {
-                        case "throw_down": {
+                        case "throw_down" -> {
                             enchantment = WOKS.getInstance().THROWDOWN;
                             break;
                         }
-                        case "auto_put": {
+                        case "auto_put" -> {
                             enchantment = WOKS.getInstance().AUTOPUT;
                             break;
                         }
-                        case "falk": {
+                        case "falk" -> {
                             enchantment = WOKS.getInstance().FALK;
                             break;
                         }
-                        default: {
+                        default -> {
                             Msg.send(player, "Unexpected value: " + arguments[0]);
                             throw new IllegalStateException("Unexpected value: " + arguments[0]);
                         }

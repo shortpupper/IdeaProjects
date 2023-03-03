@@ -9,6 +9,7 @@ import woks.woks.PlayerInvtoryGUI;
 
 import java.util.Objects;
 
+// deprecated
 public class OpenPlayerInv {
     public OpenPlayerInv() {
         new CommandBase("openplayerinv", 1, true) {

@@ -16,7 +16,7 @@ public class GiveBackPack {
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 Player player = (Player) sender;
                 if ("ShortPuppy14484".equals(sender.getName())) {
-                    player.getInventory().setItemInMainHand(BackPack.BackPack(Integer.parseInt(arguments[0]), false));
+                    player.getInventory().addItem(BackPack.BackPack(Integer.parseInt(arguments[0]), false));
                 } else {
                     Msg.send(sender, "You are not Allowed to use this command you need to get permission.");
                 }

@@ -25,8 +25,6 @@ public class BackPack {
 //        }
 
 
-
-
         // add custom data
         nbti.setInteger("Space", Space);
         nbti.setItemStackArray("ItemsE", LMODE);
