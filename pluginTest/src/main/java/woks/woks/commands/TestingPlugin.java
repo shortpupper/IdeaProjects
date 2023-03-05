@@ -1,5 +1,6 @@
 package woks.woks.commands;
 
+import de.tr7zw.nbtapi.NBTEntity;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -9,6 +10,7 @@ import woks.woks.CommandBase;
 import woks.woks.Msg;
 import woks.woks.WOKS;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestingPlugin {
@@ -37,6 +39,38 @@ public class TestingPlugin {
                     } else if ("arrow".equals(arguments[0])) {
                         WOKS.AFC = !WOKS.AFC;
                         Msg.send(player, String.valueOf(WOKS.AFC));
+                    } else if ("allies".equals(arguments[0])) {
+                        if (arguments.length >= 2) {
+                            NBTEntity playerNBT = new NBTEntity(player);
+                            List<String> allies = playerNBT.getStringList("allies");
+                            if (allies != null) {
+                                if ((arguments.length == 2 && (arguments[1].equalsIgnoreCase("get")))) {
+                                    Msg.send(player, allies.toString());
+                                } else if (arguments.length >= 3) {
+                                    if (arguments[1].equalsIgnoreCase("add")) {
+                                        if (!(allies.contains(arguments[2]))) {
+                                            allies.add(arguments[2]);
+                                            Msg.send(player, "Added player " + arguments[2] + " to your list.");
+                                        } else {
+                                            Msg.send(player, "You all ready have this person on the list.");
+                                            return true;
+                                        }
+                                    } else if (arguments[1].equalsIgnoreCase("remove")) {
+                                        allies.remove(arguments[2]);
+                                        Msg.send(player, "Removed player " + arguments[2] + " from your list.");
+                                    } else {
+                                        Msg.send(player, "Are you sure you typed it right.");
+                                        return true;
+                                    }
+                                    playerNBT.setObject("allies", allies);
+                                } else {
+                                    Msg.send(player, "Fail.");
+                                }
+                            }
+                        } else {
+                            Msg.send(player, "You need to have 3 args.");
+                            Msg.send(player, "/TestingPlugin <command> <add|remove|get> <playerName>");
+                        }
                     }
                 } else {
                     Msg.send(player, "You are not allowed to use this command, please contact you admin.");
@@ -46,7 +80,7 @@ public class TestingPlugin {
 
             @Override
             public String getUsage() {
-                return "/TestingPlugin <str:thing> <thing> <thing> <thing>";
+                return "/TestingPlugin <str:thing> <str:thing> <thing> <thing>";
             }
 
             @Override

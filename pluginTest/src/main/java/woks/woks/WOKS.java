@@ -17,6 +17,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import woks.woks.commands.*;
 import woks.woks.handlers.*;
 import woks.woks.items.*;
+//import woks.woks.items.PRQ.Obamanium.Obamanium_ChestPlate;
+import woks.woks.items.PRQ.Obamanium.*;
 
 import java.lang.reflect.Field;
 
@@ -26,6 +28,7 @@ import static woks.woks.items.EnchantedEmerald.EnchantedEmerald;
 import static woks.woks.items.EnchantedEnder_Chest.EnchantedEnder_Chest;
 import static woks.woks.items.EnchantedEnder_Pearl.EnchantedEnder_Pearl;
 import static woks.woks.items.EnchantedLeather.EnchantedLeather;
+import static woks.woks.items.PRQ.Obamanium.Obamanium_Ingot.Obamanium_Ingot;
 
 public final class WOKS extends JavaPlugin implements Listener {
     private static WOKS instance;
@@ -45,6 +48,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("PlayerWalkPath", true);
         config.addDefault("GoodDayMSG", true);
         config.addDefault("UnsafeEnchanting", true);
+        config.addDefault("PaidRequests", true);
 
         config.options().copyDefaults(true);
         saveConfig();
@@ -89,12 +93,29 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
         new AutoAim(this);
 
+        if (config.getBoolean("PaidRequests")) {
+            new Obamanium_Ingot();
+        }
+
         Recipes();
         Enchants();
         getServer().getPluginManager().registerEvents(this, this);
     }
 
     public void Recipes() {
+        if (config.getBoolean("PaidRequests")) {
+            // 50 pesos ~ 2.78 United States Dollar
+            ShapedRecipe obamanium_ingot = new ShapedRecipe(new NamespacedKey(this, "obamanium_ingot"), Obamanium_Ingot());
+            obamanium_ingot.shape("***", "***", "***");
+            obamanium_ingot.setIngredient('*', Material.DIAMOND_BLOCK);
+
+//            ShapedRecipe obamanium_chestplate = new ShapedRecipe(new NamespacedKey(this, "obamanium_chestplate"), Obamanium_ChestPlate.Obamanium_ChestPlate());
+//            obamanium_chestplate.shape("* *", "***", "***");
+//            obamanium_chestplate.setIngredient('*', Material.DIAMOND_BLOCK);
+//
+//            getServer().addRecipe(obamanium_chestplate);
+            getServer().addRecipe(obamanium_ingot);
+        }
         // recipe
         //leather
         ShapedRecipe EnchantedLeather = new ShapedRecipe(new NamespacedKey(this, "EnchantedLeather"), EnchantedLeather());
@@ -284,7 +305,6 @@ public final class WOKS extends JavaPlugin implements Listener {
             return true;
         }
     };
-
     public final Enchantment FALK = new Enchantment(new NamespacedKey(this, "falk")) {
         @Override
         public String getName() {
@@ -350,6 +370,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
     }
 
+
     @Override
     public void onDisable() {
         // Plugin shutdown logic
@@ -371,6 +392,11 @@ public final class WOKS extends JavaPlugin implements Listener {
         player.discoverRecipe(new NamespacedKey(this, "BackPack36"));
         player.discoverRecipe(new NamespacedKey(this, "BackPack45"));
         player.discoverRecipe(new NamespacedKey(this, "BackPack54"));
+
+        if (config.getBoolean("PaidRequests")) {
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_ingot"));
+        }
+
         Msg.send(player, "Hello " + player.getName() + ", to keep my plugin alive");
         Msg.send(player, "or to request me to add something, please visit my github repo");
         Msg.send(player, "https://github.com/shortpupper/IdeaProjects");

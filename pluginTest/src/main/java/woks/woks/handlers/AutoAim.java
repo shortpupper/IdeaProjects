@@ -1,5 +1,6 @@
 package woks.woks.handlers;
 
+import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -64,7 +65,10 @@ public class AutoAim implements Listener {
         double closestDistanceSquared = Double.MAX_VALUE;
         for(Entity entity : player.getWorld().getEntities()) {
             if(entity instanceof Player otherPlayer) {
-                if(otherPlayer.equals(player) || !otherPlayer.getGameMode().equals(player.getGameMode())) {
+                if (otherPlayer.equals(player) || !otherPlayer.getGameMode().equals(player.getGameMode())) {
+                    continue;
+                }
+                else if (new NBTEntity(player).getStringList("allies").contains(otherPlayer.getName())) {
                     continue;
                 }
             }

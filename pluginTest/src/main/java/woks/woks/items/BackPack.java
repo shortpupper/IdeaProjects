@@ -30,6 +30,7 @@ public class BackPack {
         nbti.setItemStackArray("ItemsE", LMODE);
         nbti.setBoolean("BackPack", true);
         nbti.setBoolean("Using", false);
+        nbti.setBoolean("DisableCrafting", false);
 
             // make it back to ItemStack / save it
             item = nbti.getItem();

@@ -10,6 +10,7 @@ public class CustomExpBottle {
         ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
         NBTItem nbti = new NBTItem(item);
         nbti.setInteger("Exp", Exp);
+        nbti.setBoolean("DisableCrafting", true);
         item = nbti.getItem();
         item.addEnchantment(WOKS.getInstance().FALK, 1);
         return item;

@@ -24,5 +24,8 @@ public class ItemDropped implements Listener {
                 event.getItemDrop().setInvulnerable(true);
             }
         }
+        else if (new NBTItem(Item).getBoolean("IsInvulnerableOnDrop")) {
+            event.getItemDrop().setInvulnerable(true);
+        }
     }
 }

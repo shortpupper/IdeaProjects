@@ -23,7 +23,8 @@ public class PlayerInteractEventHandler implements Listener {
         Player player = event.getPlayer();
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 //            Bukkit.getLogger().info("in air");
-            Material ItemType = (Objects.requireNonNull(event.getItem())).getType();
+            if (event.getItem() == null) {return true;}
+            Material ItemType = event.getItem().getType();
             if (ItemType == Material.EXPERIENCE_BOTTLE) {
                 ItemStack item = event.getItem();
                 NBTItem nbtItem = new NBTItem(item);
@@ -135,7 +136,7 @@ public class PlayerInteractEventHandler implements Listener {
                     event.setCancelled(true);
                 }
             }
-            else if (ItemType == Material.ENDER_CHEST || ItemType == Material.ENDER_PEARL || ItemType == Material.CRYING_OBSIDIAN) {
+            else if (ItemType == Material.ENDER_CHEST || ItemType == Material.ENDER_PEARL || ItemType == Material.CRYING_OBSIDIAN || ItemType == Material.TRIPWIRE) {
                 NBTItem nbtItem = new NBTItem(event.getItem());
 
                 if (nbtItem.getBoolean("Disable")) {
@@ -148,10 +149,10 @@ public class PlayerInteractEventHandler implements Listener {
                 }
             }
             else {
-                return false;
+                return true;
             }
         } else {
-            return false;
+            return true;
         }
         return true;
     }

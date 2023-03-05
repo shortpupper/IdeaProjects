@@ -14,6 +14,7 @@ public class EnchantedCrying_Obsidian {
 
         // add custom data
         nbti.setBoolean("Disable", true);
+        nbti.setBoolean("DisableCrafting", false);
 
         // make it back to ItemStack / save it
         item = nbti.getItem();
