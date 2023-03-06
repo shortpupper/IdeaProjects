@@ -461,7 +461,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             player.discoverRecipe(new NamespacedKey(this, "obamanium_helmet"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_shovel"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_scrap"));
-            player.discoverRecipe(new NamespacedKey(this, "obamanium_scrap_to"));
+//            player.discoverRecipe(new NamespacedKey(this, "obamanium_scrap_to"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_hoe"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_pickaxe"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_axe"));
@@ -470,7 +470,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         Msg.send(player, "Hello " + player.getName() + ", to keep my plugin alive");
         Msg.send(player, "or to request me to add something, please visit my github repo");
         Msg.send(player, "https://github.com/shortpupper/IdeaProjects");
-        Msg.send(player, "This plugin uses a resource pack for changes.");
+        Msg.send(player, "This plugin uses a resource pack, So make sure you are using optifine.");
         if (config.getBoolean("GoodDayMSG")) {
             Msg.send(player, "Good day.");
         } else {

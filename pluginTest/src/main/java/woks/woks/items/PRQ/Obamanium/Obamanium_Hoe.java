@@ -1,5 +1,7 @@
 package woks.woks.items.PRQ.Obamanium;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -17,9 +19,11 @@ public class Obamanium_Hoe {
         ItemMeta itemMeta = item.getItemMeta();
 
         itemMeta.setDisplayName("§r§l§9Obamanium Hoe");
-        itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier((UUID.randomUUID()), "generic.attack_damage", 2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
-        itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier((UUID.randomUUID()), "generic.attack_speed", 0.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
+        Multimap<Attribute, AttributeModifier> attributeModifiers = ArrayListMultimap.create();
+        attributeModifiers.put(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier((UUID.randomUUID()), "generic.attack_damage", 2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
+        attributeModifiers.put(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier((UUID.randomUUID()), "generic.attack_speed", 0.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
 
+        itemMeta.setAttributeModifiers(attributeModifiers);
         item.setItemMeta(itemMeta);
 
         NBTItem nbti = new NBTItem(item);
@@ -28,6 +32,7 @@ public class Obamanium_Hoe {
         nbti.setBoolean("Disable", false);
         nbti.setBoolean("DisableCrafting", false);
         nbti.setBoolean("IsInvulnerableOnDrop", true);
+        nbti.setBoolean("IsCustomItem", true);
 
         item = nbti.getItem();
         return item;

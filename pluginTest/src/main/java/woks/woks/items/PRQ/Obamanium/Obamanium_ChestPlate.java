@@ -30,6 +30,7 @@ public class Obamanium_ChestPlate {
         nbti.setBoolean("Disable", false);
         nbti.setBoolean("DisableCrafting", false);
         nbti.setBoolean("IsInvulnerableOnDrop", true);
+        nbti.setBoolean("IsCustomItem", true);
 
         item = nbti.getItem();
         return item;

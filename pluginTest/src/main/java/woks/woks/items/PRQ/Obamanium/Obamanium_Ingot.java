@@ -18,6 +18,7 @@ public class Obamanium_Ingot {
         nbti.setBoolean("Disable", true);
         nbti.setBoolean("DisableCrafting", false);
         nbti.setBoolean("IsInvulnerableOnDrop", true);
+        nbti.setBoolean("IsCustomItem", true);
 //        nbti.setBoolean("DisableNormalCrafting", true); // this is placeholder I would need to make this
 
         item = nbti.getItem();
