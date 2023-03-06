@@ -4,11 +4,12 @@ import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-public class Obamanium_Ingot {
-    public static ItemStack Obamanium_Ingot(int amount) {
-        ItemStack item = new ItemStack(Material.DIAMOND, amount);
+
+public class Obamanium_Block {
+    public static ItemStack Obamanium_Block() {
+        ItemStack item = new ItemStack(Material.DIAMOND_BLOCK, 1);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName("§r§l§9Obamanium Ingot");
+        itemMeta.setDisplayName("§r§l§9Obamanium Block");
         itemMeta.setCustomModelData(12345678);
         item.setItemMeta(itemMeta);
 
@@ -18,6 +19,7 @@ public class Obamanium_Ingot {
         nbti.setBoolean("Disable", true);
         nbti.setBoolean("DisableCrafting", false);
         nbti.setBoolean("IsInvulnerableOnDrop", true);
+        nbti.setBoolean("KeepDataOnPlace", true);
 //        nbti.setBoolean("DisableNormalCrafting", true); // this is placeholder I would need to make this
 
         item = nbti.getItem();

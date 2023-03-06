@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -95,6 +96,11 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         if (config.getBoolean("PaidRequests")) {
             new Obamanium_Ingot();
+            new Obamanium_Sword();
+            new Obamanium_Helmet();
+            new Obamanium_ChestPlate();
+            new Obamanium_Leggings();
+            new Obamanium_Boots();
         }
 
         Recipes();
@@ -104,16 +110,69 @@ public final class WOKS extends JavaPlugin implements Listener {
 
     public void Recipes() {
         if (config.getBoolean("PaidRequests")) {
+            final RecipeChoice ingot = new RecipeChoice.ExactChoice(Obamanium_Ingot(1));
             // 50 pesos ~ 2.78 United States Dollar
-            ShapedRecipe obamanium_ingot = new ShapedRecipe(new NamespacedKey(this, "obamanium_ingot"), Obamanium_Ingot());
+            ShapedRecipe obamanium_ingot = new ShapedRecipe(new NamespacedKey(this, "obamanium_ingot"), Obamanium_Ingot(1));
             obamanium_ingot.shape("***", "***", "***");
-            obamanium_ingot.setIngredient('*', Material.DIAMOND_BLOCK);
+            obamanium_ingot.setIngredient('*', new RecipeChoice.ExactChoice(Obamanium_Scrap.Obamanium_Scrap(1)));
 
-//            ShapedRecipe obamanium_chestplate = new ShapedRecipe(new NamespacedKey(this, "obamanium_chestplate"), Obamanium_ChestPlate.Obamanium_ChestPlate());
-//            obamanium_chestplate.shape("* *", "***", "***");
-//            obamanium_chestplate.setIngredient('*', Material.DIAMOND_BLOCK);
+            ShapedRecipe obamanium_chestplate = new ShapedRecipe(new NamespacedKey(this, "obamanium_chestplate"), Obamanium_ChestPlate.Obamanium_ChestPlate());
+            obamanium_chestplate.shape("* *", "***", "***");
+            obamanium_chestplate.setIngredient('*', ingot);
 //
-//            getServer().addRecipe(obamanium_chestplate);
+            ShapedRecipe obamanium_helmet = new ShapedRecipe(new NamespacedKey(this, "obamanium_helmet"), Obamanium_Helmet.Obamanium_Helmet());
+            obamanium_helmet.shape("***", "* *", "   ");
+            obamanium_helmet.setIngredient('*', ingot);
+//
+            ShapedRecipe obamanium_leggings = new ShapedRecipe(new NamespacedKey(this, "obamanium_leggings"), Obamanium_Leggings.Obamanium_Leggings());
+            obamanium_leggings.shape("***", "* *", "* *");
+            obamanium_leggings.setIngredient('*', ingot);
+
+            ShapedRecipe obamanium_boots = new ShapedRecipe(new NamespacedKey(this, "obamanium_boots"), Obamanium_Boots.Obamanium_Boots());
+            obamanium_boots.shape("   ", "* *", "* *");
+            obamanium_boots.setIngredient('*', ingot);
+
+            ShapedRecipe obamanium_sword = new ShapedRecipe(new NamespacedKey(this, "obamanium_sword"), Obamanium_Sword.Obamanium_Sword());
+            obamanium_sword.shape("*", "*", "1");
+            obamanium_sword.setIngredient('*', ingot);
+            obamanium_sword.setIngredient('1', Material.STICK);
+
+            ShapedRecipe obamanium_shovel = new ShapedRecipe(new NamespacedKey(this, "obamanium_shovel"), Obamanium_Shovel.Obamanium_Shovel());
+            obamanium_shovel.shape("*", "1", "1");
+            obamanium_shovel.setIngredient('*', ingot);
+            obamanium_shovel.setIngredient('1', Material.STICK);
+//
+            ShapedRecipe obamanium_hoe = new ShapedRecipe(new NamespacedKey(this, "obamanium_hoe"), Obamanium_Hoe.Obamanium_Hoe());
+            obamanium_hoe.shape("** ", " 1 ", " 1 ");
+            obamanium_hoe.setIngredient('*', ingot);
+            obamanium_hoe.setIngredient('1', Material.STICK);
+
+            ShapedRecipe obamanium_axe = new ShapedRecipe(new NamespacedKey(this, "obamanium_axe"), Obamanium_Axe.Obamanium_Axe());
+            obamanium_axe.shape("** ", "*1 ", " 1 ");
+            obamanium_axe.setIngredient('*', ingot);
+            obamanium_axe.setIngredient('1', Material.STICK);
+//
+            ShapedRecipe obamanium_pickaxe = new ShapedRecipe(new NamespacedKey(this, "obamanium_pickaxe"), Obamanium_Pickaxe.Obamanium_Pickaxe());
+            obamanium_pickaxe.shape("***", " 1 ", " 1 ");
+            obamanium_pickaxe.setIngredient('*', ingot);
+            obamanium_pickaxe.setIngredient('1', Material.STICK);
+
+            ShapedRecipe obamanium_scrap = new ShapedRecipe(new NamespacedKey(this, "obamanium_scrap"), Obamanium_Scrap.Obamanium_Scrap(1));
+            obamanium_scrap.shape("***", "***", "***");
+            obamanium_scrap.setIngredient('*', Material.DIAMOND_BLOCK);
+//            obamanium_scrap.setIngredient('/', Material.STICK);
+
+
+            getServer().addRecipe(obamanium_scrap);
+            getServer().addRecipe(obamanium_pickaxe);
+            getServer().addRecipe(obamanium_axe);
+            getServer().addRecipe(obamanium_hoe);
+            getServer().addRecipe(obamanium_shovel);
+            getServer().addRecipe(obamanium_sword);
+            getServer().addRecipe(obamanium_boots);
+            getServer().addRecipe(obamanium_leggings);
+            getServer().addRecipe(obamanium_helmet);
+            getServer().addRecipe(obamanium_chestplate);
             getServer().addRecipe(obamanium_ingot);
         }
         // recipe
@@ -395,11 +454,23 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         if (config.getBoolean("PaidRequests")) {
             player.discoverRecipe(new NamespacedKey(this, "obamanium_ingot"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_sword"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_chestplate"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_leggings"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_boots"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_helmet"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_shovel"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_scrap"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_scrap_to"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_hoe"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_pickaxe"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_axe"));
         }
 
         Msg.send(player, "Hello " + player.getName() + ", to keep my plugin alive");
         Msg.send(player, "or to request me to add something, please visit my github repo");
         Msg.send(player, "https://github.com/shortpupper/IdeaProjects");
+        Msg.send(player, "This plugin uses a resource pack for changes.");
         if (config.getBoolean("GoodDayMSG")) {
             Msg.send(player, "Good day.");
         } else {
