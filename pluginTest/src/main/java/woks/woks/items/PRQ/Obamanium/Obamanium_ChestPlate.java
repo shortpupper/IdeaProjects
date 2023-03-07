@@ -16,6 +16,7 @@ public class Obamanium_ChestPlate {
         ItemStack item = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
         ItemMeta itemMeta = item.getItemMeta();
 
+
         itemMeta.setDisplayName("§r§l§9Obamanium Chestplate");
         itemMeta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier((UUID.randomUUID()), "generic.armor", 9, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
         itemMeta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier((UUID.randomUUID()), "generic.armor_toughness", 4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
@@ -30,7 +31,7 @@ public class Obamanium_ChestPlate {
         nbti.setBoolean("Disable", false);
         nbti.setBoolean("DisableCrafting", false);
         nbti.setBoolean("IsInvulnerableOnDrop", true);
-        nbti.setBoolean("IsCustomItem", true);
+        nbti.setString("IsCustomItem", "1");
 
         item = nbti.getItem();
         return item;

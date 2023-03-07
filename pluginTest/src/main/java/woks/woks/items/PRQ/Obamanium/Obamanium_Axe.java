@@ -18,7 +18,7 @@ public class Obamanium_Axe {
 
         itemMeta.setDisplayName("§r§l§9Obamanium Axe");
         itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier((UUID.randomUUID()), "generic.attack_damage",  11, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
-        itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier((UUID.randomUUID()), "generic.attack_speed", 0.9, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
+        itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier((UUID.randomUUID()), "generic.attack_speed", 3.9, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
 
         item.setItemMeta(itemMeta);
 
@@ -28,7 +28,7 @@ public class Obamanium_Axe {
         nbti.setBoolean("Disable", false);
         nbti.setBoolean("DisableCrafting", false);
         nbti.setBoolean("IsInvulnerableOnDrop", true);
-        nbti.setBoolean("IsCustomItem", true);
+        nbti.setString("IsCustomItem", "1");
 
         item = nbti.getItem();
         return item;

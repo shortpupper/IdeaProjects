@@ -32,7 +32,7 @@ public class Obamanium_Hoe {
         nbti.setBoolean("Disable", false);
         nbti.setBoolean("DisableCrafting", false);
         nbti.setBoolean("IsInvulnerableOnDrop", true);
-        nbti.setBoolean("IsCustomItem", true);
+        nbti.setString("IsCustomItem", "1");
 
         item = nbti.getItem();
         return item;
