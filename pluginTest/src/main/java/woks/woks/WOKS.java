@@ -216,55 +216,13 @@ public final class WOKS extends JavaPlugin implements Listener {
         EnchantedEnder_Chest.setIngredient('#', Material.ENDER_CHEST);
 
         // BackPack9
-        ShapedRecipe BackPack9 = new ShapedRecipe(new NamespacedKey(this, "BackPack9"), BackPack.BackPack(9, false));
-        BackPack9.shape("!@#", "$C$", "#@!");
-        BackPack9.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedEnder_Chest()));
-        BackPack9.setIngredient('!', new RecipeChoice.ExactChoice(EnchantedEmerald()));
-        BackPack9.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedDiamond()));
-        BackPack9.setIngredient('#', Material.DIAMOND_BLOCK);
-        BackPack9.setIngredient('@', Material.CHEST);
-
-        // BackPack18
-        ShapedRecipe BackPack18 = new ShapedRecipe(new NamespacedKey(this, "BackPack18"), BackPack.BackPack(18, true));
-        BackPack18.shape("!@#", "$C$", "#@!");
-        BackPack18.setIngredient('C', new RecipeChoice.ExactChoice(BackPack.BackPack(9, true)));
-        BackPack18.setIngredient('!', Material.LEATHER);
-        BackPack18.setIngredient('$', Material.ENDER_CHEST);
-        BackPack18.setIngredient('#', new RecipeChoice.ExactChoice(EnchantedLeather()));
-        BackPack18.setIngredient('@', new RecipeChoice.ExactChoice(EnchantedCrying_Obsidian()));
-
-        // BackPack27
-        ShapedRecipe BackPack27 = new ShapedRecipe(new NamespacedKey(this, "BackPack27"), BackPack.BackPack(27, true));
-        BackPack27.shape("###", "$C$", "###");
-        BackPack27.setIngredient('C', new RecipeChoice.ExactChoice(BackPack.BackPack(18, true)));
-        BackPack27.setIngredient('#', new RecipeChoice.ExactChoice(EnchantedLeather()));
-        BackPack27.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedCrying_Obsidian()));
-
-        // BackPack36
-        ShapedRecipe BackPack36 = new ShapedRecipe(new NamespacedKey(this, "BackPack36"), BackPack.BackPack(36, true));
-        BackPack36.shape("##%", "$C$", "%##");
-        BackPack36.setIngredient('C', new RecipeChoice.ExactChoice(BackPack.BackPack(27, true)));
-        BackPack36.setIngredient('#', new RecipeChoice.ExactChoice(EnchantedLeather()));
-        BackPack36.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedCrying_Obsidian()));
-        BackPack36.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedDiamond()));
-
-        // BackPack45
-        ShapedRecipe BackPack45 = new ShapedRecipe(new NamespacedKey(this, "BackPack45"), BackPack.BackPack(45, true));
-        BackPack45.shape("@&%", "#C#", "%&@");
-        BackPack45.setIngredient('C', new RecipeChoice.ExactChoice(BackPack.BackPack(36, true)));
-        BackPack45.setIngredient('#', new RecipeChoice.ExactChoice(EnchantedLeather()));
-        BackPack45.setIngredient('@', new RecipeChoice.ExactChoice(EnchantedEmerald()));
-        BackPack45.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedDiamond()));
-        BackPack45.setIngredient('&', new RecipeChoice.ExactChoice(EnchantedEnder_Pearl()));
-
-        // BackPack54
-        ShapedRecipe BackPack54 = new ShapedRecipe(new NamespacedKey(this, "BackPack54"), BackPack.BackPack(54, true));
-        BackPack54.shape("#@%", "$C$", "%@#");
-        BackPack54.setIngredient('C', new RecipeChoice.ExactChoice(BackPack.BackPack(45, true)));
-        BackPack54.setIngredient('#', new RecipeChoice.ExactChoice(EnchantedLeather()));
-        BackPack54.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedEnder_Chest()));
-        BackPack54.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedEnder_Pearl()));
-        BackPack54.setIngredient('@', new RecipeChoice.ExactChoice(EnchantedDiamond()));
+        ShapedRecipe BackPackRecipe = new ShapedRecipe(new NamespacedKey(this, "BackPackRecipe"), BackPack.BackPack(9, false));
+        BackPackRecipe.shape("!@#", "$C$", "#@!");
+        BackPackRecipe.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedEnder_Chest()));
+        BackPackRecipe.setIngredient('!', new RecipeChoice.ExactChoice(EnchantedEmerald()));
+        BackPackRecipe.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedDiamond()));
+        BackPackRecipe.setIngredient('#', Material.DIAMOND_BLOCK);
+        BackPackRecipe.setIngredient('@', Material.CHEST);
 
 
         // add recipes
@@ -274,12 +232,8 @@ public final class WOKS extends JavaPlugin implements Listener {
         getServer().addRecipe(EnchantedEnder_Pearl);
         getServer().addRecipe(EnchantedEmerald);
         getServer().addRecipe(EnchantedEnder_Chest);
-        getServer().addRecipe(BackPack9);
-        getServer().addRecipe(BackPack18);
-        getServer().addRecipe(BackPack27);
-        getServer().addRecipe(BackPack36);
-        getServer().addRecipe(BackPack45);
-        getServer().addRecipe(BackPack54);
+        getServer().addRecipe(BackPackRecipe);
+
     }
 
     public final Enchantment THROWDOWN = new Enchantment(new NamespacedKey(this, "throw_down")) {
@@ -445,12 +399,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         player.discoverRecipe(new NamespacedKey(this, "EnchantedEnder_Pearl"));
         player.discoverRecipe(new NamespacedKey(this, "EnchantedEmerald"));
         player.discoverRecipe(new NamespacedKey(this, "EnchantedEnder_Chest"));
-        player.discoverRecipe(new NamespacedKey(this, "BackPack9"));
-        player.discoverRecipe(new NamespacedKey(this, "BackPack18"));
-        player.discoverRecipe(new NamespacedKey(this, "BackPack27"));
-        player.discoverRecipe(new NamespacedKey(this, "BackPack36"));
-        player.discoverRecipe(new NamespacedKey(this, "BackPack45"));
-        player.discoverRecipe(new NamespacedKey(this, "BackPack54"));
+        player.discoverRecipe(new NamespacedKey(this, "BackPackRecipe"));
 
         if (config.getBoolean("PaidRequests")) {
             player.discoverRecipe(new NamespacedKey(this, "obamanium_ingot"));
