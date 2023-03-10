@@ -8,8 +8,8 @@ import woks.woks.Msg;
 import woks.woks.PlayerInvtoryGUI;
 
 import java.util.Objects;
-
-// deprecated
+@Deprecated
+// deprecated, better alternative use PlayerInv
 public class OpenPlayerInv {
     public OpenPlayerInv() {
         new CommandBase("openplayerinv", 1, true) {

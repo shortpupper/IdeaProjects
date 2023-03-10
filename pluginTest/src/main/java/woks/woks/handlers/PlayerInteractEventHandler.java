@@ -134,6 +134,9 @@ public class PlayerInteractEventHandler implements Listener {
                     }
                     // Don't want to place it, eh?
                     event.setCancelled(true);
+                } else {
+                    event.setCancelled(true);
+                    Msg.send(player, "This is a borked backpack, contact an admin to fix it.");
                 }
             }
             else if (ItemType == Material.ENDER_CHEST || ItemType == Material.ENDER_PEARL || ItemType == Material.CRYING_OBSIDIAN || ItemType == Material.TRIPWIRE) {

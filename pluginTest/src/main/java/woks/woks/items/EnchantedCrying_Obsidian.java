@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import woks.woks.WOKS;
 
 //EnchatedLeather
+@Deprecated
 public class EnchantedCrying_Obsidian {
     public static ItemStack EnchantedCrying_Obsidian() {
         ItemStack item = new ItemStack(Material.CRYING_OBSIDIAN);

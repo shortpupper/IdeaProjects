@@ -9,7 +9,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import woks.woks.Msg;
 import woks.woks.WOKS;
-
+@Deprecated
 public class PlayerPlaceBlockEventHandler implements Listener {
     public PlayerPlaceBlockEventHandler(WOKS plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);

@@ -74,11 +74,11 @@ public final class WOKS extends JavaPlugin implements Listener {
         new PayingUSers();
 
         new EnchantedLeather();
-        new EnchantedEnder_Pearl();
-        new EnchantedDiamond();
-        new EnchantedEmerald();
-        new EnchantedCrying_Obsidian();
-        new EnchantedEnder_Chest();
+//        new EnchantedEnder_Pearl();
+//        new EnchantedDiamond();
+//        new EnchantedEmerald();
+//        new EnchantedCrying_Obsidian();
+//        new EnchantedEnder_Chest();
         new InventoryMoveItemEventHandler(this);
         new SetLore();
         new EnchantTest();
@@ -102,6 +102,8 @@ public final class WOKS extends JavaPlugin implements Listener {
             new Obamanium_Leggings();
             new Obamanium_Boots();
         }
+
+        new AccessLegacyBackPack();
 
         Recipes();
         Enchants();
@@ -176,63 +178,61 @@ public final class WOKS extends JavaPlugin implements Listener {
             getServer().addRecipe(obamanium_ingot);
         }
         // recipe
+
+//        // diamond
+//        ShapedRecipe EnchantedDiamond = new ShapedRecipe(new NamespacedKey(this, "EnchantedDiamond"), EnchantedDiamond());
+//        EnchantedDiamond.shape("*%*", "BBB", "*%*");
+//        EnchantedDiamond.setIngredient('B', Material.DIAMOND);
+//        EnchantedDiamond.setIngredient('*', Material.COPPER_BLOCK);
+//        EnchantedDiamond.setIngredient('%', Material.DIAMOND);
+//
+//        // EnchantedCrying_Obsidian
+//        ShapedRecipe EnchantedCrying_Obsidian = new ShapedRecipe(new NamespacedKey(this, "EnchantedCrying_Obsidian"), EnchantedCrying_Obsidian());
+//        EnchantedCrying_Obsidian.shape("*%*", "%*%", "*%*");
+//        EnchantedCrying_Obsidian.setIngredient('*', Material.OBSIDIAN);
+//        EnchantedCrying_Obsidian.setIngredient('%', Material.CRYING_OBSIDIAN);
+//
+//        // EnchantedEnder_Pearl
+//        ShapedRecipe EnchantedEnder_Pearl = new ShapedRecipe(new NamespacedKey(this, "EnchantedEnder_Pearl"), EnchantedEnder_Pearl());
+//        EnchantedEnder_Pearl.shape("*%*", "%B%", "*%*");
+//        EnchantedEnder_Pearl.setIngredient('B', Material.ENDER_PEARL);
+//        EnchantedEnder_Pearl.setIngredient('*', Material.ENDER_EYE);
+//        EnchantedEnder_Pearl.setIngredient('%', Material.DIAMOND);
+//
+//        // EnchantedEmerald
+//        ShapedRecipe EnchantedEmerald = new ShapedRecipe(new NamespacedKey(this, "EnchantedEmerald"), EnchantedEmerald());
+//        EnchantedEmerald.shape("%%%", "%C%", "%%%");
+//        EnchantedEmerald.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedLeather()));
+//        EnchantedEmerald.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedDiamond()));
+//
+//        // EnchantedEnder_Chest
+//        ShapedRecipe EnchantedEnder_Chest = new ShapedRecipe(new NamespacedKey(this, "EnchantedEnder_Chest"), EnchantedEnder_Chest());
+//        EnchantedEnder_Chest.shape("#$#", "$C$", "#$#");
+//        EnchantedEnder_Chest.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedCrying_Obsidian()));
+//        EnchantedEnder_Chest.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedEnder_Pearl()));
+//        EnchantedEnder_Chest.setIngredient('#', Material.ENDER_CHEST);
+
         //leather
         ShapedRecipe EnchantedLeather = new ShapedRecipe(new NamespacedKey(this, "EnchantedLeather"), EnchantedLeather());
         EnchantedLeather.shape("***", "*B*", "***");
         EnchantedLeather.setIngredient('*', Material.LEATHER);
         EnchantedLeather.setIngredient('B', Material.LAPIS_BLOCK);
 
-        // diamond
-        ShapedRecipe EnchantedDiamond = new ShapedRecipe(new NamespacedKey(this, "EnchantedDiamond"), EnchantedDiamond());
-        EnchantedDiamond.shape("*%*", "BBB", "*%*");
-        EnchantedDiamond.setIngredient('B', Material.DIAMOND);
-        EnchantedDiamond.setIngredient('*', Material.COPPER_BLOCK);
-        EnchantedDiamond.setIngredient('%', Material.DIAMOND);
-
-        // EnchantedCrying_Obsidian
-        ShapedRecipe EnchantedCrying_Obsidian = new ShapedRecipe(new NamespacedKey(this, "EnchantedCrying_Obsidian"), EnchantedCrying_Obsidian());
-        EnchantedCrying_Obsidian.shape("*%*", "%*%", "*%*");
-        EnchantedCrying_Obsidian.setIngredient('*', Material.OBSIDIAN);
-        EnchantedCrying_Obsidian.setIngredient('%', Material.CRYING_OBSIDIAN);
-
-        // EnchantedEnder_Pearl
-        ShapedRecipe EnchantedEnder_Pearl = new ShapedRecipe(new NamespacedKey(this, "EnchantedEnder_Pearl"), EnchantedEnder_Pearl());
-        EnchantedEnder_Pearl.shape("*%*", "%B%", "*%*");
-        EnchantedEnder_Pearl.setIngredient('B', Material.ENDER_PEARL);
-        EnchantedEnder_Pearl.setIngredient('*', Material.ENDER_EYE);
-        EnchantedEnder_Pearl.setIngredient('%', Material.DIAMOND);
-
-        // EnchantedEmerald
-        ShapedRecipe EnchantedEmerald = new ShapedRecipe(new NamespacedKey(this, "EnchantedEmerald"), EnchantedEmerald());
-        EnchantedEmerald.shape("%%%", "%C%", "%%%");
-        EnchantedEmerald.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedLeather()));
-        EnchantedEmerald.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedDiamond()));
-
-        // EnchantedEnder_Chest
-        ShapedRecipe EnchantedEnder_Chest = new ShapedRecipe(new NamespacedKey(this, "EnchantedEnder_Chest"), EnchantedEnder_Chest());
-        EnchantedEnder_Chest.shape("#$#", "$C$", "#$#");
-        EnchantedEnder_Chest.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedCrying_Obsidian()));
-        EnchantedEnder_Chest.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedEnder_Pearl()));
-        EnchantedEnder_Chest.setIngredient('#', Material.ENDER_CHEST);
-
-        // BackPack9
+        // BackPackRecipe
         ShapedRecipe BackPackRecipe = new ShapedRecipe(new NamespacedKey(this, "BackPackRecipe"), BackPack.BackPack(9, false));
-        BackPackRecipe.shape("!@#", "$C$", "#@!");
-        BackPackRecipe.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedEnder_Chest()));
-        BackPackRecipe.setIngredient('!', new RecipeChoice.ExactChoice(EnchantedEmerald()));
-        BackPackRecipe.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedDiamond()));
+        BackPackRecipe.shape("###", "#C#", "###");
         BackPackRecipe.setIngredient('#', Material.DIAMOND_BLOCK);
-        BackPackRecipe.setIngredient('@', Material.CHEST);
-
+        BackPackRecipe.setIngredient('C', Material.CHEST);
+        RecipeChoice rp = new RecipeChoice.MaterialChoice(Material.CHEST, Material.STICK);
 
         // add recipes
         getServer().addRecipe(EnchantedLeather);
-        getServer().addRecipe(EnchantedDiamond);
-        getServer().addRecipe(EnchantedCrying_Obsidian);
-        getServer().addRecipe(EnchantedEnder_Pearl);
-        getServer().addRecipe(EnchantedEmerald);
-        getServer().addRecipe(EnchantedEnder_Chest);
         getServer().addRecipe(BackPackRecipe);
+//        getServer().addRecipe(EnchantedDiamond);
+//        getServer().addRecipe(EnchantedCrying_Obsidian);
+//        getServer().addRecipe(EnchantedEnder_Pearl);
+//        getServer().addRecipe(EnchantedEmerald);
+//        getServer().addRecipe(EnchantedEnder_Chest);
 
     }
 
@@ -394,11 +394,11 @@ public final class WOKS extends JavaPlugin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         player.discoverRecipe(new NamespacedKey(this, "EnchantedLeather"));
-        player.discoverRecipe(new NamespacedKey(this, "EnchantedDiamond"));
-        player.discoverRecipe(new NamespacedKey(this, "EnchantedCrying_Obsidian"));
-        player.discoverRecipe(new NamespacedKey(this, "EnchantedEnder_Pearl"));
-        player.discoverRecipe(new NamespacedKey(this, "EnchantedEmerald"));
-        player.discoverRecipe(new NamespacedKey(this, "EnchantedEnder_Chest"));
+//        player.discoverRecipe(new NamespacedKey(this, "EnchantedDiamond"));
+//        player.discoverRecipe(new NamespacedKey(this, "EnchantedCrying_Obsidian"));
+//        player.discoverRecipe(new NamespacedKey(this, "EnchantedEnder_Pearl"));
+//        player.discoverRecipe(new NamespacedKey(this, "EnchantedEmerald"));
+//        player.discoverRecipe(new NamespacedKey(this, "EnchantedEnder_Chest"));
         player.discoverRecipe(new NamespacedKey(this, "BackPackRecipe"));
 
         if (config.getBoolean("PaidRequests")) {

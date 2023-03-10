@@ -15,15 +15,6 @@ public class BackPack {
         NBTItem nbti = new NBTItem(item);
         ItemStack[] LMODE = new ItemStack[]{};
 
-//        if (!uuid) {
-//            ItemMeta mete = item.getItemMeta();
-//            UUID id = UUID.randomUUID();
-//            nbti.setString("UUIDToPreventDuping", String.valueOf(id));
-//            assert mete != null;
-//            mete.setLore(Collections.singletonList(String.valueOf(id)));
-//            item.setItemMeta(mete);
-//        }
-
 
         // add custom data
         nbti.setInteger("Space", Space);
@@ -31,10 +22,12 @@ public class BackPack {
         nbti.setBoolean("BackPack", true);
         nbti.setBoolean("Using", false);
         nbti.setBoolean("DisableCrafting", false);
+        nbti.setString("UUIDToPreventDuping", String.valueOf(UUID.randomUUID()));
+        nbti.setString("Password", "");
+        nbti.setInteger("Version", 1);
 
             // make it back to ItemStack / save it
-            item = nbti.getItem();
-//        item.getItemMeta().setLore(Collections.singletonList((id).toString()));
+        item = nbti.getItem();
 
         // add a glint to show it's a backpack
         item.addEnchantment(WOKS.getInstance().FALK, 1);

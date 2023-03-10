@@ -19,7 +19,7 @@ public class EnchantTesting {
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 Player player = (Player) sender;
                 ItemStack itemStack = player.getInventory().getItemInMainHand();
-                if (player.isOp() || player.getName().equals("ShortPuppy14484")) {
+                if ((player.isOp())) {
                     if (itemStack.getType() != Material.AIR) {
 //                    ItemMeta itemMeta = itemStack.getItemMeta();
                         Enchantment enchantment = Enchantment.getByName(arguments[0]);

@@ -9,7 +9,8 @@ import woks.woks.PlayerInvtoryGUI;
 
 import java.util.Objects;
 
-// deprecated
+@Deprecated
+// deprecated, better alternative use PlayerInv
 public class OpenPlayerEnderChest {
     public OpenPlayerEnderChest() {
         new CommandBase("openplayerenderchest", 1, true) {

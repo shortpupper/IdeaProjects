@@ -12,8 +12,8 @@ import woks.woks.UserCheckPaying;
 
 import java.util.List;
 
-
-// deprecated
+@Deprecated
+// deprecated, using right click is more common and easier to do and this became too hard to update
 public class AccessBackPack {
     public AccessBackPack() {
         new CommandBase("AccessBackPack", true) {
