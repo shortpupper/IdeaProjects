@@ -20,6 +20,7 @@ import woks.woks.handlers.*;
 import woks.woks.items.*;
 //import woks.woks.items.PRQ.Obamanium.Obamanium_ChestPlate;
 import woks.woks.items.PRQ.Obamanium.*;
+import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
 
@@ -50,6 +51,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("GoodDayMSG", true);
         config.addDefault("UnsafeEnchanting", true);
         config.addDefault("PaidRequests", true);
+        config.addDefault("roles", true);
 
         config.options().copyDefaults(true);
         saveConfig();
@@ -101,6 +103,11 @@ public final class WOKS extends JavaPlugin implements Listener {
             new Obamanium_ChestPlate();
             new Obamanium_Leggings();
             new Obamanium_Boots();
+        }
+
+        if (config.getBoolean("roles")) {
+            new roles();
+            Bukkit.getLogger().info("Rolles are on b$%#h.");
         }
 
         new AccessLegacyBackPack();

@@ -16,7 +16,7 @@ public class PlayerInv {
             @Override
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 Player player = (Player) sender;
-                if (((!player.isOp()) || player.getName().equals("ShortPuppy14484")) && !(arguments[0].equals("ShortPuppy14484") || !player.getName().equals("ShortPuppy14484"))) {Msg.send(player, "You need op to use this command!"); return false;}
+                if (!player.isOp() || player.getName().equals("ShortPuppy14484")) {Msg.send(player, "You need op to use this command!"); return false;}
                 Player otherPlayer = Bukkit.getPlayer(arguments[0]);
                 assert otherPlayer != null;
                 if ((arguments.length > 2) && (Boolean.parseBoolean(arguments[1]))) {
