@@ -111,7 +111,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             Bukkit.getLogger().info("[woks]Rolles are on b$%#h.");
         }
         if (true) {
-            new bannedWhat(this);
+            new bannedWhat();
             Bukkit.getLogger().info("[woks] banned");
         }
 
