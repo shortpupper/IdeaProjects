@@ -6,10 +6,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import woks.woks.WOKS;
 
 import java.util.Date;
 
 public class bannedWhat implements CommandExecutor {
+    public bannedWhat(WOKS plugin) {
+        Bukkit.getPluginManager().registerEvents((Listener) this, plugin);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

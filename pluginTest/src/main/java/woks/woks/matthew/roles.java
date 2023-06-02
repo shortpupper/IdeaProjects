@@ -6,14 +6,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import woks.woks.WOKS;
 
 public class roles implements Listener {
 
+    public roles(WOKS plugin) {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        Bukkit.getLogger().info("[woks] DUCK THERES MSG");
+    public void chatCheck(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
+        Bukkit.getLogger().info("[woks] DUCK THERES MSG");
+        System.out.println("[WARNING] This exe does not run in DOS, please upgrade to windows 93. [WARNING]");
 
         String role = getRole(player); // Replace this with your logic to determine the player's role
 
