@@ -29,12 +29,17 @@ public class roles implements Listener {
 
     private String getRole(Player player) {
 
-        if (player.getScoreboardTags().contains("admin")) {
-            Bukkit.getLogger().info("[woks] DUCK THERE IS AN ADMIN");
+        if (player.getScoreboardTags().contains("roleAdmin")) {
             return "[ADMIN]";
+        } else if (player.getScoreboardTags().contains("roleVeteran")) {
+            return "[Veteran]";
+        } else if (player.getScoreboardTags().contains("rolePlebe")) {
+            return "[Plebe]";
+        } else if (player.getScoreboardTags().contains("roleRecruit")) {
+            return "[Recruit]";
         }
 
-        Bukkit.getLogger().info("[woks] player tags, "+player.getScoreboardTags());
+//        Bukkit.getLogger().info("[woks] player tags, "+player.getScoreboardTags());
         return "";
     }
 }
