@@ -11,25 +11,20 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import woks.woks.commands.*;
 import woks.woks.dam.bannedWhat;
 import woks.woks.handlers.*;
-import woks.woks.items.*;
-//import woks.woks.items.PRQ.Obamanium.Obamanium_ChestPlate;
+import woks.woks.items.BackPack;
+import woks.woks.items.CustomExpBottle;
+import woks.woks.items.EnchantedLeather;
 import woks.woks.items.PRQ.Obamanium.*;
 import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
 
-import static woks.woks.items.EnchantedCrying_Obsidian.EnchantedCrying_Obsidian;
-import static woks.woks.items.EnchantedDiamond.EnchantedDiamond;
-import static woks.woks.items.EnchantedEmerald.EnchantedEmerald;
-import static woks.woks.items.EnchantedEnder_Chest.EnchantedEnder_Chest;
-import static woks.woks.items.EnchantedEnder_Pearl.EnchantedEnder_Pearl;
 import static woks.woks.items.EnchantedLeather.EnchantedLeather;
 import static woks.woks.items.PRQ.Obamanium.Obamanium_Ingot.Obamanium_Ingot;
 
@@ -53,6 +48,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("UnsafeEnchanting", true);
         config.addDefault("PaidRequests", true);
         config.addDefault("roles", true);
+        config.addDefault("Killer", true);
 
         config.options().copyDefaults(true);
         saveConfig();
@@ -108,11 +104,16 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         if (config.getBoolean("roles")) {
             new roles(this);
-            Bukkit.getLogger().info("[woks]Rolles are on b$%#h.");
+            Bukkit.getLogger().info("[woks]Rolles are on.");
         }
         if (true) {
             new bannedWhat();
-            Bukkit.getLogger().info("[woks] banned");
+            Bukkit.getLogger().info("[woks] banned is on.");
+        }
+
+        if (config.getBoolean("Killer")) {
+            new EntitysDeathKillCount(this);
+            new pardenAll();
         }
 
         new AccessLegacyBackPack();

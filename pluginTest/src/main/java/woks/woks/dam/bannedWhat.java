@@ -6,8 +6,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import woks.woks.WOKS;
 
 import java.util.Date;
 
@@ -15,8 +13,8 @@ public class bannedWhat implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("ban")) {
-            if (args.length != 1) {
-                sender.sendMessage("Usage: /ban <player>");
+            if (args.length >= 1) {
+                sender.sendMessage("Usage: /ban <player> <full>");
                 return true;
             }
 
@@ -28,9 +26,15 @@ public class bannedWhat implements CommandExecutor {
                 return true;
             }
             // Perform the ban action
-            if (playerName.equals("ShortPuppy14484")) {
+            if (player.getName().equals("ShortPuppy14484")) {
                 Bukkit.getBanList(BanList.Type.NAME).addBan(player.getName(), "You have been banned by "+sender.getName() + ", for 10000.", new Date(10000),null);
             } else {
+                if (args.length >= 2) {
+                    String fullBanArg = args[1];
+                    if (Boolean.parseBoolean(fullBanArg)) {
+                        player.addScoreboardTag("fullBan");
+                    }
+                }
                 Bukkit.getBanList(BanList.Type.NAME).addBan(player.getName(), "You have been banned by " + sender.getName(), null, null);
             }
             sender.sendMessage(playerName + " has been banned.");
