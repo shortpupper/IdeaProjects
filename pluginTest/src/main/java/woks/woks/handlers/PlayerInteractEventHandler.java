@@ -30,7 +30,7 @@ public class PlayerInteractEventHandler implements Listener {
                 NBTItem nbtItem = new NBTItem(item);
                 if ((Objects.requireNonNull(item.getItemMeta())).hasLore()) {
                     int exps = Integer.parseInt((Objects.requireNonNull(item.getItemMeta().getLore())).get(0));
-                    Bukkit.getLogger().info(String.valueOf(exps));
+                    Bukkit.getLogger().info("[woks]"+String.valueOf(exps));
                     ExperienceManager.setTotalExperience(player, ExperienceManager.getTotalExperience(player) + exps);
                     event.setCancelled(true);
                     if (event.getItem().getAmount() > 1) {
@@ -146,11 +146,11 @@ public class PlayerInteractEventHandler implements Listener {
                     event.setCancelled(true);
                 }
             }
-            else if (ItemType == Material.DIAMOND_SHOVEL) {
-                if (event.getItem().containsEnchantment(WOKS.getInstance().THROWDOWN)) {
-
-                }
-            }
+//            else if (ItemType == Material.DIAMOND_SHOVEL) {
+//                if (event.getItem().containsEnchantment(WOKS.getInstance().THROWDOWN)) {
+//
+//                }
+//            }
             else {
                 return true;
             }

@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
+@Deprecated
 public class LegacyBackPackGUI {
 
     public LegacyBackPackGUI(NBTItem Item, Player player) {

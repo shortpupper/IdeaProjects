@@ -16,6 +16,7 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import woks.woks.commands.*;
+import woks.woks.dam.bannedWhat;
 import woks.woks.handlers.*;
 import woks.woks.items.*;
 //import woks.woks.items.PRQ.Obamanium.Obamanium_ChestPlate;
@@ -107,7 +108,11 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         if (config.getBoolean("roles")) {
             new roles();
-            Bukkit.getLogger().info("Rolles are on b$%#h.");
+            Bukkit.getLogger().info("[woks]Rolles are on b$%#h.");
+        }
+        if (true) {
+            new bannedWhat();
+            Bukkit.getLogger().info("[woks] banned");
         }
 
         new AccessLegacyBackPack();
