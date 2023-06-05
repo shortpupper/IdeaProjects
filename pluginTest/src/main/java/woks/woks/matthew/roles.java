@@ -2,11 +2,17 @@ package woks.woks.matthew;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import woks.woks.WOKS;
+
+import static woks.woks.WOKS.Ranks;
 
 public class roles implements Listener {
 
@@ -27,20 +33,42 @@ public class roles implements Listener {
         event.setFormat(ChatColor.translateAlternateColorCodes('&', formattedMessage));
     }
 
-    private String getRole(Player player) {
+    public String getRole(Player player) {
 
-        if (player.getScoreboardTags().contains("roleAdmin")) {
-            return "[ADMIN]";
-        } else if (player.getScoreboardTags().contains("roleVeteran")) {
-            return "[Veteran]";
-        } else if (player.getScoreboardTags().contains("rolePlebe")) {
-            return "[Plebe]";
-        } else if (player.getScoreboardTags().contains("roleRecruit")) {
-            return "[Recruit]";
+        NamespacedKey namespacedKeyNumberRank = new NamespacedKey((Plugin) this, "_role_rank_air_number");
+        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+
+
+        if (!dataContainer.has(namespacedKeyNumberRank, PersistentDataType.INTEGER)) {
+            dataContainer.set(namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
         }
 
+        Integer role_rank_air_number = dataContainer.get(namespacedKeyNumberRank, PersistentDataType.INTEGER);
+        String role_rank_air = Ranks[role_rank_air_number];
+
+        String admin = "";
+        if (dataContainer.has(new NamespacedKey((Plugin) this, "_admin"), PersistentDataType.INTEGER)) {
+            admin = "§d[Admin]§f";
+        }
+
+
+
+        return admin + "[" + role_rank_air + "]" + "[" + role_rank_air_number + "]";
+
+
+        // old stuff kind of crap tho
+//        if (player.getScoreboardTags().contains("roleAdmin")) {
+//            return "[ADMIN]";
+//        } else if (player.getScoreboardTags().contains("roleVeteran")) {
+//            return "[Veteran]";
+//        } else if (player.getScoreboardTags().contains("rolePlebe")) {
+//            return "[Plebe]";
+//        } else if (player.getScoreboardTags().contains("roleRecruit")) {
+//            return "[Recruit]";
+//        }
+
 //        Bukkit.getLogger().info("[woks] player tags, "+player.getScoreboardTags());
-        return "";
+//        return "";
     }
 }
 

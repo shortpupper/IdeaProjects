@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class pardenAll {
     public pardenAll() {
-        new CommandBase("pardonall", false) {
+        new CommandBase("pardonall", 0, 1, false) {
             @Override
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 BanList x = Bukkit.getBanList(BanList.Type.NAME);

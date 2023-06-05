@@ -33,6 +33,60 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static boolean AFC = false;
     FileConfiguration config = this.getConfig();
 
+    public static String[] enlistedRanks = {
+            "Airman Basic",
+            "Airman",
+            "Airman First Class",
+            "Senior Airman",
+            "Staff Sergeant",
+            "Technical Sergeant",
+            "Master Sergeant",
+            "Senior Master Sergeant",
+            "Chief Master Sergeant",
+            "Command Chief Master Sergeant",
+            "Chief Master Sergeant of the Air Force"
+    };
+
+    public static String[] officerRanks = {
+            "Second Lieutenant",
+            "First Lieutenant",
+            "Captain",
+            "Major",
+            "Lieutenant Colonel",
+            "Colonel",
+            "Brigadier General",
+            "Major General",
+            "Lieutenant General",
+            "General",
+            "General of the Air Force"
+    };
+
+
+    public static String[] Ranks = {
+            "Airman Basic",
+            "Airman",
+            "Airman First Class",
+            "Senior Airman",
+            "Staff Sergeant",
+            "Technical Sergeant",
+            "Master Sergeant",
+            "Senior Master Sergeant",
+            "Chief Master Sergeant",
+            "Command Chief Master Sergeant",
+            "Chief Master Sergeant of the Air Force",
+            "Second Lieutenant",
+            "First Lieutenant",
+            "Captain",
+            "Major",
+            "Lieutenant Colonel",
+            "Colonel",
+            "Brigadier General",
+            "Major General",
+            "Lieutenant General",
+            "General",
+            "General of the Air Force"
+    };
+
     public static WOKS getInstance() {
         return instance;
     }
@@ -104,9 +158,9 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         if (config.getBoolean("roles")) {
             new roles(this);
-            Bukkit.getLogger().info("[woks]Rolles are on.");
+            Bukkit.getLogger().info("[woks] Rolles are on.");
         }
-        if (true) {
+        if (false) {
             new bannedWhat();
             Bukkit.getLogger().info("[woks] banned is on.");
         }

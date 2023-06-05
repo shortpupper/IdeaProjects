@@ -12,7 +12,7 @@ import java.util.Date;
 public class bannedWhat implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("ban")) {
+        if (command.getName().equalsIgnoreCase("ba")) {
             if (args.length >= 1) {
                 sender.sendMessage("Usage: /ban <player> <full>");
                 return true;
