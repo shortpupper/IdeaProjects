@@ -13,6 +13,7 @@ import org.bukkit.plugin.Plugin;
 import woks.woks.WOKS;
 
 import static woks.woks.WOKS.Ranks;
+import static woks.woks.WOKS._namespacedKeyNumberRank;
 
 public class roles implements Listener {
 
@@ -35,15 +36,14 @@ public class roles implements Listener {
 
     public String getRole(Player player) {
 
-        NamespacedKey namespacedKeyNumberRank = new NamespacedKey((Plugin) this, "_role_rank_air_number");
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
 
+//        // COULD DO THIS ON JOIN
+//        if (!dataContainer.has(_namespacedKeyNumberRank, PersistentDataType.INTEGER)) {
+//            dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
+//        }
 
-        if (!dataContainer.has(namespacedKeyNumberRank, PersistentDataType.INTEGER)) {
-            dataContainer.set(namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
-        }
-
-        Integer role_rank_air_number = dataContainer.get(namespacedKeyNumberRank, PersistentDataType.INTEGER);
+        Integer role_rank_air_number = dataContainer.get(_namespacedKeyNumberRank, PersistentDataType.INTEGER);
         String role_rank_air = Ranks[role_rank_air_number];
 
         String admin = "";
@@ -56,7 +56,7 @@ public class roles implements Listener {
         return admin + "[" + role_rank_air + "]" + "[" + role_rank_air_number + "]";
 
 
-        // old stuff kind of crap tho
+        // old stuff
 //        if (player.getScoreboardTags().contains("roleAdmin")) {
 //            return "[ADMIN]";
 //        } else if (player.getScoreboardTags().contains("roleVeteran")) {

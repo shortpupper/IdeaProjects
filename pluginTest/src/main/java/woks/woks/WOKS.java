@@ -13,6 +13,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import woks.woks.commands.*;
 import woks.woks.dam.bannedWhat;
@@ -34,33 +37,9 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static boolean AFC = false;
     FileConfiguration config = this.getConfig();
 
-    public static String[] enlistedRanks = {
-            "Airman Basic",
-            "Airman",
-            "Airman First Class",
-            "Senior Airman",
-            "Staff Sergeant",
-            "Technical Sergeant",
-            "Master Sergeant",
-            "Senior Master Sergeant",
-            "Chief Master Sergeant",
-            "Command Chief Master Sergeant",
-            "Chief Master Sergeant of the Air Force"
-    };
-
-    public static String[] officerRanks = {
-            "Second Lieutenant",
-            "First Lieutenant",
-            "Captain",
-            "Major",
-            "Lieutenant Colonel",
-            "Colonel",
-            "Brigadier General",
-            "Major General",
-            "Lieutenant General",
-            "General",
-            "General of the Air Force"
-    };
+    public static NamespacedKey _jsonSmells;
+    public static NamespacedKey _admin;
+    public static NamespacedKey _namespacedKeyNumberRank;
 
 
     public static String[] Ranks = {
@@ -87,16 +66,21 @@ public final class WOKS extends JavaPlugin implements Listener {
             "General",
             "General of the Air Force"
     };
-
     public static WOKS getInstance() {
         return instance;
     }
+
 
     @Override
     public void onEnable() {
         instance = this;
         // Plugin startup logic
         Bukkit.getLogger().info("Starting, ShortPuppy14484 plugin.");
+
+        _admin     = new NamespacedKey(this, "_admin");
+        _jsonSmells = new NamespacedKey(this, "jsonSmells");
+        _namespacedKeyNumberRank = new NamespacedKey((Plugin) this, "_role_rank_air_number");
+
 
         config.addDefault("PlayerWalkPath", true);
         config.addDefault("GoodDayMSG", true);
@@ -159,7 +143,8 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         if (config.getBoolean("roles")) {
             new roles(this);
-            new ImAnAdmin(this);
+
+            new ImAnAdmin();
             Bukkit.getLogger().info("[woks] Rolles are on.");
         }
         if (false) {
@@ -178,6 +163,8 @@ public final class WOKS extends JavaPlugin implements Listener {
         Enchants();
         getServer().getPluginManager().registerEvents(this, this);
     }
+
+
 
     public void Recipes() {
         if (config.getBoolean("PaidRequests")) {
@@ -493,6 +480,13 @@ public final class WOKS extends JavaPlugin implements Listener {
             Msg.send(player, "Good day.");
         } else {
             Msg.send(player, "Hellos.");
+        }
+
+        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+
+        // COULD DO THIS ON JOIN
+        if (!dataContainer.has(_namespacedKeyNumberRank, PersistentDataType.INTEGER)) {
+            dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
         }
     }
 }
