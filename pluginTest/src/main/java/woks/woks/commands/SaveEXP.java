@@ -7,11 +7,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.StringUtil;
 import woks.woks.CommandBase;
 import woks.woks.ExperienceManager;
 import woks.woks.Msg;
 import woks.woks.items.CustomExpBottle;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -69,8 +72,26 @@ public class SaveEXP {
             }
 
             @Override
-            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-                return null;
+            public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+                if (cmd.getName().equalsIgnoreCase("savexp")) {
+//                    if (!sender.hasPermission("commanditems.give")) return Collections.EMPTY_LIST;
+                    final List<String> completions = new ArrayList<>(List.of(new String[]{"c", "t"}));
+
+                    final List<String> oneArgList = new ArrayList<>(List.of(new String[]{"cats", "turtle"}));
+
+                    // Adds all custom items to the list
+
+                    if (args.length == 1){
+                        StringUtil.copyPartialMatches(args[0], oneArgList, completions);
+                    }
+                    if (args.length == 2){
+                        return null;
+                        // Returns null to get all online players
+                    }
+                    Collections.sort(completions);
+                    return completions;
+                }
+                return Collections.EMPTY_LIST;
             }
         };
     }

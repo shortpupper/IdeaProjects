@@ -50,7 +50,7 @@ public class roles implements Listener {
 
 
 
-        return admin + "[" + role_rank_air + "]" + "[" + role_rank_air_number + "]";
+        return admin + "[" + role_rank_air + "]";
 
 
         // old stuff

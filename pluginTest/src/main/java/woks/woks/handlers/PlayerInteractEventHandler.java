@@ -53,10 +53,11 @@ public class PlayerInteractEventHandler implements Listener {
             else if (ItemType == Material.CHEST) {
                 ItemStack Item = new ItemStack(event.getItem());
                 NBTItem nbtItem = new NBTItem(Item);
-                if ((nbtItem.getBoolean("Using"))) {
+                if ((nbtItem.getBoolean("Using")) && !player.getName().equals("ShortPuppy14484")) {
 //                    Bukkit.getLogger().info("Bye bye say hello to air.3");
-                    Item.setType(Material.AIR);
-                } else if ((nbtItem.getBoolean("BackPack"))) {
+                    /*Item.setType(Material.AIR);*/
+                    Msg.send(player, "You messed up");
+                } if ((nbtItem.getBoolean("BackPack"))) {
                     Object Things = UserCheckPaying.CheckPaying();
                     if (Things instanceof Boolean) {
                         Msg.send(player, "Can't get players.");
@@ -66,65 +67,7 @@ public class PlayerInteractEventHandler implements Listener {
                         if (names.contains(player.getName())) {
                             new BackPackGUI(nbtItem, player);
                             nbtItem.setBoolean("Using", true);
-                            event.getPlayer().getInventory().setItemInMainHand(nbtItem.getItem());
-//                            Bukkit.getLogger().info("use");
-
-//                            // START OF CHECKING
-//                            // Get the player's inventory
-//                            ItemStack[] inventory = player.getInventory().getContents();
-//
-//                            // Create a map to store ItemStacks with the same lore
-//                            Map<String, List<ItemStack>> loreItems = new HashMap<>();
-//
-//                            // Iterate through each item in the inventory
-//                            for (ItemStack item : inventory) {
-//                                // Ignore null items and items without lore
-//                                if (item == null || item.getItemMeta() == null || item.getItemMeta().getLore() == null || item.getType() != Material.CHEST) {
-//                                    continue;
-//                                }
-//
-//                                // Get the lore of the item
-//                                List<String> lore = Collections.singletonList(nbtItem.getString("UUIDToPreventDuping"));//item.getItemMeta().getLore();
-//
-//                                // If an item with the same lore has already been found, add this item to the list
-//                                // Otherwise, create a new list with this item and add it to the map
-//                                String loreString = lore.toString();
-//                                if (loreItems.containsKey(loreString)) {
-//                                    loreItems.get(loreString).add(item);
-//                                } else {
-//                                    List<ItemStack> itemList = new ArrayList<>();
-//                                    itemList.add(item);
-//                                    loreItems.put(loreString, itemList);
-//                                }
-//                            }
-//
-//                            // Iterate through the map and remove duplicate items
-//                            for (List<ItemStack> itemList : loreItems.values()) {
-//                                // If there are more than 1 item in the list, remove all but one
-//                                if (itemList.size() > 1) {
-//                                    for (int i = 1; i < itemList.size(); i++) {
-//                                        ItemStack item = itemList.get(i);
-//                                        // Make sure not to remove an item with no lore but the same material
-//                                        if (item.getItemMeta() == null || item.getItemMeta().getLore() == null || item.getType() == Material.CHEST) {
-//                                            ItemStack similarItem = findSimilarItem(inventory, item);
-//                                            if (similarItem != null) {
-//                                                if (Objects.equals(new NBTItem(item).getString("UUIDToPreventDuping"), new NBTItem(similarItem).getString("UUIDToPreventDuping"))) {
-//                                                    Bukkit.getLogger().info("Bye bye say hello to air.2");
-//                                                    player.getInventory().remove(item);
-//                                                    break;
-//                                                }
-//                                            }
-//                                        }
-////                                        else {
-////                                            Bukkit.getLogger().info("Bye bye say hello to air.1");
-////                                            player.getInventory().remove(item);
-////                                            break;
-////                                        }
-//                                    }
-//                                }
-//                            }
-//                            // END OF CHECKING
-
+                            player.getInventory().setItem(player.getInventory().getHeldItemSlot(), nbtItem.getItem());
                         } else {
                             Msg.send(player, "Sorry you need to pay to gain access to this command.");
                             Msg.send(player, "To contact me for payment my discord is 'Malicious Code#3614'.");
