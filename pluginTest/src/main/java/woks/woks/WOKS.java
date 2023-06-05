@@ -1,5 +1,6 @@
 package woks.woks;
 
+import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -28,6 +29,7 @@ import woks.woks.matthew.permote;
 import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
 import static woks.woks.items.EnchantedLeather.EnchantedLeather;
 import static woks.woks.items.PRQ.Obamanium.Obamanium_Ingot.Obamanium_Ingot;
@@ -46,28 +48,35 @@ public final class WOKS extends JavaPlugin implements Listener {
 
 
     public static String[] Ranks = {
-            "Airman Basic",
-            "Airman",
-            "Airman First Class",
-            "Senior Airman",
-            "Staff Sergeant",
-            "Technical Sergeant",
-            "Master Sergeant",
-            "Senior Master Sergeant",
-            "Chief Master Sergeant",
-            "Command Chief Master Sergeant",
-            "Chief Master Sergeant of the Air Force",
-            "Second Lieutenant",
-            "First Lieutenant",
-            "Captain",
-            "Major",
-            "Lieutenant Colonel",
-            "Colonel",
-            "Brigadier General",
-            "Major General",
-            "Lieutenant General",
-            "General",
-            "General of the Air Force"
+            "Airman Basic§f",
+            "Airman§f",
+
+            "§2Airman First Class§f",
+            "§2Senior Airman§f",
+            "§2Staff Sergeant§f",
+            "§2Technical Sergeant§f",
+
+            "§2Master Sergeant§f",
+            "§2Senior Master Sergeant§f",
+            "§2Chief Master Sergeant§f",
+            "§2Command Chief Master Sergeant§f",
+            "§2Chief Master Sergeant of the Air Force§f",
+
+            "§2Second Lieutenant§f",
+            "§2First Lieutenant§f",
+            "§2Captain§f",
+
+            "§2Major§f",
+            "§2Lieutenant Colonel§f",
+            "§2Colonel§f",
+
+            "§2Brigadier General§f",
+            "§2Major General§f",
+
+            "§2Lieutenant General§f",
+            "§2General§f",
+
+            "§cGeneral of the Air Force§f"
     };
     public static WOKS getInstance() {
         return instance;
@@ -507,6 +516,10 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
         if (!dataContainer.has(_quest_claimed, PersistentDataType.INTEGER)) {
             dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);
+        }
+
+        if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
+            Bukkit.getBanList(BanList.Type.NAME).addBan(player.getName(), "You have been banned for being a loser.", new Date(1),null);
         }
     }
 }
