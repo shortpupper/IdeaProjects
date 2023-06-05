@@ -21,6 +21,7 @@ import woks.woks.items.BackPack;
 import woks.woks.items.CustomExpBottle;
 import woks.woks.items.EnchantedLeather;
 import woks.woks.items.PRQ.Obamanium.*;
+import woks.woks.matthew.ImAnAdmin;
 import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
@@ -158,6 +159,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         if (config.getBoolean("roles")) {
             new roles(this);
+            new ImAnAdmin(this);
             Bukkit.getLogger().info("[woks] Rolles are on.");
         }
         if (false) {
