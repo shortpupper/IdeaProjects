@@ -2,18 +2,15 @@ package woks.woks.matthew;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import woks.woks.WOKS;
 
-import static woks.woks.WOKS.Ranks;
-import static woks.woks.WOKS._namespacedKeyNumberRank;
+import static woks.woks.WOKS.*;
 
 public class roles implements Listener {
 
@@ -47,7 +44,7 @@ public class roles implements Listener {
         String role_rank_air = Ranks[role_rank_air_number];
 
         String admin = "";
-        if (dataContainer.has(new NamespacedKey((Plugin) this, "_admin"), PersistentDataType.INTEGER)) {
+        if (dataContainer.has(_admin, PersistentDataType.INTEGER)) {
             admin = "§d[Admin]§f";
         }
 

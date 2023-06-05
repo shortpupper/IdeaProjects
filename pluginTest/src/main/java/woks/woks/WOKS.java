@@ -15,7 +15,6 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import woks.woks.commands.*;
 import woks.woks.dam.bannedWhat;
@@ -25,6 +24,7 @@ import woks.woks.items.CustomExpBottle;
 import woks.woks.items.EnchantedLeather;
 import woks.woks.items.PRQ.Obamanium.*;
 import woks.woks.matthew.ImAnAdmin;
+import woks.woks.matthew.permote;
 import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
@@ -40,6 +40,9 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static NamespacedKey _jsonSmells;
     public static NamespacedKey _admin;
     public static NamespacedKey _namespacedKeyNumberRank;
+    public static NamespacedKey _quest_id;
+    public static NamespacedKey _quest_done;
+    public static NamespacedKey _quest_claimed;
 
 
     public static String[] Ranks = {
@@ -77,9 +80,15 @@ public final class WOKS extends JavaPlugin implements Listener {
         // Plugin startup logic
         Bukkit.getLogger().info("Starting, ShortPuppy14484 plugin.");
 
-        _admin     = new NamespacedKey(this, "_admin");
-        _jsonSmells = new NamespacedKey(this, "jsonSmells");
-        _namespacedKeyNumberRank = new NamespacedKey((Plugin) this, "_role_rank_air_number");
+        _admin                   = new NamespacedKey(this, "_admin");
+        _jsonSmells              = new NamespacedKey(this, "_jsonSmells");
+        _namespacedKeyNumberRank = new NamespacedKey(this, "_role_rank_air_number");
+        _quest_id                = new NamespacedKey(this, "_quest_id");
+        _quest_done              = new NamespacedKey(this, "_quest_done");
+        _quest_claimed           = new NamespacedKey(this, "_quest_claimed");
+
+
+
 
 
         config.addDefault("PlayerWalkPath", true);
@@ -145,6 +154,8 @@ public final class WOKS extends JavaPlugin implements Listener {
             new roles(this);
 
             new ImAnAdmin();
+
+            new permote();
             Bukkit.getLogger().info("[woks] Rolles are on.");
         }
         if (false) {
@@ -487,6 +498,15 @@ public final class WOKS extends JavaPlugin implements Listener {
         // COULD DO THIS ON JOIN
         if (!dataContainer.has(_namespacedKeyNumberRank, PersistentDataType.INTEGER)) {
             dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
+        }
+        if (!dataContainer.has(_quest_done, PersistentDataType.DOUBLE)) {
+            dataContainer.set(_quest_done, PersistentDataType.DOUBLE, 0.0d);
+        }
+        if (!dataContainer.has(_quest_id, PersistentDataType.INTEGER)) {
+            dataContainer.set(_quest_id, PersistentDataType.INTEGER, 0);
+        }
+        if (!dataContainer.has(_quest_claimed, PersistentDataType.INTEGER)) {
+            dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);
         }
     }
 }
