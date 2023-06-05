@@ -28,21 +28,17 @@ public class permote {
                     //could probley do some assert thing where the thing returns in the length cus other wise this is a fing mess
                     if (arguments.length == 0) {
                         // check if they have max rank
-                        premote(sender, role_rank_air_number, dataContainer, 1, "+");
+                        premote(sender, role_rank_air_number, dataContainer, "add", 1);
                     } else if (arguments.length == 1) {
                         Player player2 = Bukkit.getPlayer(arguments[0]);
-                        premote(player2, role_rank_air_number, dataContainer, 1, "+");
+                        premote(player2, role_rank_air_number, dataContainer, "add", 1);
                     } else if (arguments.length == 2) {
                         Player player2 = Bukkit.getPlayer(arguments[0]);
-                        if (arguments[1].length() == 1) {
-                            premote(player2, role_rank_air_number, dataContainer, 1, arguments[1]);
-                        } else {
-                            Msg.send(sender, "You need to put in a valid operater, must be '=', '+', '-', or '*'.");
-                        }
+                        premote(player2, role_rank_air_number, dataContainer, arguments[1], 1);
                     } else if (arguments.length == 3) {
                         Player player2 = Bukkit.getPlayer(arguments[0]);
                         if (arguments[1].length() == 1) {
-                            premote(player2, role_rank_air_number, dataContainer, Integer.valueOf(arguments[2]), arguments[1]);
+                            premote(player2, role_rank_air_number, dataContainer,  arguments[1], Integer.valueOf(arguments[2]));
                         } else {
                             Msg.send(sender, "You need to put in a valid operater, must be '=', '+', '-', or '*'.");
                         }
@@ -58,7 +54,7 @@ public class permote {
 
             @Override
             public String getUsage() {
-                return "/permote <playerName> <char:+|-|*|=> <int:amount>";
+                return "/permote <playerName> <string:add|sub|multi|eq> <int:amount>";
             }
 
             @Override
@@ -70,19 +66,19 @@ public class permote {
 
     }
 
-    public void premote(CommandSender sender, Integer role_rank_air_number, PersistentDataContainer dataContainer, Integer amount, String op) {
+    public void premote(CommandSender sender, Integer role_rank_air_number, PersistentDataContainer dataContainer, String op, Integer amount) {
         if (role_rank_air_number >= Ranks.length - 1) {
             Msg.send(sender, "You have reached max rank.");
-        } else if (Objects.equals(op, "-")) {
+        } else if (Objects.equals(op, "sub")) {
             dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number - amount);
             Msg.send(sender, "Your rank is now " + (role_rank_air_number - amount));
-        } else if (Objects.equals(op, "=")) {
+        } else if (Objects.equals(op, "eq")) {
             dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, amount);
             Msg.send(sender, "Your rank is now " + (amount));
-        } else if (Objects.equals(op, "+")) {
+        } else if (Objects.equals(op, "add")) {
             dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number + amount);
             Msg.send(sender, "Your rank is now " + (role_rank_air_number + amount));
-        } else if (Objects.equals(op, "*")) {
+        } else if (Objects.equals(op, "multi")) {
             if (role_rank_air_number * amount >= Ranks.length) {
                 dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, Ranks.length - 1);
                 Msg.send(sender, "Your rank is now " + (Ranks.length - 1));
