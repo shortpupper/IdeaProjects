@@ -10,7 +10,6 @@ import woks.woks.CommandBase;
 import woks.woks.Msg;
 
 import java.util.List;
-import java.util.Objects;
 
 import static woks.woks.WOKS.Ranks;
 import static woks.woks.WOKS._namespacedKeyNumberRank;
@@ -37,11 +36,7 @@ public class permote {
                         premote(player2, role_rank_air_number, dataContainer, arguments[1], 1);
                     } else if (arguments.length == 3) {
                         Player player2 = Bukkit.getPlayer(arguments[0]);
-                        if (arguments[1].length() == 1) {
-                            premote(player2, role_rank_air_number, dataContainer,  arguments[1], Integer.valueOf(arguments[2]));
-                        } else {
-                            Msg.send(sender, "You need to put in a valid operater, must be '=', '+', '-', or '*'.");
-                        }
+                        premote(player2, role_rank_air_number, dataContainer,  arguments[1], Integer.valueOf(arguments[2]));
                     } else {
                         Msg.send(sender, "This has yet to be made. LOL. Or you failed at life.");
                     }
@@ -69,16 +64,16 @@ public class permote {
     public void premote(CommandSender sender, Integer role_rank_air_number, PersistentDataContainer dataContainer, String op, Integer amount) {
         if (role_rank_air_number >= Ranks.length - 1) {
             Msg.send(sender, "You have reached max rank.");
-        } else if (Objects.equals(op, "sub")) {
+        } else if (op.equals("sub")) {
             dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number - amount);
             Msg.send(sender, "Your rank is now " + (role_rank_air_number - amount));
-        } else if (Objects.equals(op, "eq")) {
+        } else if (op.equals("eq")) {
             dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, amount);
             Msg.send(sender, "Your rank is now " + (amount));
-        } else if (Objects.equals(op, "add")) {
+        } else if (op.equals("add")) {
             dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number + amount);
             Msg.send(sender, "Your rank is now " + (role_rank_air_number + amount));
-        } else if (Objects.equals(op, "multi")) {
+        } else if (op.equals("multi")) {
             if (role_rank_air_number * amount >= Ranks.length) {
                 dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, Ranks.length - 1);
                 Msg.send(sender, "Your rank is now " + (Ranks.length - 1));
