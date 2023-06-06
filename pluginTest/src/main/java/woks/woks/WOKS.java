@@ -46,7 +46,7 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static NamespacedKey _admin;
     public static NamespacedKey _namespacedKeyNumberRank;
     public static NamespacedKey _quest_id;
-    public static NamespacedKey _quest_done;
+    public static NamespacedKey _quest_percent_done;
     public static NamespacedKey _quest_claimed;
     public static NamespacedKey _quest_completed;
     public static NamespacedKey _quest_completed_array;
@@ -99,7 +99,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         _jsonSmells              = new NamespacedKey(this, "_jsonSmells");
         _namespacedKeyNumberRank = new NamespacedKey(this, "_role_rank_air_number");
         _quest_id                = new NamespacedKey(this, "_quest_id");
-        _quest_done              = new NamespacedKey(this, "_quest_done");
+        _quest_percent_done      = new NamespacedKey(this, "_quest_percent_done");
         _quest_claimed           = new NamespacedKey(this, "_quest_claimed");
         _quest_completed         = new NamespacedKey(this, "_quest_completed");
         _quest_completed_array   = new NamespacedKey(this, "_quest_completed_array");
@@ -191,9 +191,9 @@ public final class WOKS extends JavaPlugin implements Listener {
         if (config.getBoolean("Quests")) {
             new QuestManager();
             new claimReward();
-            new questMaker();
             new rewordQuest();
             new giveQuest();
+            new CommandNextQuest();
 
             Bukkit.getLogger().info("[woks] Quests are on.");
 
@@ -543,8 +543,8 @@ public final class WOKS extends JavaPlugin implements Listener {
             dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
         }
         // this is like how much is done
-        if (!dataContainer.has(_quest_done, PersistentDataType.DOUBLE)) {
-            dataContainer.set(_quest_done, PersistentDataType.DOUBLE, 0.0d);
+        if (!dataContainer.has(_quest_percent_done, PersistentDataType.DOUBLE)) {
+            dataContainer.set(_quest_percent_done, PersistentDataType.DOUBLE, 0.0d);
         }
         // the id so you can get it
         if (!dataContainer.has(_quest_id, PersistentDataType.STRING)) {
@@ -566,7 +566,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         // ban him for why not, he called me a loser
         if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
-            Bukkit.getBanList(BanList.Type.NAME).addBan(player.getName(), "You have been banned for being a loser.", new Date(1),null);
+            Bukkit.getBanList(BanList.Type.NAME).addBan(player.getName(), "You have been banned for", new Date(1),null);
         }
 
         // check if quests is a go
@@ -578,7 +578,8 @@ public final class WOKS extends JavaPlugin implements Listener {
             expAmount = 5;
 
             questManager.registerQuest("Join_sever_first_time", 1, items, expAmount, "Join the sever");
-
+            questManager.registerQuest("Say_Hello", 5,"Talking In Chat");
+            
             // check if they have ever done a quest
             if (dataContainer.get(_quest_completed, PersistentDataType.INTEGER) == 0) {
                 GiveQuest(player, "1");

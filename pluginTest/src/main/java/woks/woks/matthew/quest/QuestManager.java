@@ -17,137 +17,53 @@ public class QuestManager {
         activeQuestsInteger = new HashMap<>();
     }
 
-    public void registerQuest(String questId, Integer questIdInteger, ItemStack[] RewardItems, int RewardExpAmount, String name) {
-        Quest quest = new Quest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
-
+    public void registerQuest(String questId, Integer questIdInteger, ItemStack[] rewardItems, int rewardExpAmount, String name) {
+        Quest quest = new Quest(questId, questIdInteger, rewardItems, rewardExpAmount, name);
         activeQuests.put(questId, quest);
-        activeQuestsInteger.put(questIdInteger, questId);
     }
 
-    public void registerQuest(String questId, ItemStack[] RewardItems, int RewardExpAmount, String name) {
-        Integer questIdInteger;
-        questIdInteger = activeQuests.values().size() + 1;
-
-        registerQuest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
+    public void registerQuest(String questId, ItemStack[] rewardItems, int rewardExpAmount, String name) {
+        Integer questIdInteger = activeQuests.size() + 1;
+        registerQuest(questId, questIdInteger, rewardItems, rewardExpAmount, name);
     }
-    public void registerQuest(String questId, ItemStack[] RewardItems, String name) {
-        Integer questIdInteger;
-        int RewardExpAmount;
 
-        RewardExpAmount = DefaultExpAmounts;
-        questIdInteger = activeQuests.values().size() + 1;
-
-        Quest quest = new Quest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
-
-        activeQuests.put(questId, quest);
-        activeQuestsInteger.put(questIdInteger, questId);
+    public void registerQuest(String questId, ItemStack[] rewardItems, String name) {
+        Integer questIdInteger = activeQuests.size() + 1;
+        registerQuest(questId, questIdInteger, rewardItems, DefaultExpAmounts, name);
     }
-    public void registerQuest(String questId, int RewardExpAmount, String name) {
-        Integer questIdInteger;
-        ItemStack[] RewardItems;
 
-        RewardItems = DefaultItemStacks;
-        questIdInteger = activeQuests.values().size() + 1;
-
-        Quest quest = new Quest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
-
-        activeQuests.put(questId, quest);
-        activeQuestsInteger.put(questIdInteger, questId);
+    public void registerQuest(String questId, int rewardExpAmount, String name) {
+        Integer questIdInteger = activeQuests.size() + 1;
+        registerQuest(questId, questIdInteger, DefaultItemStacks, rewardExpAmount, name);
     }
+
     public void registerQuest(String questId, String name) {
-        Integer questIdInteger;
-        ItemStack[] RewardItems;
-        int RewardExpAmount;
-
-        RewardItems = DefaultItemStacks;
-        RewardExpAmount = DefaultExpAmounts;
-        questIdInteger = activeQuests.values().size() + 1;
-
-        Quest quest = new Quest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
-
-        activeQuests.put(questId, quest);
-        activeQuestsInteger.put(questIdInteger, questId);
+        Integer questIdInteger = activeQuests.size() + 1;
+        registerQuest(questId, questIdInteger, DefaultItemStacks, DefaultExpAmounts, name);
+    }
+    public void registerQuest(Integer questIdInteger, ItemStack[] rewardItems, int rewardExpAmount, String name) {
+        registerQuest(String.valueOf(questIdInteger), questIdInteger, rewardItems, rewardExpAmount, name);
     }
 
-    public void registerQuest(Integer questIdInteger, ItemStack[] RewardItems, int RewardExpAmount, String name) {
-        String questId;
-        questId = String.valueOf(questIdInteger);
-
-        Quest quest = new Quest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
-
-        activeQuests.put(questId, quest);
-        activeQuestsInteger.put(questIdInteger, questId);
+    public void registerQuest(Integer questIdInteger, ItemStack[] rewardItems, String name) {
+        registerQuest(String.valueOf(questIdInteger), questIdInteger, rewardItems, DefaultExpAmounts, name);
     }
-    public void registerQuest(Integer questIdInteger, ItemStack[] RewardItems, String name) {
-        String questId;
-        int RewardExpAmount;
 
-        RewardExpAmount = DefaultExpAmounts;
-        questId = String.valueOf(questIdInteger);
-
-        Quest quest = new Quest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
-
-        activeQuests.put(questId, quest);
-        activeQuestsInteger.put(questIdInteger, questId);
+    public void registerQuest(Integer questIdInteger, int rewardExpAmount, String name) {
+        registerQuest(String.valueOf(questIdInteger), questIdInteger, DefaultItemStacks, rewardExpAmount, name);
     }
-    public void registerQuest(Integer questIdInteger, int RewardExpAmount, String name) {
-        String questId;
-        ItemStack[] RewardItems;
 
-        RewardItems = DefaultItemStacks;
-        questId = String.valueOf(questIdInteger);
-
-        Quest quest = new Quest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
-
-        activeQuests.put(questId, quest);
-        activeQuestsInteger.put(questIdInteger, questId);
-    }
     public void registerQuest(Integer questIdInteger, String name) {
-        String questId;
-        ItemStack[] RewardItems;
-        int RewardExpAmount;
-
-        RewardItems = DefaultItemStacks;
-        RewardExpAmount = DefaultExpAmounts;
-        questId = String.valueOf(questIdInteger);
-
-        Quest quest = new Quest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
-
-        activeQuests.put(questId, quest);
-        activeQuestsInteger.put(questIdInteger, questId);
+        registerQuest(String.valueOf(questIdInteger), questIdInteger, DefaultItemStacks, DefaultExpAmounts, name);
     }
-
-    public void registerQuest(String questId, Integer questIdInteger, ItemStack[] RewardItems, String name) {
-        int RewardExpAmount;
-
-        RewardExpAmount = DefaultExpAmounts;
-
-        Quest quest = new Quest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
-
-        activeQuests.put(questId, quest);
-        activeQuestsInteger.put(questIdInteger, questId);
+    public void registerQuest(String questId, Integer questIdInteger, int rewardExpAmount, String name) {
+        registerQuest(questId, questIdInteger, DefaultItemStacks, rewardExpAmount, name);
     }
-    public void registerQuest(String questId, Integer questIdInteger, int RewardExpAmount, String name) {
-        ItemStack[] RewardItems;
-        RewardItems = DefaultItemStacks;
-
-        Quest quest = new Quest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
-
-        activeQuests.put(questId, quest);
-        activeQuestsInteger.put(questIdInteger, questId);
+    public void registerQuest(String questId, Integer questIdInteger, ItemStack[] rewardItems, String name) {
+        registerQuest(questId, questIdInteger, rewardItems, DefaultExpAmounts, name);
     }
-
     public void registerQuest(String questId, Integer questIdInteger, String name) {
-        ItemStack[] RewardItems;
-        int RewardExpAmount;
-        RewardItems = DefaultItemStacks;
-        RewardExpAmount = DefaultExpAmounts;
-
-
-        Quest quest = new Quest(questId, questIdInteger, RewardItems, RewardExpAmount, name);
-
-        activeQuests.put(questId, quest);
-        activeQuestsInteger.put(questIdInteger, questId);
+        registerQuest(questId, questIdInteger, DefaultItemStacks, DefaultExpAmounts, name);
     }
 
     public Quest getQuestById(String questId) {
