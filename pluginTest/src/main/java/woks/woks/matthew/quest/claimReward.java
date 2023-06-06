@@ -28,7 +28,7 @@ public class claimReward {
                     dataContainer.set(_quest_completed, PersistentDataType.INTEGER, dataContainer.get(_quest_completed, PersistentDataType.INTEGER) + 1);
                     RewordQuest(player, dataContainer.get(_quest_id, PersistentDataType.STRING));
                 } else if (dataContainer.get(_quest_claimed, PersistentDataType.INTEGER) == 1) {
-                    Msg.send(player, "You have all ready claim this quest.");
+                    Msg.send(player, "You have already claim this quest.");
                 } else {
                     Msg.send(player, "Your not done yet you've only done " + dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) + "%");
                 }

@@ -11,6 +11,7 @@ import woks.woks.Msg;
 import java.util.List;
 
 import static woks.woks.WOKS.*;
+import static woks.woks.matthew.quest.giveQuest.GiveQuest;
 
 public class CommandNextQuest {
     public CommandNextQuest() {
@@ -34,6 +35,7 @@ public class CommandNextQuest {
 
                 // give them the next quest
 
+                GiveQuest(player);
 
                 return true;
             }

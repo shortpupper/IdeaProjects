@@ -17,7 +17,6 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import woks.woks.commands.*;
 import woks.woks.dam.bannedWhat;
 import woks.woks.handlers.*;
@@ -31,11 +30,15 @@ import woks.woks.matthew.quest.*;
 import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.UUID;
 
 import static woks.woks.items.EnchantedLeather.EnchantedLeather;
 import static woks.woks.items.PRQ.Obamanium.Obamanium_Ingot.Obamanium_Ingot;
 import static woks.woks.matthew.quest.giveQuest.GiveQuest;
+import static woks.woks.matthew.quest.rewordQuest.DefaultExpAmounts;
+import static woks.woks.matthew.quest.rewordQuest.DefaultItemStacks;
 
 public final class WOKS extends JavaPlugin implements Listener {
     private static WOKS instance;
@@ -194,6 +197,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             new rewordQuest();
             new giveQuest();
             new CommandNextQuest();
+            new ResetQuestCommand();
 
             Bukkit.getLogger().info("[woks] Quests are on.");
 
@@ -220,6 +224,12 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         return result;
     }
+    public static UUID uuid3Generator(String inputString) {
+        byte[] bytes = inputString.getBytes(StandardCharsets.UTF_8);
+        return UUID.nameUUIDFromBytes(bytes);
+    }
+
+
     public void Recipes() {
         if (config.getBoolean("PaidRequests")) {
             final RecipeChoice ingot = new RecipeChoice.ExactChoice(Obamanium_Ingot(1));
@@ -578,7 +588,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             expAmount = 5;
 
             questManager.registerQuest("Join_sever_first_time", 1, items, expAmount, "Join the sever");
-            questManager.registerQuest("Say_Hello", 5,"Talking In Chat");
+            questManager.registerQuest("Say_Hello", 2, DefaultItemStacks, DefaultExpAmounts,"Talking In Chat");
             
             // check if they have ever done a quest
             if (dataContainer.get(_quest_completed, PersistentDataType.INTEGER) == 0) {

@@ -26,12 +26,23 @@ public class giveQuest {
             dataContainer.set(_quest_id, PersistentDataType.STRING, questId);
             dataContainer.set(_quest_percent_done, PersistentDataType.DOUBLE, 0.0d);
             dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);
-
-
         } else {
             Msg.send(player, "You still have a quest going.");
             Msg.send(player, "Complete it first before you can do another one.");
         }
+    }
+    public static void GiveQuest(Player player, Integer integerId) {
+        GiveQuest(player, questManager.getQuestStringIdByIntegerId(integerId));
+    }
 
+    public static void GiveQuest(Player player) {
+        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+        String quest_id_get = dataContainer.get(_quest_id, PersistentDataType.STRING);
+        Quest quest = questManager.getQuestById(quest_id_get);
+        Integer questIntegerId =  quest.getQuestIntegerId();
+
+//        questManager.activeQuests.
+
+        GiveQuest(player, 2);
     }
 }
