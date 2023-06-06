@@ -10,8 +10,8 @@ import woks.woks.Msg;
 
 import java.util.List;
 
-import static woks.woks.WOKS._quest_claimed;
-import static woks.woks.WOKS._quest_done;
+import static woks.woks.WOKS.*;
+import static woks.woks.matthew.quest.rewordQuest.RewordQuest;
 
 public class claimReward {
     public claimReward() {
@@ -25,7 +25,7 @@ public class claimReward {
                 if (dataContainer.get(_quest_done, PersistentDataType.DOUBLE) >= 100.0d) {
                     Msg.send(sender, "Good job.");
                     dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 1);
-
+                    RewordQuest(player, dataContainer.get(_quest_id, PersistentDataType.STRING));
                 } else {
                     Msg.send(player, "Your not done yet you've only done " + dataContainer.get(_quest_done, PersistentDataType.DOUBLE) + "%");
                 }

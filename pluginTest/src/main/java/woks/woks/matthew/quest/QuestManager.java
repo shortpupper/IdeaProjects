@@ -12,8 +12,8 @@ public class QuestManager {
         activeQuests = new HashMap<>();
     }
 
-    public void registerQuest(String questId, ItemStack[] items, int expAmount) {
-        Quest quest = new Quest(questId, items, expAmount);
+    public void registerQuest(String questId, ItemStack[] items, int expAmount, String name) {
+        Quest quest = new Quest(questId, items, expAmount, name);
         activeQuests.put(questId, quest);
     }
 
@@ -21,27 +21,19 @@ public class QuestManager {
         return activeQuests.get(questId);
     }
 
-//    public void completeQuest(Player player) {
-//        Quest quest = activeQuests.get(player);
-//        if (quest != null) {
-//            // Handle quest completion logic here
-//            // You can give rewards, update player stats, etc.
-//
-//            // Remove the completed quest from the activeQuests map
-//            activeQuests.remove(player);
-//        }
-//    }
 }
 
 class Quest {
     private final String questId;
     private final ItemStack[] items;
     private final int expAmount;
+    private final String name;
 
-    public Quest(String questId, ItemStack[] items, int expAmount) {
+    public Quest(String questId, ItemStack[] items, int expAmount, String name) {
         this.questId = questId;
         this.items = items;
         this.expAmount = expAmount;
+        this.name = name;
     }
 
     public String getQuestId() {
@@ -56,6 +48,7 @@ class Quest {
         return expAmount;
     }
 
+    public String getName() { return name;}
 
     // Add getters/setters or other methods as needed
 }

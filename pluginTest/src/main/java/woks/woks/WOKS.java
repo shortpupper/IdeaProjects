@@ -17,6 +17,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import woks.woks.commands.*;
 import woks.woks.dam.bannedWhat;
 import woks.woks.handlers.*;
@@ -34,6 +35,7 @@ import java.util.Date;
 
 import static woks.woks.items.EnchantedLeather.EnchantedLeather;
 import static woks.woks.items.PRQ.Obamanium.Obamanium_Ingot.Obamanium_Ingot;
+import static woks.woks.matthew.quest.giveQuest.GiveQuest;
 
 public final class WOKS extends JavaPlugin implements Listener {
     private static WOKS instance;
@@ -46,7 +48,9 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static NamespacedKey _quest_id;
     public static NamespacedKey _quest_done;
     public static NamespacedKey _quest_claimed;
-    private QuestManager questManager;
+    public static NamespacedKey _quest_completed;
+    public static NamespacedKey _quest_completed_array;
+    public static QuestManager questManager;
 
 
     public static String[] Ranks = {
@@ -97,7 +101,8 @@ public final class WOKS extends JavaPlugin implements Listener {
         _quest_id                = new NamespacedKey(this, "_quest_id");
         _quest_done              = new NamespacedKey(this, "_quest_done");
         _quest_claimed           = new NamespacedKey(this, "_quest_claimed");
-
+        _quest_completed         = new NamespacedKey(this, "_quest_completed");
+        _quest_completed_array   = new NamespacedKey(this, "_quest_completed");
 
 
 
@@ -530,28 +535,47 @@ public final class WOKS extends JavaPlugin implements Listener {
         if (!dataContainer.has(_namespacedKeyNumberRank, PersistentDataType.INTEGER)) {
             dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
         }
+        // this is like how much is done
         if (!dataContainer.has(_quest_done, PersistentDataType.DOUBLE)) {
             dataContainer.set(_quest_done, PersistentDataType.DOUBLE, 0.0d);
         }
-        if (!dataContainer.has(_quest_id, PersistentDataType.INTEGER)) {
-            dataContainer.set(_quest_id, PersistentDataType.INTEGER, 0);
+        // the id so you can get it
+        if (!dataContainer.has(_quest_id, PersistentDataType.STRING)) {
+            dataContainer.set(_quest_id, PersistentDataType.STRING, "0");
         }
+        // have they claimed the reward
         if (!dataContainer.has(_quest_claimed, PersistentDataType.INTEGER)) {
             dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);
         }
+        // how many total quest they have done
+        if (!dataContainer.has(_quest_completed, PersistentDataType.INTEGER)) {
+            dataContainer.set(_quest_completed, PersistentDataType.INTEGER, 0);
+        }
 
+        // which quests they have done
+        if (!dataContainer.has(_quest_completed_array, PersistentDataType.INTEGER_ARRAY)) {
+            dataContainer.set(_quest_completed_array, PersistentDataType.INTEGER_ARRAY, new int[]{});
+        }
+
+        // ban him for why not, he called me a loser
         if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
             Bukkit.getBanList(BanList.Type.NAME).addBan(player.getName(), "You have been banned for being a loser.", new Date(1),null);
         }
 
+        // check if quests is a go
         if (config.getBoolean("Quests")) {
             ItemStack[] items;
             int expAmount;
-            items = new ItemStack[]{new ItemStack(Material.OAK_LOG, 16)};
-            expAmount = 1;
-            questManager.registerQuest("1", items, expAmount);
 
-//            new giveQuest(player);
+            items = new ItemStack[]{new ItemStack(Material.SPRUCE_LOG, 16)};
+            expAmount = 5;
+
+            questManager.registerQuest("1", items, expAmount, "Join the sever");
+
+            // check if they have ever done a quest
+            if (dataContainer.get(_quest_completed, PersistentDataType.INTEGER) == 0) {
+                GiveQuest(player, "1");
+            }
         }
     }
 }
