@@ -26,6 +26,7 @@ import woks.woks.items.EnchantedLeather;
 import woks.woks.items.PRQ.Obamanium.*;
 import woks.woks.matthew.ImAnAdmin;
 import woks.woks.matthew.permote;
+import woks.woks.matthew.quest.*;
 import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
@@ -45,6 +46,7 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static NamespacedKey _quest_id;
     public static NamespacedKey _quest_done;
     public static NamespacedKey _quest_claimed;
+    private QuestManager questManager;
 
 
     public static String[] Ranks = {
@@ -100,12 +102,13 @@ public final class WOKS extends JavaPlugin implements Listener {
 
 
 
-        config.addDefault("PlayerWalkPath", true);
+        config.addDefault("PlayerWalkPath", false);
         config.addDefault("GoodDayMSG", true);
         config.addDefault("UnsafeEnchanting", true);
         config.addDefault("PaidRequests", true);
         config.addDefault("roles", true);
         config.addDefault("Killer", true);
+        config.addDefault("Quests", true);
 
         config.options().copyDefaults(true);
         saveConfig();
@@ -163,19 +166,38 @@ public final class WOKS extends JavaPlugin implements Listener {
             new roles(this);
 
             new ImAnAdmin();
-
             new permote();
+
             Bukkit.getLogger().info("[woks] Rolles are on.");
         }
         if (false) {
             new bannedWhat();
+
             Bukkit.getLogger().info("[woks] banned is on.");
         }
 
         if (config.getBoolean("Killer")) {
             new EntitysDeathKillCount(this);
             new pardenAll();
+
+            Bukkit.getLogger().info("Killer stats are on.");
         }
+
+        if (config.getBoolean("Quests")) {
+            new QuestManager();
+            new claimReward();
+            new questMaker();
+            new rewordQuest();
+            new giveQuest();
+
+            Bukkit.getLogger().info("[woks] Quests are on.");
+
+            questManager = new QuestManager();
+
+        }
+
+
+
 
         new AccessLegacyBackPack();
 
@@ -520,6 +542,16 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
             Bukkit.getBanList(BanList.Type.NAME).addBan(player.getName(), "You have been banned for being a loser.", new Date(1),null);
+        }
+
+        if (config.getBoolean("Quests")) {
+            ItemStack[] items;
+            int expAmount;
+            items = new ItemStack[]{new ItemStack(Material.OAK_LOG, 16)};
+            expAmount = 1;
+            questManager.registerQuest("1", items, expAmount);
+
+//            new giveQuest(player);
         }
     }
 }
