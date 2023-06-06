@@ -2,6 +2,7 @@ package woks.woks.handlers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,18 +24,42 @@ public class EntitysDeathKillCount implements Listener {
         if (player != null) {
             Bukkit.getLogger().info("[woks] player is teh killer.");
 
-            ItemStack item = player.getItemInUse();
-            assert item != null;
+            ItemStack item = player.getInventory().getItemInMainHand();
+            ItemStack item2 = player.getInventory().getItemInOffHand();
+            int count;
 
-            NBTItem nbtItem = new NBTItem(item);
+            if (item.getType() == Material.AIR) {
+                if (item2.getType() == Material.AIR) {
+                    return;
+                } else {
+                    NBTItem nbtItem = new NBTItem(item);
+//                    int count = (nbtItem.getInteger((Name + "_killed")) == null) ? 1 : nbtItem.getInteger(("killed_count_" + Name) + 1);
+                    if (nbtItem.getInteger((Name + "_killed")) == null || (nbtItem.getInteger((Name + "_killed")) == 0)) {
+                        count = 1;
+                    } else {
+                        count = nbtItem.getInteger(Name + "_killed")+ 1;
+                    }
+                    Bukkit.getLogger().info(Integer.valueOf(count).toString());
+                    nbtItem.setInteger(Name + "_killed", count);
 
+                    item = nbtItem.getItem();
+                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), item);
+                }
+            } else {
+                NBTItem nbtItem = new NBTItem(item);
 
-            int count = (nbtItem.getInteger((Name + "_killed")) == null) ? 1 : nbtItem.getInteger(("killed_count_" + Name) + 1);
-            Bukkit.getLogger().info(Integer.valueOf(count).toString());
-            nbtItem.setInteger("killed_count_" + Name, count);
+                if (nbtItem.getInteger((Name + "_killed")) == null || (nbtItem.getInteger((Name + "_killed")) == 0)) {
+                    count = 1;
+                } else {
+                    count = nbtItem.getInteger(Name + "_killed")+ 1;
+                }
 
-            item = nbtItem.getItem();
-            player.getInventory().setItem(player.getInventory().getHeldItemSlot(), item);
+                Bukkit.getLogger().info(Integer.valueOf(count).toString());
+                nbtItem.setInteger(Name + "_killed", count);
+
+                item = nbtItem.getItem();
+                player.getInventory().setItem(player.getInventory().getHeldItemSlot(), item);
+            }
         }
     }
 }
