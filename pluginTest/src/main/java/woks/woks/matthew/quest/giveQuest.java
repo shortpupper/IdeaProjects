@@ -18,7 +18,7 @@ public class giveQuest {
             dataContainer.set(_quest_done, PersistentDataType.DOUBLE, 100.0d);
             dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);
 
-            Msg.send(player, "Do /claimreward to claim your quest.");
+            Msg.send(player, "Do /claimreward to claim your quest reward.");
         } else if (isDone == 0) {
             Msg.send(player, "Claim your quest before you can get a new one.");
         } else if (isDone == 1 && dataContainer.get(_quest_done, PersistentDataType.DOUBLE) >= 100.0d) {

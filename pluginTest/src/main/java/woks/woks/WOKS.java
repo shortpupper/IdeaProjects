@@ -102,7 +102,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         _quest_done              = new NamespacedKey(this, "_quest_done");
         _quest_claimed           = new NamespacedKey(this, "_quest_claimed");
         _quest_completed         = new NamespacedKey(this, "_quest_completed");
-        _quest_completed_array   = new NamespacedKey(this, "_quest_completed");
+        _quest_completed_array   = new NamespacedKey(this, "_quest_completed_array");
 
 
 
@@ -212,7 +212,14 @@ public final class WOKS extends JavaPlugin implements Listener {
     }
 
 
+    public static int[] addArrays(int[] arr1, int[] arr2) {
+        int[] result = new int[arr1.length + arr2.length];
 
+        System.arraycopy(arr1, 0, result, 0, arr1.length);
+        System.arraycopy(arr2, 0, result, arr1.length, arr2.length);
+
+        return result;
+    }
     public void Recipes() {
         if (config.getBoolean("PaidRequests")) {
             final RecipeChoice ingot = new RecipeChoice.ExactChoice(Obamanium_Ingot(1));
@@ -570,7 +577,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             items = new ItemStack[]{new ItemStack(Material.SPRUCE_LOG, 16)};
             expAmount = 5;
 
-            questManager.registerQuest("1", items, expAmount, "Join the sever");
+            questManager.registerQuest("Join_sever_first_time", 1, items, expAmount, "Join the sever");
 
             // check if they have ever done a quest
             if (dataContainer.get(_quest_completed, PersistentDataType.INTEGER) == 0) {
