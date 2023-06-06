@@ -40,8 +40,7 @@ public class InventoryEventHandler implements Listener {
         }
         else {
 //            ItemStack Item = inventory.getItemInMainHand();
-            ItemStack Item = player.getItemInUse();
-            assert Item != null;
+            ItemStack Item = player.getInventory().getItem(player.getInventory().getHeldItemSlot());
             if (!(Item.getType() == Material.AIR || Item.getAmount() == 0)) {
                 if (Item.getType() != Material.CHEST) {
                     NBTItem nbtItem = new NBTItem(inventory.getItemInOffHand());
@@ -56,6 +55,7 @@ public class InventoryEventHandler implements Listener {
                         ItemStack[] ItemsE = event.getInventory().getStorageContents();
                         nbtItem.setItemStackArray("ItemsE", ItemsE);
                         nbtItem.setBoolean("Using", false);
+
 
                         // might need fixing
                         player.getInventory().setItem(player.getInventory().getHeldItemSlot(), nbtItem.getItem());
