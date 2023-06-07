@@ -15,6 +15,7 @@ public class giveQuest {
 
         if (dataContainer.get(_quest_completed, PersistentDataType.INTEGER) == 0 && dataContainer.get(_quest_claimed, PersistentDataType.INTEGER) == 0) {
             dataContainer.set(_quest_id, PersistentDataType.STRING, questId);
+            dataContainer.set(_quest_id_integer, PersistentDataType.INTEGER, questManager.getQuestById(questId).getQuestIntegerId());
             dataContainer.set(_quest_percent_done, PersistentDataType.DOUBLE, 100.0d);
             dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);
 
@@ -24,6 +25,7 @@ public class giveQuest {
         } else if (isDone == 1 && dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) >= 100.0d) {
             // give a new quest via the quest id thing
             dataContainer.set(_quest_id, PersistentDataType.STRING, questId);
+            dataContainer.set(_quest_id_integer, PersistentDataType.INTEGER, questManager.getQuestById(questId).getQuestIntegerId());
             dataContainer.set(_quest_percent_done, PersistentDataType.DOUBLE, 0.0d);
             dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);
         } else {
@@ -36,10 +38,10 @@ public class giveQuest {
     }
 
     public static void GiveQuest(Player player) {
-        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
-        String quest_id_get = dataContainer.get(_quest_id, PersistentDataType.STRING);
-        Quest quest = questManager.getQuestById(quest_id_get);
-        Integer questIntegerId =  quest.getQuestIntegerId();
+//        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+//        String quest_id_get = dataContainer.get(_quest_id, PersistentDataType.STRING);
+//        Quest quest = questManager.getQuestById(quest_id_get);
+//        Integer questIntegerId =  quest.getQuestIntegerId();
 
 //        questManager.activeQuests.
 

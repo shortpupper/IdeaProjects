@@ -32,6 +32,7 @@ import woks.woks.matthew.roles;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import static woks.woks.items.EnchantedLeather.EnchantedLeather;
@@ -49,6 +50,7 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static NamespacedKey _admin;
     public static NamespacedKey _namespacedKeyNumberRank;
     public static NamespacedKey _quest_id;
+    public static NamespacedKey _quest_id_integer;
     public static NamespacedKey _quest_percent_done;
     public static NamespacedKey _quest_claimed;
     public static NamespacedKey _quest_completed;
@@ -102,6 +104,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         _jsonSmells              = new NamespacedKey(this, "_jsonSmells");
         _namespacedKeyNumberRank = new NamespacedKey(this, "_role_rank_air_number");
         _quest_id                = new NamespacedKey(this, "_quest_id");
+        _quest_id_integer        = new NamespacedKey(this, "_quest_id_integer");
         _quest_percent_done      = new NamespacedKey(this, "_quest_percent_done");
         _quest_claimed           = new NamespacedKey(this, "_quest_claimed");
         _quest_completed         = new NamespacedKey(this, "_quest_completed");
@@ -227,6 +230,25 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static UUID uuid3Generator(String inputString) {
         byte[] bytes = inputString.getBytes(StandardCharsets.UTF_8);
         return UUID.nameUUIDFromBytes(bytes);
+    }
+    public static String convertHashMapToString(Map<?, ?> hashMap) {
+        StringBuilder sb = new StringBuilder();
+
+        // Iterate over the key-value pairs in the HashMap
+        for (Map.Entry<?, ?> entry : hashMap.entrySet()) {
+            String key = (String) entry.getKey();
+            String value = (String) entry.getValue();
+
+            // Append key-value pair to the StringBuilder
+            sb.append(key).append(": ").append(value).append(", ");
+        }
+
+        // Remove the trailing comma and space
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 2);
+        }
+
+        return sb.toString();
     }
 
 
@@ -560,6 +582,9 @@ public final class WOKS extends JavaPlugin implements Listener {
         if (!dataContainer.has(_quest_id, PersistentDataType.STRING)) {
             dataContainer.set(_quest_id, PersistentDataType.STRING, "0");
         }
+        if (!dataContainer.has(_quest_id_integer, PersistentDataType.INTEGER)) {
+            dataContainer.set(_quest_id_integer, PersistentDataType.INTEGER, 0);
+        }
         // have they claimed the reward
         if (!dataContainer.has(_quest_claimed, PersistentDataType.INTEGER)) {
             dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);
@@ -589,10 +614,15 @@ public final class WOKS extends JavaPlugin implements Listener {
 
             questManager.registerQuest("Join_sever_first_time", 1, items, expAmount, "Join the sever");
             questManager.registerQuest("Say_Hello", 2, DefaultItemStacks, DefaultExpAmounts,"Talking In Chat");
-            
+            questManager.registerQuest("3", 3, items, expAmount, "Github", new Integer[]{1,2});
+
+            Bukkit.getLogger().info(String.valueOf(questManager.activeQuests.size()));
+            Bukkit.getLogger().info(String.valueOf(questManager.activeQuestsInteger.size()));
+            Bukkit.getLogger().info(String.valueOf(questManager.IndexQuests.size()));
+
             // check if they have ever done a quest
             if (dataContainer.get(_quest_completed, PersistentDataType.INTEGER) == 0) {
-                GiveQuest(player, "1");
+                GiveQuest(player, 1);
             }
         }
     }

@@ -26,6 +26,7 @@ public class claimReward {
                     Msg.send(sender, "Good job.");
                     dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 1);
                     dataContainer.set(_quest_completed, PersistentDataType.INTEGER, dataContainer.get(_quest_completed, PersistentDataType.INTEGER) + 1);
+
                     RewordQuest(player, dataContainer.get(_quest_id, PersistentDataType.STRING));
                 } else if (dataContainer.get(_quest_claimed, PersistentDataType.INTEGER) == 1) {
                     Msg.send(player, "You have already claim this quest.");
