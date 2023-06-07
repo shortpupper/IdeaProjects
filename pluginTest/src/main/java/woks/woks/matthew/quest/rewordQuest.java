@@ -7,6 +7,8 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import woks.woks.Msg;
 
+import java.util.Objects;
+
 import static woks.woks.WOKS.*;
 import static woks.woks.items.CustomExpBottle.customExpBottle;
 
@@ -23,7 +25,9 @@ public class rewordQuest {
         Msg.send(player, "You claimed " + questById.getName() + " Quest [" + questById.getQuestId() + "].");
 
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
-        dataContainer.set(_quest_completed_array, PersistentDataType.INTEGER_ARRAY, addArrays(dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY), new int[]{Integer.parseInt(questById.getQuestId())}));
+//        Bukkit.getLogger().info("[woks] hello?");
+        dataContainer.set(_quest_completed_array, PersistentDataType.INTEGER_ARRAY, addArrays(Objects.requireNonNull(dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY)), new int[]{questById.getQuestIntegerId()}));
+//        Bukkit.getLogger().info("[woks] bye?");
 
         Bukkit.getLogger().info("Quest reward given.");
     }
