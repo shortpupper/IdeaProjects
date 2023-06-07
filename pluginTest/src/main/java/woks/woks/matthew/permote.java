@@ -49,7 +49,7 @@ public class permote {
 
             @Override
             public String getUsage() {
-                return "/permote <playerName> <string:add|sub|multi|eq> <int:amount>";
+                return "/permote <playerName> <string:add|sub|multi|eq|set> <int:amount>";
             }
 
             @Override
@@ -65,14 +65,29 @@ public class permote {
         if (role_rank_air_number >= Ranks.length - 1) {
             Msg.send(sender, "You have reached max rank.");
         } else if (op.equals("sub")) {
-            dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number - amount);
-            Msg.send(sender, "Your rank is now " + (role_rank_air_number - amount));
-        } else if (op.equals("eq")) {
-            dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, amount);
-            Msg.send(sender, "Your rank is now " + (amount));
+            if (role_rank_air_number - amount >= 0) {
+                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number - amount);
+                Msg.send(sender, "Your rank is now " + (role_rank_air_number - amount));
+            } else {
+                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
+                Msg.send(sender, "Your rank is now " + 0);
+            }
+        } else if (op.equals("eq") || op.equals("set")) {
+            if (amount <= Ranks.length) {
+                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, amount);
+                Msg.send(sender, "Your rank is now " + (amount));
+            } else {
+                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, (Ranks.length - 1));
+                Msg.send(sender, "Your rank is now " + (Ranks.length - 1));
+            }
         } else if (op.equals("add")) {
-            dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number + amount);
-            Msg.send(sender, "Your rank is now " + (role_rank_air_number + amount));
+            if (role_rank_air_number + amount <= Ranks.length) {
+                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number + amount);
+                Msg.send(sender, "Your rank is now " + (role_rank_air_number + amount));
+            } else {
+                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, (Ranks.length - 1));
+                Msg.send(sender, "Your rank is now " + ((Ranks.length - 1)));
+            }
         } else if (op.equals("multi")) {
             if (role_rank_air_number * amount >= Ranks.length) {
                 dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, Ranks.length - 1);
@@ -82,8 +97,13 @@ public class permote {
                 Msg.send(sender, "Your rank is now " + (role_rank_air_number * amount));
             }
         } else {
-            dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number + 1);
-            Msg.send(sender, "Your rank is now " + (role_rank_air_number + 1));
+            if (role_rank_air_number + 1 <= Ranks.length) {
+                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number + 1);
+                Msg.send(sender, "Your rank is now " + (role_rank_air_number + 1));
+            } else {
+                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, Ranks.length - 1);
+                Msg.send(sender, "Your rank is now " + (Ranks.length - 1));
+            }
         }
     }
 }
