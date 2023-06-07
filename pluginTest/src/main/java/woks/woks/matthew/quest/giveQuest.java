@@ -24,7 +24,11 @@ public class giveQuest {
             Msg.send(player, "Claim your quest before you can get a new one.");
         } else if (isDone == 1 && dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) >= 100.0d) {
             // give a new quest via the quest id thing
+            Msg.send(player, "Workin");
             dataContainer.set(_quest_id, PersistentDataType.STRING, questId);
+            Msg.send(player, questId);
+            Msg.send(player, questManager.getQuestById(questId).toString());
+            Msg.send(player, String.valueOf(questManager.getQuestById(questId).getQuestIntegerId()));
             dataContainer.set(_quest_id_integer, PersistentDataType.INTEGER, questManager.getQuestById(questId).getQuestIntegerId());
             dataContainer.set(_quest_percent_done, PersistentDataType.DOUBLE, 0.0d);
             dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);

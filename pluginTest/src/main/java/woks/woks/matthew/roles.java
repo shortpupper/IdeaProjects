@@ -24,7 +24,7 @@ public class roles implements Listener {
         Player player = event.getPlayer();
         String message = event.getMessage();
 //        Bukkit.getLogger().info("[woks] DUCK THERES MSG");
-        Bukkit.getLogger().info("§c[WARNING] This exe does not run in DOS, please upgrade to windows 93. [WARNING]§c§f");
+        Bukkit.getLogger().info(ChatColor.translateAlternateColorCodes('&',"&c§c[WARNING] This exe does not run in DOS, please upgrade to windows 93. [WARNING]§c§f"));
 
         String role = getRole(player); // Replace this with your logic to determine the player's role
 
@@ -32,7 +32,7 @@ public class roles implements Listener {
         event.setFormat(ChatColor.translateAlternateColorCodes('&', formattedMessage));
         if (message.equalsIgnoreCase("hello")) {
             PersistentDataContainer dataContainer = player.getPersistentDataContainer();
-            if (dataContainer.get(_quest_id_integer, PersistentDataType.INTEGER) == 2) {
+            if (dataContainer.get(_quest_id_integer, PersistentDataType.INTEGER) == 2 && dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) < 100.0d) {
                 dataContainer.set(_quest_percent_done, PersistentDataType.DOUBLE, 100.0d);
                 Msg.send(player, "§bQuest completed!§r");
             }

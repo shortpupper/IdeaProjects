@@ -25,9 +25,11 @@ public class claimReward {
                 if (dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) >= 100.0d && dataContainer.get(_quest_claimed, PersistentDataType.INTEGER) == 0) {
                     Msg.send(sender, "Good job.");
                     dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 1);
+                    Msg.send(sender, "Good job. 2");
                     dataContainer.set(_quest_completed, PersistentDataType.INTEGER, dataContainer.get(_quest_completed, PersistentDataType.INTEGER) + 1);
-
+                    Msg.send(sender, "Good job. 3");
                     RewordQuest(player, dataContainer.get(_quest_id, PersistentDataType.STRING));
+                    Msg.send(sender, "Good job. 4");
                 } else if (dataContainer.get(_quest_claimed, PersistentDataType.INTEGER) == 1) {
                     Msg.send(player, "You have already claim this quest.");
                 } else {
