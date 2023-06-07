@@ -1,6 +1,5 @@
 package woks.woks;
 
-import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -31,7 +30,6 @@ import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -600,9 +598,9 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
 
         // ban him for why not, he called me a loser
-        if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
-            Bukkit.getBanList(BanList.Type.NAME).addBan(player.getName(), "You have been banned for", new Date(1),null);
-        }
+//        if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
+//            Bukkit.getBanList(BanList.Type.NAME).addBan(player.getName(), "You have been banned for", new Date(1),null);
+//        }
 
         // check if quests is a go
         if (config.getBoolean("Quests")) {

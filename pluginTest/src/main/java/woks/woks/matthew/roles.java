@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import woks.woks.Msg;
 import woks.woks.WOKS;
 
 import static woks.woks.WOKS.*;
@@ -22,13 +23,20 @@ public class roles implements Listener {
     public void chatCheck(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
-        Bukkit.getLogger().info("[woks] DUCK THERES MSG");
-        System.out.println("[WARNING] This exe does not run in DOS, please upgrade to windows 93. [WARNING]");
+//        Bukkit.getLogger().info("[woks] DUCK THERES MSG");
+        Bukkit.getLogger().info("§c[WARNING] This exe does not run in DOS, please upgrade to windows 93. [WARNING]§c§f");
 
         String role = getRole(player); // Replace this with your logic to determine the player's role
 
         String formattedMessage =  role + "<" + player.getName() + "> " + message;
         event.setFormat(ChatColor.translateAlternateColorCodes('&', formattedMessage));
+        if (message.equalsIgnoreCase("hello")) {
+            PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+            if (dataContainer.get(_quest_id_integer, PersistentDataType.INTEGER) == 2) {
+                dataContainer.set(_quest_percent_done, PersistentDataType.DOUBLE, 100.0d);
+                Msg.send(player, "§bQuest completed!§r");
+            }
+        }
     }
 
     public String getRole(Player player) {

@@ -35,7 +35,7 @@ public class CommandNextQuest {
 
                 // give them the next quest
 
-                GiveQuest(player);
+                GiveQuest(player, questManager.getNextQuestStrId(dataContainer.get(_quest_id_integer, PersistentDataType.INTEGER)));
 
                 return true;
             }

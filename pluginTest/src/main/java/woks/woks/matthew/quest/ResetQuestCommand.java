@@ -92,6 +92,6 @@ public class ResetQuestCommand {
             public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
                 return null;
             }
-        }.enableDelay(2);
+        };
     }
 }
