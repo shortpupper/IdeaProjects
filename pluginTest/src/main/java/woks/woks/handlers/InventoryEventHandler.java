@@ -41,26 +41,31 @@ public class InventoryEventHandler implements Listener {
         else {
 //            ItemStack Item = inventory.getItemInMainHand();
             ItemStack Item = player.getInventory().getItem(player.getInventory().getHeldItemSlot());
-            if (!(Item.getType() == Material.AIR || Item.getAmount() == 0)) {
-                if (Item.getType() != Material.CHEST) {
-                    NBTItem nbtItem = new NBTItem(inventory.getItemInOffHand());
-                    if (nbtItem.getBoolean("Using") && inventory.getItemInOffHand().getType() == Material.CHEST) {
-                        Bukkit.getLogger().info("Bye bye say hello to air.7");
-                        player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+            if (Item == null) {
+                return;
+            } else {
+                if (!(Item.getType() == Material.AIR || Item.getAmount() == 0)) {
+//                    if (Item.getType() != Material.CHEST) {
+//                        NBTItem nbtItem = new NBTItem(inventory.getItemInOffHand());
+//                        if (nbtItem.getBoolean("Using") && inventory.getItemInOffHand().getType() == Material.CHEST) {
+//                            Bukkit.getLogger().info("Bye bye say hello to air.7");
+//                            player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+//                        }
+//
+//                    }
+                    if (Item.getType() == Material.CHEST) {
+                        NBTItem nbtItem = new NBTItem(Item);
+                        if ((nbtItem.getBoolean("BackPack")) && (event.getView().getTitle().equals("BackPack"))) {
+                            ItemStack[] ItemsE = event.getInventory().getStorageContents();
+                            nbtItem.setItemStackArray("ItemsE", ItemsE);
+                            nbtItem.setBoolean("Using", false);
+
+
+                            // might need fixing
+                            player.getInventory().setItem(player.getInventory().getHeldItemSlot(), nbtItem.getItem());
+                        }
+
                     }
-
-                } else if (Item.getType() == Material.CHEST) {
-                    NBTItem nbtItem = new NBTItem(Item);
-                    if ((nbtItem.getBoolean("BackPack")) && (event.getView().getTitle().equals("BackPack"))) {
-                        ItemStack[] ItemsE = event.getInventory().getStorageContents();
-                        nbtItem.setItemStackArray("ItemsE", ItemsE);
-                        nbtItem.setBoolean("Using", false);
-
-
-                        // might need fixing
-                        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), nbtItem.getItem());
-                    }
-
                 }
             }
         }

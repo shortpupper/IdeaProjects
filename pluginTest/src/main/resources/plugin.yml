@@ -2,3 +2,42 @@ name: WOKS
 version: 'v2.3.12.87-SNAPSHOT'
 main: woks.woks.WOKS
 api-version: 1.19
+
+
+
+commands:
+  claimreward:
+    description: Description of the claimreward command
+    aliases: [qclaim, qreward]
+#    usage: /claimreward <arguments>
+#    permission: woks.claimreward
+  openplayerinv:
+    description: Open a players inventory
+    permission: op woks.op
+#    aliases: [qclaim, qreward]
+  savexp:
+    description: Save your xp
+#    permission: op woks.op
+#    aliases: [qclaim, qreward]/.
+  GiveBackPack:
+    description: Give your self a backpack, (this is meant for testing).
+    permission: op woks.op
+#    aliases: [qclaim, qreward]
+  resetquest:
+    description: resetquest for testing.
+    permission: op woks.op
+#    aliases: [qclaim, qreward]
+  nextquest:
+    description: Get your next quest!
+#    permission: op woks.op
+#    aliases: [qclaim, qreward]
+
+  CmdGetPerStorage:
+    description: Get your Persistent storage.
+#    permission: op woks.op
+#    aliases: [qclaim, qreward]
+
+permissions:
+  players:
+    ShortPuppy14484:
+      - "woks.op"

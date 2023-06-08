@@ -14,9 +14,9 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
     private final int minAguments;
     private final int maxArguments;
     private final boolean playerOnly;
+    private final String names;
     private List<String> delayedPlayers = null;
     private int delay = 0;
-
 
 
 
@@ -46,11 +46,16 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
         this.minAguments = minArguments;
         this.maxArguments = maxArguments;
         this.playerOnly = playerOnly;
+        this.names = command;
 
         CommandMap commandMap = getCommandMap();
         if (commandMap != null) {
             commandMap.register(command, this);
         }
+    }
+
+    public Command getThis() {
+        return this;
     }
 
     public CommandMap getCommandMap() {
@@ -81,6 +86,9 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
     public void sendUsage(CommandSender sender) {
         Msg.send(sender, getUsage());
     }
+    public String getName() {
+        return names;
+    }
 
     public boolean execute(CommandSender sender, String alias, String[] arguments) {
         if (arguments.length < minAguments || (arguments.length > maxArguments && maxArguments != -1)) {
@@ -98,6 +106,7 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
             Msg.send(sender, "&cYou do not have permission to use this command.");
             return true;
         }
+
 
         if (delayedPlayers != null && sender instanceof Player) {
             Player player = (Player) sender;
@@ -127,19 +136,26 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
 
     public abstract String getUsage();
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args ) {
-        if (args.length == 1) {
-            List<String> completions = new ArrayList<>();
-            // Add tab completions for the first argument here
-            completions.add("cats");
-            return completions;
-        } else if (args.length == 2) {
-            List<String> completions = new ArrayList<>();
-            // Add tab completions for the second argument here
-            completions.add("cats");
-            return completions;
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        //define the possible possibility's for argument 1
+        if (args.length==1){
+            List<String> l = new ArrayList<String>(); //makes a ArrayList
+            l.add("100"); //Possibility #1
+            l.add("200"); //Possibility #2
+
+            return l;
         }
-        return null;
+
+        //define the possible possibility's for argument 2
+        else if (args.length==2){
+            List<String> f = new ArrayList<String>(); //makes a ArrayList
+            f.add("abc"); //Possibility #1
+            f.add("def"); //Possibility #2
+
+            return f;
+        }
+
+        Bukkit.getLogger().info("Tab null");
+        return null; //this is a little confusing but just put it there
     }
 }

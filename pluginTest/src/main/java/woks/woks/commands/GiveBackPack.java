@@ -2,14 +2,16 @@ package woks.woks.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
 import woks.woks.items.BackPack;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class GiveBackPack {
+public class GiveBackPack implements TabCompleter {
     public GiveBackPack() {
         new CommandBase("GiveBackPack", 1, true) {
             @Override
@@ -25,13 +27,25 @@ public class GiveBackPack {
 
             @Override
             public String getUsage() {
-                return "/GiveBackPack <int:count>";
+                return "/givebackpack <int:count>";
             }
 
-            @Override
-            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-                return null;
-            }
         };
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 1) {
+            List<String> out = new ArrayList<>();
+            out.add("9");
+            out.add("18");
+            out.add("27");
+            out.add("36");
+            out.add("45");
+            out.add("54");
+
+            return out;
+        }
+        return null;
     }
 }

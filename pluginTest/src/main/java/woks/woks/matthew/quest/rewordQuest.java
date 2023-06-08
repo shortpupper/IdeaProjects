@@ -18,14 +18,13 @@ public class rewordQuest {
 
     public static void RewordQuest(Player player, String questId) {
         Msg.send(player, questId);
+
         Quest questById = questManager.getQuestById(questId);
-        Msg.send(player, "Good job.51");
+
         Msg.send(player, questById.toString());
 
         player.getInventory().addItem(questById.getItems());
-        Msg.send(player, "Good job.212");
         player.getInventory().addItem(customExpBottle(questById.getExpAmount()));
-        Msg.send(player, "Good job.4151");
 
         Msg.send(player, "You claimed " + questById.getName() + " Quest [" + questById.getQuestId() + "].");
 

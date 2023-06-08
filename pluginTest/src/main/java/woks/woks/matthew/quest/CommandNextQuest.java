@@ -2,6 +2,7 @@ package woks.woks.matthew.quest;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -13,7 +14,7 @@ import java.util.List;
 import static woks.woks.WOKS.*;
 import static woks.woks.matthew.quest.giveQuest.GiveQuest;
 
-public class CommandNextQuest {
+public class CommandNextQuest implements TabCompleter {
     public CommandNextQuest() {
         new CommandBase("nextquest", true) {
             @Override
@@ -45,10 +46,10 @@ public class CommandNextQuest {
                 return "/nextquest";
             }
 
-            @Override
-            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-                return null;
-            }
         }.enableDelay(2);
+    }
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        return null;
     }
 }

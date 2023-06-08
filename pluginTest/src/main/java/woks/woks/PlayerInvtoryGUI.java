@@ -1,6 +1,5 @@
 package woks.woks;
 
-import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -16,9 +15,9 @@ public class PlayerInvtoryGUI {
         // Put the items into the inventory
         ItemStack[] Items;
         if (ender == 1) {
-            Items = player.getEnderChest().getStorageContents();
+            Items = player2.getEnderChest().getStorageContents();
         } else {
-            Items = player.getInventory().getStorageContents();
+            Items = player2.getInventory().getStorageContents();
         }
 
         inv.setStorageContents(Items);

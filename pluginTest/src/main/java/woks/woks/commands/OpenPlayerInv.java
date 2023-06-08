@@ -1,16 +1,19 @@
 package woks.woks.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
 import woks.woks.PlayerInvtoryGUI;
 
+import java.util.List;
 import java.util.Objects;
 @Deprecated
 // deprecated, better alternative use PlayerInv
-public class OpenPlayerInv {
+public class OpenPlayerInv implements TabCompleter {
     public OpenPlayerInv() {
         new CommandBase("openplayerinv", 1, true) {
             @Override
@@ -34,5 +37,9 @@ public class OpenPlayerInv {
                 return "/openplayerinv <string:playerName>";
             }
         };
+    }
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        return null; //this is a little confusing but just put it there
     }
 }

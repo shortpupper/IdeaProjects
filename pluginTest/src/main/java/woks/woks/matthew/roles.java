@@ -24,7 +24,7 @@ public class roles implements Listener {
         Player player = event.getPlayer();
         String message = event.getMessage();
 //        Bukkit.getLogger().info("[woks] DUCK THERES MSG");
-        Bukkit.getLogger().info(ChatColor.translateAlternateColorCodes('&',"&c§c[WARNING] This exe does not run in DOS, please upgrade to windows 93. [WARNING]§c§f"));
+        Bukkit.getLogger().info(ChatColor.translateAlternateColorCodes('&', String.valueOf("[&c§c[WARNING] This exe does not run in DOS, please upgrade to windows 93. [WARNING]§c§r]")));
 
         String role = getRole(player); // Replace this with your logic to determine the player's role
 

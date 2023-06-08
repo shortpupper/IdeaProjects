@@ -57,7 +57,7 @@ public class PlayerInteractEventHandler implements Listener {
 //                    Bukkit.getLogger().info("Bye bye say hello to air.3");
                     /*Item.setType(Material.AIR);*/
                     Msg.send(player, "You messed up");
-                } if ((nbtItem.getBoolean("BackPack"))) {
+                } else if ((nbtItem.getBoolean("BackPack"))) {
                     Object Things = UserCheckPaying.CheckPaying();
                     if (Things instanceof Boolean) {
                         Msg.send(player, "Can't get players.");

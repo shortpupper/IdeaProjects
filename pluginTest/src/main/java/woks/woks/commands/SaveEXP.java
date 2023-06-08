@@ -5,20 +5,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.StringUtil;
 import woks.woks.CommandBase;
 import woks.woks.ExperienceManager;
 import woks.woks.Msg;
 import woks.woks.items.CustomExpBottle;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
-public class SaveEXP {
+public class SaveEXP implements TabCompleter {
     public SaveEXP() {
         new CommandBase("savexp", 1, 2, true) {
             @Override
@@ -71,28 +70,36 @@ public class SaveEXP {
                 return "/savexp <int:amount|all> <level>";
             }
 
-            @Override
-            public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-                if (cmd.getName().equalsIgnoreCase("savexp")) {
-//                    if (!sender.hasPermission("commanditems.give")) return Collections.EMPTY_LIST;
-                    final List<String> completions = new ArrayList<>(List.of(new String[]{"c", "t"}));
 
-                    final List<String> oneArgList = new ArrayList<>(List.of(new String[]{"cats", "turtle"}));
-
-                    // Adds all custom items to the list
-
-                    if (args.length == 1){
-                        StringUtil.copyPartialMatches(args[0], oneArgList, completions);
-                    }
-                    if (args.length == 2){
-                        return null;
-                        // Returns null to get all online players
-                    }
-                    Collections.sort(completions);
-                    return completions;
-                }
-                return Collections.EMPTY_LIST;
-            }
         };
+
+    }
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        //define the possible possibility's for argument 1
+        if (args.length==1){
+            List<String> l = new ArrayList<String>(); //makes a ArrayList
+            l.add("all"); //Possibility #1
+            l.add("5"); //Possibility #2
+            l.add("25"); //Possibility #2
+            l.add("125"); //Possibility #2
+            l.add("625"); //Possibility #2
+            l.add("3125"); //Possibility #2
+            l.add("15625"); //Possibility #2
+
+            return l;
+        }
+
+        //define the possible possibility's for argument 2
+        else if (args.length==2){
+            List<String> f = new ArrayList<String>(); //makes a ArrayList
+            f.add("levels"); //Possibility #1
+            f.add("level"); //Possibility #2
+            f.add("l"); //Possibility #2
+
+            return f;
+        }
+
+        return null; //this is a little confusing but just put it there
     }
 }
