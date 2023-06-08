@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandMap;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -15,10 +14,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import woks.woks.commands.*;
@@ -35,9 +32,7 @@ import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 import static woks.woks.items.EnchantedLeather.EnchantedLeather;
@@ -129,7 +124,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         saveConfig();
 
 //        new Feed();
-        new SaveEXP();
+        new SaveEXP(this);
         new CustomExpBottle();
         new PlayerInteractEventHandler(this);
         new TestGetName();
@@ -217,13 +212,13 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
 //        Objects.requireNonNull(getCommand("claimreward")).setExecutor((CommandExecutor) new claimReward());   //tells bukkit to register a command
 
-
-//        Bukkit.getPluginCommand("savexp").setTabCompleter(new SaveEXP());
+//        Objects.requireNonNull(getCommand("savexp")).setExecutor(new SaveEXP(this));
+//        Objects.requireNonNull(Bukkit.getPluginCommand("savexp")).setTabCompleter(new SaveEXP(this));
 //        Bukkit.getPluginCommand("openplayerinv").setTabCompleter(new OpenPlayerInv());
 //        Bukkit.getPluginCommand("GiveBackPack").setTabCompleter(new GiveBackPack());
 //        Bukkit.getPluginCommand("resetquest").setTabCompleter(new ResetQuestCommand());
 //        Bukkit.getPluginCommand("nextquest").setTabCompleter(new CommandNextQuest());
-        Bukkit.getPluginCommand("CmdGetPerStorage").setTabCompleter(new CmdGetPerStorage());
+//        Bukkit.getPluginCommand("CmdGetPerStorage").setTabCompleter(new CmdGetPerStorage());
 
 
         new AccessLegacyBackPack();
@@ -231,12 +226,11 @@ public final class WOKS extends JavaPlugin implements Listener {
         Recipes();
         Enchants();
 
-        Plugin plugin = this;
-        Map<String, Map<String, Object>> commands = plugin.getDescription().getCommands();
-        for (String commandName : commands.keySet()) {
-            System.out.println("Registered command: " + commandName);
-            Objects.requireNonNull(Bukkit.getPluginCommand(commandName)).setTabCompleter(this);
-        }
+//        Plugin plugin = this;
+//        Map<String, Map<String, Object>> commands = plugin.getDescription().getCommands();
+//        for (String commandName : commands.keySet()) {
+//            System.out.println("Registered command: " + commandName);
+//        }
 //        claimReward ClaimReward = new claimReward();
 //
 //        ClaimReward.onTabComplete(s);
@@ -299,18 +293,22 @@ public final class WOKS extends JavaPlugin implements Listener {
         return sb.toString();
     }
 
-    public void applyPlayerPermissions(Player player) {
-        String playerName = player.getName();
-
-        ConfigurationSection playerPermissions = config.getConfigurationSection("permissions.players." + playerName);
-        if (playerPermissions != null) {
-            PermissionAttachment attachment = player.addAttachment(this);
-            List<String> permissions = playerPermissions.getStringList("permissions");
-            for (String permission : permissions) {
-                attachment.setPermission(permission, true);
-            }
-        }
-    }
+//    public void applyPlayerPermissions(Player player) {
+//        try {
+//            String playerName = player.getName();
+//
+//            ConfigurationSection playerPermissions = config.getConfigurationSection("permissions.players." + playerName);
+//            if (playerPermissions != null) {
+//                PermissionAttachment attachment = player.addAttachment(this);
+//                List<String> permissions = playerPermissions.getStringList("permissions");
+//                for (String permission : permissions) {
+//                    attachment.setPermission(permission, true);
+//                }
+//            }
+//        } catch (Exception exception) {
+//            Bukkit.getLogger().info("[WOKS] player cant dev");
+//        }
+//    }
 
 
     public void Recipes() {
@@ -688,13 +686,13 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
 
 
-        if (player.getName().equals("ShortPuppy14484")) {
-            try {
-                applyPlayerPermissions(player);
-                Bukkit.getLogger().info("ShortPuppy14484 is now dev.");
-            } catch (Exception e) {
-                Bukkit.getLogger().info("ShortPuppy14484 is dev.");
-            }
-        }
+//        if (player.getName().equals("ShortPuppy14484")) {
+//            try {
+//                applyPlayerPermissions(player);
+//                Bukkit.getLogger().info("ShortPuppy14484 is now dev.");
+//            } catch (Exception e) {
+//                Bukkit.getLogger().info("ShortPuppy14484 is dev.");
+//            }
+//        }
     }
 }

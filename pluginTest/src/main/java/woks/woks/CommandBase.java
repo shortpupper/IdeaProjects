@@ -4,21 +4,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.SimplePluginManager;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public abstract class CommandBase extends BukkitCommand implements CommandExecutor, TabExecutor, TabCompleter {
-    private final int minAguments;
+public abstract class CommandBase extends BukkitCommand implements CommandExecutor, TabExecutor, TabCompleter, Listener {
+    private final int minArguments;
     private final int maxArguments;
     private final boolean playerOnly;
     private final String names;
     private List<String> delayedPlayers = null;
     private int delay = 0;
-
-
+    private final WOKS plugin;
 
     public CommandBase(String command) {
         this(command, 0);
@@ -43,7 +44,7 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
     public CommandBase(String command, int minArguments, int maxArguments, boolean playerOnly) {
         super(command);
 
-        this.minAguments = minArguments;
+        this.minArguments = minArguments;
         this.maxArguments = maxArguments;
         this.playerOnly = playerOnly;
         this.names = command;
@@ -51,6 +52,21 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
         CommandMap commandMap = getCommandMap();
         if (commandMap != null) {
             commandMap.register(command, this);
+        }
+
+        this.plugin = WOKS.getInstance();
+
+        try {
+            Objects.requireNonNull(plugin.getCommand(command)).setExecutor(this);
+            Objects.requireNonNull(plugin.getCommand(command)).setTabCompleter(this);
+            Bukkit.getLogger().info("[woks] " + command +  " Succeed.");
+        } catch (Exception exception) {
+            Bukkit.getLogger().info("[woks] " + command +  " Failed.");
+        }
+        try {
+            Bukkit.getPluginManager().registerEvents(this, plugin);
+        } catch (Exception exception) {
+            Bukkit.getLogger().info("[woks] THIS broke.");
         }
     }
 
@@ -86,12 +102,13 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
     public void sendUsage(CommandSender sender) {
         Msg.send(sender, getUsage());
     }
+
     public String getName() {
         return names;
     }
 
     public boolean execute(CommandSender sender, String alias, String[] arguments) {
-        if (arguments.length < minAguments || (arguments.length > maxArguments && maxArguments != -1)) {
+        if (arguments.length < minArguments || (arguments.length > maxArguments && maxArguments != -1)) {
             sendUsage(sender);
             return true;
         }
@@ -107,7 +124,6 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
             return true;
         }
 
-
         if (delayedPlayers != null && sender instanceof Player) {
             Player player = (Player) sender;
             if (delayedPlayers.contains(player.getName())) {
@@ -116,8 +132,8 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
             }
 
             delayedPlayers.add(player.getName());
-            Bukkit.getScheduler().scheduleSyncDelayedTask(WOKS.getInstance(), () -> {
-                delayedPlayers.remove((player.getName()));
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                delayedPlayers.remove(player.getName());
             }, 20L * delay);
         }
 
@@ -137,25 +153,13 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
     public abstract String getUsage();
 
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        //define the possible possibility's for argument 1
-        if (args.length==1){
-            List<String> l = new ArrayList<String>(); //makes a ArrayList
-            l.add("100"); //Possibility #1
-            l.add("200"); //Possibility #2
+        if (args.length == 1) {
+            List<String> out = new ArrayList<>();
 
-            return l;
+            out.add("CommandBaseIgnore");
+
+            return out;
         }
-
-        //define the possible possibility's for argument 2
-        else if (args.length==2){
-            List<String> f = new ArrayList<String>(); //makes a ArrayList
-            f.add("abc"); //Possibility #1
-            f.add("def"); //Possibility #2
-
-            return f;
-        }
-
-        Bukkit.getLogger().info("Tab null");
         return null; //this is a little confusing but just put it there
     }
 }

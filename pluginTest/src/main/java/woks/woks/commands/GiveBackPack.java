@@ -30,6 +30,22 @@ public class GiveBackPack implements TabCompleter {
                 return "/givebackpack <int:count>";
             }
 
+            @Override
+            public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+                if (args.length == 1) {
+                    List<String> out = new ArrayList<>();
+                    out.add("9");
+                    out.add("18");
+                    out.add("27");
+                    out.add("36");
+                    out.add("45");
+                    out.add("54");
+
+                    return out;
+                }
+                return null;
+            }
+
         };
     }
 

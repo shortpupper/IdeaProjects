@@ -12,13 +12,13 @@ import static woks.woks.matthew.quest.rewordQuest.RewordQuest;
 
 public class claimReward {
     public claimReward()  {
-        new CommandBase("claimreward",  true) {
+        new CommandBase("claimreward",   true) {
             @Override
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 Player player = (Player) sender;
                 PersistentDataContainer dataContainer = player.getPersistentDataContainer();
 
-                // check if they have 100% it
+                // check if they hav11e 100% it
                 if (dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) >= 100.0d && dataContainer.get(_quest_claimed, PersistentDataType.INTEGER) == 0) {
                     Msg.send(sender, "Good job.");
 
