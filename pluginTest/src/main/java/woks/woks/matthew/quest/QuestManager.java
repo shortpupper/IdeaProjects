@@ -32,13 +32,25 @@ public class QuestManager {
 
 
 
-    public void registerQuest(String questId, Integer questIdInteger, ItemStack[] rewardItems,
-                              int rewardExpAmount, String name, Integer[] requiredQuests,
-                              Material material, String description, String requirements) {
+    public void registerQuest(
+            String       questId,
+            Integer      questIdInteger,
+            ItemStack[]  rewardItems,
+            int          rewardExpAmount,
+            String       name,
+            Integer[]    requiredQuests,
+            Material     material,
+            String       description,
+            String       requirements,
+            Integer[]    canDoQuests
+
+    ) {
         Quest quest = new Quest(
                 questId,          questIdInteger,  rewardItems,
                 rewardExpAmount,  name,            requiredQuests,
-                material,         description,     requirements);
+                material,         description,     requirements,
+                canDoQuests
+        );
 
         activeQuests.put(questId, quest);
         activeQuestsInteger.put(questIdInteger, questId);
@@ -46,22 +58,24 @@ public class QuestManager {
     }
     public void registerQuest(String questId,       Integer questIdInteger,  ItemStack[] rewardItems,
                               int rewardExpAmount,  String name,             Integer[] requiredQuests,
-                              Material material,    String description) {
+                              Material material,    String description,      Integer[] getCanDoQuests) {
 
         registerQuest(
                 questId,          questIdInteger,  rewardItems,
                 rewardExpAmount,  name,            requiredQuests,
-                material,         description,     "None");
+                material,         description,     "None",
+                getCanDoQuests
+                );
     }
 
-    public void registerQuest(String questId,       Integer questIdInteger,  ItemStack[] rewardItems,
-                              int rewardExpAmount,  String name,             Material material,
-                              String description) {
-        registerQuest(
-                questId,          questIdInteger,  rewardItems,
-                rewardExpAmount,  name,            DefaultRequiredQuests,
-                material,         description,     "None");
-    }
+//    public void registerQuest(String questId,       Integer questIdInteger,  ItemStack[] rewardItems,
+//                              int rewardExpAmount,  String name,             Material material,
+//                              String description) {
+//        registerQuest(
+//                questId,          questIdInteger,  rewardItems,
+//                rewardExpAmount,  name,            DefaultRequiredQuests,
+//                material,         description,     "None");
+//    }
 
     public List<Quest> getActiveQuestsAsListQuest() {
         return (List<Quest>) activeQuests.values();
@@ -122,19 +136,38 @@ class Quest {
     private final Material material;
     private final String description;
     private final String requirements;
+    private final Integer[] canDoQuests;
 
-    public Quest(String questId,       Integer questIdInteger,  ItemStack[] RewardItems,
-                 int RewardExpAmount,  String name,             Integer[] requiredQuests,
-                 Material material,    String description,      String requirements) {
+    public Quest(String questId, Integer questIdInteger, ItemStack[] RewardItems,
+                 int RewardExpAmount, String name, Integer[] requiredQuests,
+                 Material material, String description, String requirements, Integer[] canDoQuests) {
         this.questId         = questId;
         this.questIdInteger  = questIdInteger;
         this.RewardItems     = RewardItems;
         this.RewardExpAmount = RewardExpAmount;
         this.name            = name;
         this.requiredQuests  = requiredQuests;
-        this.material = material;
-        this.description = description;
-        this.requirements = requirements;
+        this.material        = material;
+        this.description     = description;
+        this.requirements    = requirements;
+        this.canDoQuests     = canDoQuests;
+    }
+
+    public Integer[] getCanDoQuests() {
+        return canDoQuests;
+    }
+
+    public ItemStack[] getRewardItems() {
+        return RewardItems;
+    }
+
+
+    public int getRewardExpAmount() {
+        return RewardExpAmount;
+    }
+
+    public Integer getQuestIdInteger() {
+        return questIdInteger;
     }
 
     public String getRequirements() {

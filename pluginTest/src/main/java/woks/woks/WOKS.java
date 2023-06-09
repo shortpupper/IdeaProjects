@@ -64,6 +64,7 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static NamespacedKey _quest_claimed;
     public static NamespacedKey _quest_completed;
     public static NamespacedKey _quest_completed_array;
+    public static NamespacedKey _quest_can_array;
     public static QuestManager questManager;
 
 
@@ -118,6 +119,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         _quest_claimed           = new NamespacedKey(this, "_quest_claimed");
         _quest_completed         = new NamespacedKey(this, "_quest_completed");
         _quest_completed_array   = new NamespacedKey(this, "_quest_completed_array");
+        _quest_can_array   = new NamespacedKey(this, "_quest_can_array");
 
 
 
@@ -682,6 +684,10 @@ public final class WOKS extends JavaPlugin implements Listener {
         if (!dataContainer.has(_quest_completed_array, PersistentDataType.INTEGER_ARRAY)) {
             dataContainer.set(_quest_completed_array, PersistentDataType.INTEGER_ARRAY, new int[]{});
         }
+        // which quests they CAN do
+        if (!dataContainer.has(_quest_can_array, PersistentDataType.INTEGER_ARRAY)) {
+            dataContainer.set(_quest_can_array, PersistentDataType.INTEGER_ARRAY, new int[]{});
+        }
 
         // ban him for why not, he called me a loser
 //        if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
@@ -705,7 +711,8 @@ public final class WOKS extends JavaPlugin implements Listener {
                     new Integer[]{},
                     Material.OAK_DOOR,
                     "Be a part of the sever.",
-                    "Joining the sever for the first time"
+                    "Joining the sever for the first time",
+                    new Integer[]{2}
             );
             questManager.registerQuest(
                     "Say_Hello",
@@ -716,7 +723,8 @@ public final class WOKS extends JavaPlugin implements Listener {
                     new Integer[]{1},
                     Material.REDSTONE_TORCH,
                     "Say hello meat someone new.",
-                    "Typing 'Hello' into chat just by its self."
+                    "Typing 'Hello' into chat just by its self.",
+                    new Integer[]{3}
             );
             questManager.registerQuest(
                     "Quest_Help",
@@ -727,7 +735,8 @@ public final class WOKS extends JavaPlugin implements Listener {
                     new Integer[]{1,2},
                     Material.STRUCTURE_BLOCK,
                     "Getting used to Quests.",
-                    "Executing the command '/questhelp'."
+                    "Executing the command '/questhelp'.",
+                    new Integer[]{4,5,6}
             );
 
             Bukkit.getLogger().info(String.valueOf(questManager.activeQuests.size()));

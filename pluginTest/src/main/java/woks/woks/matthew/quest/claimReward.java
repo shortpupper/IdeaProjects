@@ -7,11 +7,14 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
+import woks.woks.TypeConversionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.bukkit.persistence.PersistentDataType.INTEGER_ARRAY;
 import static woks.woks.WOKS.*;
+import static woks.woks.matthew.quest.QuestGUI.getActiveQuestFromListInteger;
 import static woks.woks.matthew.quest.rewordQuest.RewordQuest;
 
 public class claimReward {
@@ -25,12 +28,19 @@ public class claimReward {
                 if (arguments[0].equalsIgnoreCase("gui")) {
                     QuestGUI questGUI = new QuestGUI(player);
 
-                    // TODO You have to make a new thing where the player has a new persistant stoarge thigny
-                    // TODO so and that it is where this error is so that it fixes its self cus rn its bad
-                    // TODO ADD in the questManger that quest class must have a new field that adds or
-                    // TODO gives the player new quests with teh integerId are an integer_array, good luck and good
-                    // TODO Night cus im sleepy rn, just go fix it.
-                    questGUI.openGUI(dataContainer., 0);
+                    /*
+                     TODO You have to make a new thing where the player has a new persistant stoarge thigny
+                      so and that it is where this error is so that it fixes its self cus rn its bad
+                      ADD in the questManger that quest class must have a new field that adds or
+                      gives the player new quests with teh integerId are an integer_array, good luck and good
+                      Night cus im sleepy rn, just go fix it.
+                    */
+
+                    int[] numbers = dataContainer.get(_quest_can_array, INTEGER_ARRAY);
+
+                    assert numbers != null;
+                    questGUI.openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(numbers)), 0);
+
 
                     return true;
                 }

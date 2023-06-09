@@ -177,7 +177,7 @@ public class QuestGUI implements Listener {
         }
     }
 
-    public List<Quest> getActiveQuestFromListInteger(List<Integer> integerList) {
+    public static List<Quest> getActiveQuestFromListInteger(List<Integer> integerList) {
         List<Quest> questList = new ArrayList<>();
 
         for (Integer intId : integerList) {
