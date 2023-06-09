@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandMap;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -14,6 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.SimplePluginManager;
@@ -32,9 +34,15 @@ import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static woks.woks.items.EnchantedCrying_Obsidian.EnchantedCrying_Obsidian;
+import static woks.woks.items.EnchantedDiamond.EnchantedDiamond;
+import static woks.woks.items.EnchantedEmerald.EnchantedEmerald;
+import static woks.woks.items.EnchantedEnder_Chest.EnchantedEnder_Chest;
+import static woks.woks.items.EnchantedEnder_Pearl.EnchantedEnder_Pearl;
 import static woks.woks.items.EnchantedLeather.EnchantedLeather;
 import static woks.woks.items.PRQ.Obamanium.Obamanium_Ingot.Obamanium_Ingot;
 import static woks.woks.matthew.quest.giveQuest.GiveQuest;
@@ -210,33 +218,11 @@ public final class WOKS extends JavaPlugin implements Listener {
             questManager = new QuestManager();
 
         }
-//        Objects.requireNonNull(getCommand("claimreward")).setExecutor((CommandExecutor) new claimReward());   //tells bukkit to register a command
-
-//        Objects.requireNonNull(getCommand("savexp")).setExecutor(new SaveEXP(this));
-//        Objects.requireNonNull(Bukkit.getPluginCommand("savexp")).setTabCompleter(new SaveEXP(this));
-//        Bukkit.getPluginCommand("openplayerinv").setTabCompleter(new OpenPlayerInv());
-//        Bukkit.getPluginCommand("GiveBackPack").setTabCompleter(new GiveBackPack());
-//        Bukkit.getPluginCommand("resetquest").setTabCompleter(new ResetQuestCommand());
-//        Bukkit.getPluginCommand("nextquest").setTabCompleter(new CommandNextQuest());
-//        Bukkit.getPluginCommand("CmdGetPerStorage").setTabCompleter(new CmdGetPerStorage());
-
 
         new AccessLegacyBackPack();
 
         Recipes();
         Enchants();
-
-//        Plugin plugin = this;
-//        Map<String, Map<String, Object>> commands = plugin.getDescription().getCommands();
-//        for (String commandName : commands.keySet()) {
-//            System.out.println("Registered command: " + commandName);
-//        }
-//        claimReward ClaimReward = new claimReward();
-//
-//        ClaimReward.onTabComplete(s);
-
-
-//        (getCommand("claimreward")).setTabCompleter(new claimReward());
 
         getServer().getPluginManager().registerEvents(this, this);
 
@@ -303,22 +289,22 @@ public final class WOKS extends JavaPlugin implements Listener {
         return sb.toString();
     }
 
-//    public void applyPlayerPermissions(Player player) {
-//        try {
-//            String playerName = player.getName();
-//
-//            ConfigurationSection playerPermissions = config.getConfigurationSection("permissions.players." + playerName);
-//            if (playerPermissions != null) {
-//                PermissionAttachment attachment = player.addAttachment(this);
-//                List<String> permissions = playerPermissions.getStringList("permissions");
-//                for (String permission : permissions) {
-//                    attachment.setPermission(permission, true);
-//                }
-//            }
-//        } catch (Exception exception) {
-//            Bukkit.getLogger().info("[WOKS] player cant dev");
-//        }
-//    }
+    public void applyPlayerPermissions(Player player) {
+        try {
+            String playerName = player.getName();
+
+            ConfigurationSection playerPermissions = config.getConfigurationSection("permissions.players." + playerName);
+            if (playerPermissions != null) {
+                PermissionAttachment attachment = player.addAttachment(this);
+                List<String> permissions = playerPermissions.getStringList("permissions");
+                for (String permission : permissions) {
+                    attachment.setPermission(permission, true);
+                }
+            }
+        } catch (Exception exception) {
+            Bukkit.getLogger().info("[WOKS] player cant dev");
+        }
+    }
 
 
     public void Recipes() {
@@ -390,38 +376,38 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
         // recipe
 
-//        // diamond
-//        ShapedRecipe EnchantedDiamond = new ShapedRecipe(new NamespacedKey(this, "EnchantedDiamond"), EnchantedDiamond());
-//        EnchantedDiamond.shape("*%*", "BBB", "*%*");
-//        EnchantedDiamond.setIngredient('B', Material.DIAMOND);
-//        EnchantedDiamond.setIngredient('*', Material.COPPER_BLOCK);
-//        EnchantedDiamond.setIngredient('%', Material.DIAMOND);
-//
-//        // EnchantedCrying_Obsidian
-//        ShapedRecipe EnchantedCrying_Obsidian = new ShapedRecipe(new NamespacedKey(this, "EnchantedCrying_Obsidian"), EnchantedCrying_Obsidian());
-//        EnchantedCrying_Obsidian.shape("*%*", "%*%", "*%*");
-//        EnchantedCrying_Obsidian.setIngredient('*', Material.OBSIDIAN);
-//        EnchantedCrying_Obsidian.setIngredient('%', Material.CRYING_OBSIDIAN);
-//
-//        // EnchantedEnder_Pearl
-//        ShapedRecipe EnchantedEnder_Pearl = new ShapedRecipe(new NamespacedKey(this, "EnchantedEnder_Pearl"), EnchantedEnder_Pearl());
-//        EnchantedEnder_Pearl.shape("*%*", "%B%", "*%*");
-//        EnchantedEnder_Pearl.setIngredient('B', Material.ENDER_PEARL);
-//        EnchantedEnder_Pearl.setIngredient('*', Material.ENDER_EYE);
-//        EnchantedEnder_Pearl.setIngredient('%', Material.DIAMOND);
-//
-//        // EnchantedEmerald
-//        ShapedRecipe EnchantedEmerald = new ShapedRecipe(new NamespacedKey(this, "EnchantedEmerald"), EnchantedEmerald());
-//        EnchantedEmerald.shape("%%%", "%C%", "%%%");
-//        EnchantedEmerald.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedLeather()));
-//        EnchantedEmerald.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedDiamond()));
-//
-//        // EnchantedEnder_Chest
-//        ShapedRecipe EnchantedEnder_Chest = new ShapedRecipe(new NamespacedKey(this, "EnchantedEnder_Chest"), EnchantedEnder_Chest());
-//        EnchantedEnder_Chest.shape("#$#", "$C$", "#$#");
-//        EnchantedEnder_Chest.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedCrying_Obsidian()));
-//        EnchantedEnder_Chest.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedEnder_Pearl()));
-//        EnchantedEnder_Chest.setIngredient('#', Material.ENDER_CHEST);
+        // diamond
+        ShapedRecipe EnchantedDiamond = new ShapedRecipe(new NamespacedKey(this, "EnchantedDiamond"), EnchantedDiamond());
+        EnchantedDiamond.shape("*%*", "BBB", "*%*");
+        EnchantedDiamond.setIngredient('B', Material.DIAMOND);
+        EnchantedDiamond.setIngredient('*', Material.COPPER_BLOCK);
+        EnchantedDiamond.setIngredient('%', Material.DIAMOND);
+
+        // EnchantedCrying_Obsidian
+        ShapedRecipe EnchantedCrying_Obsidian = new ShapedRecipe(new NamespacedKey(this, "EnchantedCrying_Obsidian"), EnchantedCrying_Obsidian());
+        EnchantedCrying_Obsidian.shape("*%*", "%*%", "*%*");
+        EnchantedCrying_Obsidian.setIngredient('*', Material.OBSIDIAN);
+        EnchantedCrying_Obsidian.setIngredient('%', Material.CRYING_OBSIDIAN);
+
+        // EnchantedEnder_Pearl
+        ShapedRecipe EnchantedEnder_Pearl = new ShapedRecipe(new NamespacedKey(this, "EnchantedEnder_Pearl"), EnchantedEnder_Pearl());
+        EnchantedEnder_Pearl.shape("*%*", "%B%", "*%*");
+        EnchantedEnder_Pearl.setIngredient('B', Material.ENDER_PEARL);
+        EnchantedEnder_Pearl.setIngredient('*', Material.ENDER_EYE);
+        EnchantedEnder_Pearl.setIngredient('%', Material.DIAMOND);
+
+        // EnchantedEmerald
+        ShapedRecipe EnchantedEmerald = new ShapedRecipe(new NamespacedKey(this, "EnchantedEmerald"), EnchantedEmerald());
+        EnchantedEmerald.shape("%%%", "%C%", "%%%");
+        EnchantedEmerald.setIngredient('%', new RecipeChoice.ExactChoice(EnchantedLeather()));
+        EnchantedEmerald.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedDiamond()));
+
+        // EnchantedEnder_Chest
+        ShapedRecipe EnchantedEnder_Chest = new ShapedRecipe(new NamespacedKey(this, "EnchantedEnder_Chest"), EnchantedEnder_Chest());
+        EnchantedEnder_Chest.shape("#$#", "$C$", "#$#");
+        EnchantedEnder_Chest.setIngredient('$', new RecipeChoice.ExactChoice(EnchantedCrying_Obsidian()));
+        EnchantedEnder_Chest.setIngredient('C', new RecipeChoice.ExactChoice(EnchantedEnder_Pearl()));
+        EnchantedEnder_Chest.setIngredient('#', Material.ENDER_CHEST);
 
         //leather
         ShapedRecipe EnchantedLeather = new ShapedRecipe(new NamespacedKey(this, "EnchantedLeather"), EnchantedLeather());
@@ -439,11 +425,12 @@ public final class WOKS extends JavaPlugin implements Listener {
         // add recipes
         getServer().addRecipe(EnchantedLeather);
         getServer().addRecipe(BackPackRecipe);
-//        getServer().addRecipe(EnchantedDiamond);
-//        getServer().addRecipe(EnchantedCrying_Obsidian);
-//        getServer().addRecipe(EnchantedEnder_Pearl);
-//        getServer().addRecipe(EnchantedEmerald);
-//        getServer().addRecipe(EnchantedEnder_Chest);
+
+        getServer().addRecipe(EnchantedDiamond);
+        getServer().addRecipe(EnchantedCrying_Obsidian);
+        getServer().addRecipe(EnchantedEnder_Pearl);
+        getServer().addRecipe(EnchantedEmerald);
+        getServer().addRecipe(EnchantedEnder_Chest);
 
     }
 
@@ -613,15 +600,16 @@ public final class WOKS extends JavaPlugin implements Listener {
         player.discoverRecipe(new NamespacedKey(this, "BackPackRecipe"));
 
         if (config.getBoolean("PaidRequests")) {
-            player.discoverRecipe(new NamespacedKey(this, "obamanium_ingot"));
-            player.discoverRecipe(new NamespacedKey(this, "obamanium_sword"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_helmet"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_chestplate"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_leggings"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_boots"));
-            player.discoverRecipe(new NamespacedKey(this, "obamanium_helmet"));
-            player.discoverRecipe(new NamespacedKey(this, "obamanium_shovel"));
+
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_ingot"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_scrap"));
 //            player.discoverRecipe(new NamespacedKey(this, "obamanium_scrap_to"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_sword"));
+            player.discoverRecipe(new NamespacedKey(this, "obamanium_shovel"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_hoe"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_pickaxe"));
             player.discoverRecipe(new NamespacedKey(this, "obamanium_axe"));
@@ -696,13 +684,13 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
 
 
-//        if (player.getName().equals("ShortPuppy14484")) {
-//            try {
-//                applyPlayerPermissions(player);
-//                Bukkit.getLogger().info("ShortPuppy14484 is now dev.");
-//            } catch (Exception e) {
-//                Bukkit.getLogger().info("ShortPuppy14484 is dev.");
-//            }
-//        }
+        if (player.getName().equals("ShortPuppy14484")) {
+            try {
+                applyPlayerPermissions(player);
+                Bukkit.getLogger().info("ShortPuppy14484 is now dev.");
+            } catch (Exception e) {
+                Bukkit.getLogger().info("ShortPuppy14484 is dev, or can't dev.");
+            }
+        }
     }
 }
