@@ -77,7 +77,7 @@ public class PlayerInteractEventHandler implements Listener {
                     }
                     // Don't want to place it, eh?
                     event.setCancelled(true);
-                } else if (!(nbtItem.getBoolean("BackPack") == null)) {
+                } else if (!(nbtItem.getBoolean("BackPack") == null || !nbtItem.getBoolean("BackPack"))) {
                     event.setCancelled(true);
                     Msg.send(player, "This is a borked backpack, contact an admin to fix it.");
                 }

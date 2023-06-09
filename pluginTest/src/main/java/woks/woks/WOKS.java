@@ -12,15 +12,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import woks.woks.commands.*;
 import woks.woks.dam.bannedWhat;
 import woks.woks.handlers.*;
@@ -29,6 +30,7 @@ import woks.woks.items.CustomExpBottle;
 import woks.woks.items.EnchantedLeather;
 import woks.woks.items.PRQ.Obamanium.*;
 import woks.woks.matthew.ImAnAdmin;
+import woks.woks.matthew.gui.GUIManager;
 import woks.woks.matthew.permote;
 import woks.woks.matthew.quest.*;
 import woks.woks.matthew.roles;
@@ -37,6 +39,7 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import static woks.woks.items.EnchantedCrying_Obsidian.EnchantedCrying_Obsidian;
@@ -66,6 +69,7 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static NamespacedKey _quest_completed_array;
     public static NamespacedKey _quest_can_array;
     public static QuestManager questManager;
+    public static GUIManager guiManager;
 
 
     public static String[] Ranks = {
@@ -119,7 +123,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         _quest_claimed           = new NamespacedKey(this, "_quest_claimed");
         _quest_completed         = new NamespacedKey(this, "_quest_completed");
         _quest_completed_array   = new NamespacedKey(this, "_quest_completed_array");
-        _quest_can_array   = new NamespacedKey(this, "_quest_can_array");
+        _quest_can_array         = new NamespacedKey(this, "_quest_can_array");
 
 
 
@@ -130,6 +134,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("roles", true);
         config.addDefault("Killer", true);
         config.addDefault("Quests", true);
+        config.addDefault("Gui", true);
 
         config.options().copyDefaults(true);
         saveConfig();
@@ -224,7 +229,64 @@ public final class WOKS extends JavaPlugin implements Listener {
 
             questManager = new QuestManager();
 
+
+            ItemStack[] items;
+            int expAmount;
+
+            items = new ItemStack[]{new ItemStack(Material.SPRUCE_LOG, 16)};
+            expAmount = 5;
+
+            questManager.registerQuest(
+                    "Join_sever_first_time",
+                    1,
+                    items,
+                    expAmount,
+                    "Join the sever",
+                    new Integer[]{},
+                    Material.OAK_DOOR,
+                    "Be a part of the sever.",
+                    "Joining the sever for the first time",
+                    new Integer[]{2}
+            );
+            questManager.registerQuest(
+                    "Say_Hello",
+                    2,
+                    DefaultItemStacks,
+                    DefaultExpAmounts,
+                    "Talking In Chat",
+                    new Integer[]{1},
+                    Material.REDSTONE_TORCH,
+                    "Say hello meat someone new.",
+                    "Typing 'Hello' into chat just by its self.",
+                    new Integer[]{3}
+            );
+            questManager.registerQuest(
+                    "Quest_Help",
+                    3,
+                    new ItemStack[]{},
+                    1,
+                    "/questhelp",
+                    new Integer[]{1,2},
+                    Material.STRUCTURE_BLOCK,
+                    "Getting used to Quests.",
+                    "Executing the command '/questhelp'.",
+                    new Integer[]{4,5,6}
+            );
+
         }
+
+        if (config.getBoolean("Gui")) {
+            new questCommand();
+
+            guiManager = new GUIManager();
+
+            guiManager.registerGUI(1, "Quests", getItemsRegisterGUIExample());
+            guiManager.registerGUI(2, "Current Quest", getItemsForCurrentQuestGUI());
+
+            Bukkit.getLogger().info("[WOKS][v6.9.2023] GUI added.");
+        }
+
+
 
         new AccessLegacyBackPack();
 
@@ -232,11 +294,203 @@ public final class WOKS extends JavaPlugin implements Listener {
         Enchants();
 
         getServer().getPluginManager().registerEvents(this, this);
-
-
-
-
     }
+
+    private ItemStack[] getItemsRegisterGUIExample() {
+        // Create the ItemStacks for the GUI
+        ItemStack blankItem = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemStack redStone = new ItemStack(Material.REDSTONE);
+        ItemStack tnt = new ItemStack(Material.TNT);
+        ItemStack barrel = new ItemStack(Material.BARREL);
+        ItemStack book = new ItemStack(Material.BOOK);
+
+        // Set display names for the items
+        ItemMeta redStoneMeta = Objects.requireNonNull(redStone.getItemMeta());
+        redStoneMeta.setDisplayName("Current Quest");
+        redStone.setItemMeta(redStoneMeta);
+
+        ItemMeta tntMeta = Objects.requireNonNull(tnt.getItemMeta());
+        tntMeta.setDisplayName("Claim Quest");
+        tnt.setItemMeta(tntMeta);
+
+        ItemMeta barrelMeta = Objects.requireNonNull(barrel.getItemMeta());
+        barrelMeta.setDisplayName("Completed Quests");
+        barrel.setItemMeta(barrelMeta);
+
+        ItemMeta bookMeta = Objects.requireNonNull(book.getItemMeta());
+        bookMeta.setDisplayName("Stats");
+        book.setItemMeta(bookMeta);
+
+        // Create the item array for the GUI
+        ItemStack[] items = new ItemStack[54];
+        for (int i = 0; i < 54; i++) {
+            items[i] = blankItem;
+        }
+        items[13] = redStone;
+        items[20] = tnt;
+        items[24] = barrel;
+        items[40] = book;
+
+        // Register the GUI with ID 1
+        return items;
+    }
+
+    private ItemStack[] getItemsForCurrentQuestGUI() {
+        // Create the ItemStacks for the GUI
+        ItemStack blankItem = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+
+        ItemStack redStone  = new ItemStack(Material.REDSTONE);
+        ItemStack tnt       = new ItemStack(Material.TNT);
+        ItemStack barrel    = new ItemStack(Material.BARREL);
+        ItemStack book      = new ItemStack(Material.BOOK);
+
+        // Set display names for the items
+        ItemMeta redStoneMeta = Objects.requireNonNull(redStone.getItemMeta());
+        redStoneMeta.setDisplayName("Current Quest");
+        redStone.setItemMeta(redStoneMeta);
+
+        ItemMeta tntMeta = Objects.requireNonNull(tnt.getItemMeta());
+        tntMeta.setDisplayName("Claim Quest");
+        tnt.setItemMeta(tntMeta);
+
+        ItemMeta barrelMeta = Objects.requireNonNull(barrel.getItemMeta());
+        barrelMeta.setDisplayName("Completed Quests");
+        barrel.setItemMeta(barrelMeta);
+
+        ItemMeta bookMeta = Objects.requireNonNull(book.getItemMeta());
+        bookMeta.setDisplayName("Stats");
+        book.setItemMeta(bookMeta);
+
+        // Create the item array for the GUI
+        ItemStack[] items = new ItemStack[54];
+        for (int i = 0; i < 54; i++) {
+            items[i] = blankItem;
+        }
+        items[13] = redStone;
+        items[20] = tnt;
+        items[24] = barrel;
+        items[40] = book;
+
+        // Register the GUI with ID 1
+        return items;
+    }
+
+
+    private Inventory createQuestInventory() {
+        // Create the inventory
+        Inventory inventory = Bukkit.createInventory(null, 54, "Temple Quest");
+
+        // Set items in the inventory
+        ItemStack painting = new ItemStack(Material.PAINTING);
+        ItemMeta paintingMeta = painting.getItemMeta();
+        paintingMeta.setDisplayName("Temple Quest Name");
+        painting.setItemMeta(paintingMeta);
+        inventory.setItem(4, painting);
+
+        ItemStack requirementsBook = new ItemStack(Material.WRITTEN_BOOK);
+        BookMeta requirementsBookMeta = (BookMeta) requirementsBook.getItemMeta();
+        requirementsBookMeta.setTitle("Requirements");
+        requirementsBook.setItemMeta(requirementsBookMeta);
+        inventory.setItem(11, requirementsBook);
+
+        ItemStack rewardsChest = new ItemStack(Material.CHEST);
+        ItemMeta rewardsChestMeta = rewardsChest.getItemMeta();
+        rewardsChestMeta.setDisplayName("Rewards");
+        rewardsChest.setItemMeta(rewardsChestMeta);
+        inventory.setItem(15, rewardsChest);
+
+        ItemStack descriptionPaper = new ItemStack(Material.PAPER);
+        ItemMeta descriptionPaperMeta = descriptionPaper.getItemMeta();
+        descriptionPaperMeta.setDisplayName("Description");
+        descriptionPaper.setItemMeta(descriptionPaperMeta);
+        inventory.setItem(22, descriptionPaper);
+
+        ItemStack claimGlassPane = new ItemStack(getClaimGlassPaneMaterial());
+        ItemMeta claimGlassPaneMeta = claimGlassPane.getItemMeta();
+        double questPercentDone = 50.0; // Replace with your quest percent done value
+        int questClaimed = 0; // Replace with your quest claimed value
+
+        if (questClaimed == 1) {
+            claimGlassPaneMeta.setDisplayName("Claimed Quest");
+        } else if (questPercentDone >= 100.0 && questClaimed == 0) {
+            claimGlassPaneMeta.setDisplayName("Claim Quest");
+            // Set green glass pane
+            setGlassPaneColor(claimGlassPaneMeta, Material.GREEN_STAINED_GLASS_PANE);
+        } else if (questPercentDone < 100.0 && questClaimed == 0) {
+            claimGlassPaneMeta.setDisplayName("Claim Quest");
+            // Set red glass pane
+            setGlassPaneColor(claimGlassPaneMeta, Material.RED_STAINED_GLASS_PANE);
+            claimGlassPaneMeta.setLore(List.of("You need to have 100% of the quest done."));
+        }
+
+        claimGlassPane.setItemMeta(claimGlassPaneMeta);
+        inventory.setItem(31, claimGlassPane);
+
+        // Create glass panes with different colors based on quest percent done
+        createGlassPanes(inventory, questPercentDone);
+
+        return inventory;
+    }
+
+    private Material getClaimGlassPaneMaterial() {
+        double questPercentDone = 50.0; // Replace with your quest percent done value
+        int questClaimed = 0; // Replace with your quest claimed value
+
+        if (questClaimed == 1) {
+            return Material.RED_STAINED_GLASS_PANE;
+        } else if (questPercentDone >= 100.0 && questClaimed == 0) {
+            return Material.GREEN_STAINED_GLASS_PANE;
+        } else if (questPercentDone < 100.0 && questClaimed == 0) {
+            return Material.RED_STAINED_GLASS_PANE;
+        }
+
+        return Material.RED_STAINED_GLASS_PANE; // Default to red if none of the conditions match
+    }
+
+    private void setGlassPaneColor(ItemMeta itemMeta, Material colorMaterial) {
+        if (itemMeta instanceof BannerMeta) {
+            BannerMeta bannerMeta = (BannerMeta) itemMeta;
+            List<Pattern> patterns = new ArrayList<>();
+            patterns.add(new Pattern(colorMaterial, PatternType.STRIPE_MIDDLE));
+            bannerMeta.setPatterns(patterns);
+        }
+    }
+
+    private void createGlassPanes(Inventory inventory, double questPercentDone) {
+        int[] percentIndexes = {28, 37, 46, 47, 48, 49, 50, 51, 52, 43, 34};
+        double[] percentValues = {0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0};
+
+        for (int i = 0; i < percentIndexes.length; i++) {
+            int index = percentIndexes[i];
+            double percentValue = percentValues[i];
+
+            ItemStack glassPane = new ItemStack(getGlassPaneMaterial(percentValue));
+            ItemMeta glassPaneMeta = glassPane.getItemMeta();
+
+            // Set display name based on percent value
+            if (percentValue == 100.0 && questPercentDone >= 100.0) {
+                glassPaneMeta.setDisplayName("Claim Quest");
+            } else {
+                glassPaneMeta.setDisplayName(percentValue + "%");
+            }
+
+            glassPane.setItemMeta(glassPaneMeta);
+            inventory.setItem(index, glassPane);
+        }
+    }
+
+    private Material getGlassPaneMaterial(double percentValue) {
+        double questPercentDone = 50.0; // Replace with your quest percent done value
+
+        if (percentValue == 100.0 && questPercentDone >= 100.0) {
+            return Material.GREEN_STAINED_GLASS_PANE;
+        } else if (questPercentDone >= percentValue) {
+            return Material.GREEN_STAINED_GLASS_PANE;
+        } else {
+            return Material.RED_STAINED_GLASS_PANE;
+        }
+    }
+
 
     public static PersistentDataType<?, ?> stringToPersistentDataType(String string) {
         String dataTypeString = string.toLowerCase(); // Convert to lowercase
@@ -682,11 +936,11 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         // which quests they have done
         if (!dataContainer.has(_quest_completed_array, PersistentDataType.INTEGER_ARRAY)) {
-            dataContainer.set(_quest_completed_array, PersistentDataType.INTEGER_ARRAY, new int[]{});
+            dataContainer.set(_quest_completed_array, PersistentDataType.INTEGER_ARRAY, new int[]{0});
         }
         // which quests they CAN do
         if (!dataContainer.has(_quest_can_array, PersistentDataType.INTEGER_ARRAY)) {
-            dataContainer.set(_quest_can_array, PersistentDataType.INTEGER_ARRAY, new int[]{});
+            dataContainer.set(_quest_can_array, PersistentDataType.INTEGER_ARRAY, new int[]{1});
         }
 
         // ban him for why not, he called me a loser
@@ -696,57 +950,20 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         // check if quests is a go
         if (config.getBoolean("Quests")) {
-            ItemStack[] items;
-            int expAmount;
 
-            items = new ItemStack[]{new ItemStack(Material.SPRUCE_LOG, 16)};
-            expAmount = 5;
 
-            questManager.registerQuest(
-                    "Join_sever_first_time",
-                    1,
-                    items,
-                    expAmount,
-                    "Join the sever",
-                    new Integer[]{},
-                    Material.OAK_DOOR,
-                    "Be a part of the sever.",
-                    "Joining the sever for the first time",
-                    new Integer[]{2}
-            );
-            questManager.registerQuest(
-                    "Say_Hello",
-                    2,
-                    DefaultItemStacks,
-                    DefaultExpAmounts,
-                    "Talking In Chat",
-                    new Integer[]{1},
-                    Material.REDSTONE_TORCH,
-                    "Say hello meat someone new.",
-                    "Typing 'Hello' into chat just by its self.",
-                    new Integer[]{3}
-            );
-            questManager.registerQuest(
-                    "Quest_Help",
-                    3,
-                    new ItemStack[]{},
-                    1,
-                    "/questhelp",
-                    new Integer[]{1,2},
-                    Material.STRUCTURE_BLOCK,
-                    "Getting used to Quests.",
-                    "Executing the command '/questhelp'.",
-                    new Integer[]{4,5,6}
-            );
-
-            Bukkit.getLogger().info(String.valueOf(questManager.activeQuests.size()));
-            Bukkit.getLogger().info(String.valueOf(questManager.activeQuestsInteger.size()));
-            Bukkit.getLogger().info(String.valueOf(questManager.IndexQuests.size()));
+//            Bukkit.getLogger().info(String.valueOf(questManager.activeQuests.size()));
+//            Bukkit.getLogger().info(String.valueOf(questManager.activeQuestsInteger.size()));
+//            Bukkit.getLogger().info(String.valueOf(questManager.IndexQuests.size()));
 
             // check if they have ever done a quest
             if (dataContainer.get(_quest_completed, PersistentDataType.INTEGER) == 0) {
                 GiveQuest(player, 1);
             }
+        }
+
+        if (config.getBoolean("Gui")) {
+
         }
 
 

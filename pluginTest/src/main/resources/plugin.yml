@@ -133,6 +133,12 @@ commands:
       - whattheduckisaquestihavenotideawhatthisisorhowtouseitjusttellmewhatyouarepleaseitwouldhelpalotyouknow
 
 
+  quest:
+    description: Opens a gui with quests!
+    aliases:
+      - q
+
+
 
 permissions:
   players:
