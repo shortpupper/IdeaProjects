@@ -245,6 +245,16 @@ public final class WOKS extends JavaPlugin implements Listener {
 
     }
 
+    public static NamespacedKey parseStringNameSpaceKey(String input) {
+        String[] parts = input.split(":");
+        if (parts.length != 2) {
+            throw new IllegalArgumentException("Invalid input: " + input);
+        }
+        String namespace = parts[0];
+        String key = parts[1];
+        return new NamespacedKey(namespace, key);
+    }
+
     public CommandMap getCommandMap() {
         try {
             if (Bukkit.getPluginManager() instanceof SimplePluginManager) {

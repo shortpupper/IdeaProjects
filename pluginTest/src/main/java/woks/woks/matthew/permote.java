@@ -9,6 +9,7 @@ import org.bukkit.persistence.PersistentDataType;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static woks.woks.WOKS.Ranks;
@@ -54,6 +55,45 @@ public class permote {
 
             @Override
             public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+                if (args.length == 1) {
+                    return null;
+                } else if (args.length == 2) {
+                    List<String> out = new ArrayList<>();
+
+                    out.add("add");
+                    out.add("+");
+
+                    out.add("sub");
+                    out.add("subtract");
+                    out.add("-");
+
+                    out.add("multi");
+                    out.add("multiply");
+                    out.add("*");
+                    out.add("x");
+
+                    out.add("eq");
+                    out.add("equal");
+                    out.add("set");
+                    out.add("=");
+                    out.add("==");
+                    out.add("===");
+
+                    return out;
+                } else if (args.length == 3) {
+                    List<String> out = new ArrayList<>();
+
+                    out.add("0");
+                    out.add("5");
+                    out.add("10");
+                    out.add("15");
+                    out.add("20");
+                    out.add("21");
+
+                    return out;
+                }
+
                 return null;
             }
         };
@@ -64,7 +104,7 @@ public class permote {
     public void premote(CommandSender sender, Integer role_rank_air_number, PersistentDataContainer dataContainer, String op, Integer amount) {
         if (role_rank_air_number >= Ranks.length - 1) {
             Msg.send(sender, "You have reached max rank.");
-        } else if (op.equals("sub")) {
+        } else if (op.equals("sub") || op.equals("subtract") || op.equals("-")) {
             if (role_rank_air_number - amount >= 0) {
                 dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number - amount);
                 Msg.send(sender, "Your rank is now " + (role_rank_air_number - amount));
@@ -72,7 +112,7 @@ public class permote {
                 dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
                 Msg.send(sender, "Your rank is now " + 0);
             }
-        } else if (op.equals("eq") || op.equals("set")) {
+        } else if (op.equals("eq") || op.equals("set") || op.equals("equal") || op.equals("=") || op.equals("==") || op.equals("===")) {
             if (amount <= Ranks.length) {
                 dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, amount);
                 Msg.send(sender, "Your rank is now " + (amount));
@@ -80,7 +120,7 @@ public class permote {
                 dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, (Ranks.length - 1));
                 Msg.send(sender, "Your rank is now " + (Ranks.length - 1));
             }
-        } else if (op.equals("add")) {
+        } else if (op.equals("add") || op.equals("+")) {
             if (role_rank_air_number + amount <= Ranks.length) {
                 dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number + amount);
                 Msg.send(sender, "Your rank is now " + (role_rank_air_number + amount));
@@ -88,7 +128,7 @@ public class permote {
                 dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, (Ranks.length - 1));
                 Msg.send(sender, "Your rank is now " + ((Ranks.length - 1)));
             }
-        } else if (op.equals("multi")) {
+        } else if (op.equals("multi") || op.equals("x") || op.equals("*") || op.equals("multiply")) {
             if (role_rank_air_number * amount >= Ranks.length) {
                 dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, Ranks.length - 1);
                 Msg.send(sender, "Your rank is now " + (Ranks.length - 1));

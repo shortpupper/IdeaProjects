@@ -12,10 +12,13 @@ commands:
     description: Save your xp
     executor: woks.woks.commands.SaveEXP
     usage: /savexp
+    aliases:
+      - sxp
+      - spx
   claimreward:
     description: Description of the claimreward command
     aliases: [qclaim, qreward]
-    usage: /claimreward <arguments>
+#    usage: /claimreward <arguments>
 #    permission: woks.claimreward
   openplayerinv:
     description: Open a players inventory
@@ -31,17 +34,81 @@ commands:
 #    aliases: [qclaim, qreward]
   resetquest:
     description: resetquest for testing.
-    permission: op, woks.op
-#    aliases: [qclaim, qreward]
+    permission: op
+    aliases:
+      - questadminpanel
+      - qadmin
+  #    aliases: [qclaim, qreward]
   nextquest:
     description: Get your next quest!
-    permission: op | woks.op
-#    aliases: [qclaim, qreward]
+#    permission: op
+    aliases:
+      - nquest
+      - nextq
+      - qnext
+      - questnext
 
   CmdGetPerStorage:
     description: Get your Persistent storage.
 #    permission: op woks.op
 #    aliases: [qclaim, qreward]
+
+  GetExp:
+    description: Get the xp in custom Bottle o' Enchanting
+    aliases:
+      - thisxp
+  #    permission: op woks.op
+#    aliases: [qclaim, qreward]
+
+  TestingPlugin:
+    description: This is just if you want to foul around.
+    permission: op
+#    aliases: [qclaim, qreward]
+
+  USetUsers:
+    description: Get your Persistent storage.
+#    permission: op woks.op
+#    aliases: [qclaim, qreward]
+
+  setlore:
+    description: Set the lore of an item
+#    permission: op woks.op
+#    aliases: [qclaim, qreward]
+
+  enchanttest:
+    description: To test custom enchants.
+    permission: op
+#    aliases: [qclaim, qreward]
+
+  playerInventory:
+    description: To open a players inventory.
+    permission: op
+#    aliases: [qclaim, qreward]
+
+  EnchantTesting:
+    description: To add unsafe enchants to items.
+    permission: op
+#    aliases: [qclaim, qreward]
+
+  imanadmin:
+    description: Gives eligibility to have admin role in chat.
+    permission: op
+#    aliases: [qclaim, qreward]
+
+  permote:
+    description: Promotes your rank.
+    permission: op
+    aliases:
+      - promote
+
+  pardonall:
+    description: Pardons everyone.
+    permission: op
+
+  AccessLegacyBackPack:
+    description: Access your backpack with a command.
+    permission: op
+
 
 permissions:
   players:

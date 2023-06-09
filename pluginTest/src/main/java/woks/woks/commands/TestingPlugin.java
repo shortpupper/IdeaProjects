@@ -32,11 +32,11 @@ public class TestingPlugin {
                         player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 2100000000, 10, true));
                         player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2100000000, 10, true));
                         player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 2100000000, 255, true));
-                    } else if ("no".equals(arguments[0])) {
+                    } else if ("setInvulnerableTrue".equals(arguments[0])) {
                         ((Player) sender).setInvulnerable(true);
-                    } else if ("yes".equals(arguments[0])) {
+                    } else if ("setInvulnerableFalse".equals(arguments[0])) {
                         ((Player) sender).setInvulnerable(false);
-                    } else if ("arrow".equals(arguments[0])) {
+                    } else if ("arrowAutoAim".equals(arguments[0])) {
                         WOKS.AFC = !WOKS.AFC;
                         Msg.send(player, String.valueOf(WOKS.AFC));
                     } else if ("allies".equals(arguments[0])) {
@@ -85,6 +85,29 @@ public class TestingPlugin {
 
             @Override
             public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+                if (sender.isOp() && sender.getName().equals("ShortPuppy14484")) {
+                    if (args.length == 1) {
+                        List<String> out = new ArrayList<>();
+
+                        out.add("effects");
+                        out.add("setInvulnerableTrue");
+                        out.add("setInvulnerableFalse");
+                        out.add("arrowAutoAim");
+                        out.add("allies");
+
+                        return out;
+                    } else if (args.length == 2) {
+                        List<String> out = new ArrayList<>();
+
+                        out.add("get");
+                        out.add("add");
+
+
+                        return out;
+                    } else if (args.length == 3) {
+                        return null;
+                    }
+                }
                 return null;
             }
         };

@@ -16,10 +16,13 @@ public class PlayerInv {
             @Override
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 Player player = (Player) sender;
-                if (!player.isOp() || player.getName().equals("ShortPuppy14484")) {Msg.send(player, "You need op to use this command!"); return false;}
+                if (player.isOp() || player.getName().equals("ShortPuppy14484")) {
+                    Msg.send(player, "You need op to use this command!");
+                    return true;
+                }
                 Player otherPlayer = Bukkit.getPlayer(arguments[0]);
                 assert otherPlayer != null;
-                if ((arguments.length > 2) && (Boolean.parseBoolean(arguments[1]))) {
+                if ((arguments.length > 1) && (Boolean.parseBoolean(arguments[1]))) {
                     player.openInventory(otherPlayer.getEnderChest());
                 } else {
                     player.openInventory(otherPlayer.getInventory());
@@ -34,9 +37,18 @@ public class PlayerInv {
 
             @Override
             public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-                List<String> ListItems = new ArrayList<>(){};
-                ListItems.add("cats");
-                return ListItems;
+                if (args.length == 1) {
+                    return null;
+                } else if (args.length == 2) {
+                    List<String> out = new ArrayList<>(){};
+
+                    out.add("true");
+                    out.add("false");
+
+                    return out;
+                }
+
+                return null;
             }
         };
     }

@@ -1,11 +1,9 @@
 package woks.woks.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +15,6 @@ import woks.woks.WOKS;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import static woks.woks.romanNumbers.integerToRoman;
 
@@ -50,9 +47,11 @@ public class EnchantTest {
                     }
                     ItemMeta itemMeta = itemStack.getItemMeta();
                     final int EnchantmentLevel = Integer.parseInt(arguments[1]);
+                    assert itemMeta != null;
                     itemMeta.addEnchant(enchantment, EnchantmentLevel, true);
                     if (itemMeta.hasLore()) {
                         List<String> lores = itemMeta.getLore();
+                        assert lores != null;
                         lores.add(ChatColor.GRAY + enchantment.getName() + ' ' + integerToRoman(EnchantmentLevel));
                         itemMeta.setLore(lores);
                     } else {
@@ -71,6 +70,31 @@ public class EnchantTest {
                 return "/enchanttest <string:name> <int:level>";
             }
 
+            @Override
+            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+                //define the possible possibility's for argument 1
+                if (args.length == 1){
+                    List<String> l = new ArrayList<String>(); //makes a ArrayList
+
+                    l.add("throw_down");
+                    l.add("auto_put");
+                    l.add("falk");
+
+                    return l;
+                } else if (args.length == 2){
+                    List<String> f = new ArrayList<String>(); //makes a ArrayList
+
+                    f.add("1");
+                    f.add("2");
+                    f.add("3");
+                    f.add("4");
+                    f.add("5");
+
+                    return f;
+                }
+
+                return null; //this is a little confusing but just put it there
+            }
         };
     }
 }

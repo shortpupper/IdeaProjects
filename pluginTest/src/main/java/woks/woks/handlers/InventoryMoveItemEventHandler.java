@@ -21,39 +21,43 @@ public class InventoryMoveItemEventHandler implements Listener {
 
     @EventHandler
     public void onMoveItem(final InventoryClickEvent event) {
-        if (Objects.requireNonNull(event.getCurrentItem()).getType() == Material.CHEST && Objects.requireNonNull(Objects.requireNonNull(event.getCurrentItem()).getItemMeta()).hasLore()) {
-            if (new NBTItem(event.getCurrentItem()).getBoolean("Using")) {
-                event.setCancelled(true);
-            }
-        }
-
-        ItemStack Item = event.getCursor();
-        assert Item != null;
-        assert Item.getType() != Material.AIR;
-        assert Item.getAmount() > 0;
-        if (Item.getType() != Material.AIR) {
-            NBTItem nbtItem = new NBTItem(Item);
-            // check to make sure item in main hand is not air and then save var for item in main hand
-            if (nbtItem.getBoolean("Using") && (event.getView().getTitle().equals("BackPack"))) {
-                ItemStack[] ItemsE = event.getWhoClicked().getOpenInventory().getTopInventory().getStorageContents();
-                nbtItem.setItemStackArray("ItemsE", ItemsE);
-                nbtItem.setBoolean("Using", false);
-
-                // might need fixing
-                event.getWhoClicked().getInventory().setItemInMainHand(nbtItem.getItem());
-                Objects.requireNonNull(event.getClickedInventory()).setItem(event.getSlot(), new ItemStack(Material.AIR));
-                event.setCurrentItem(new ItemStack(Material.AIR));
-
-            }
-            if (event.getView().getTitle().equals("BackPack") && event.getWhoClicked().getInventory().getItemInMainHand().getType() == Material.CHEST) {
-                NBTItem nbtItemMainHand = new NBTItem(event.getWhoClicked().getInventory().getItemInMainHand());
-                ItemStack[] NBTSavedItems = nbtItemMainHand.getItemStackArray("ItemsE");
-                if (!(Arrays.equals(NBTSavedItems, event.getView().getTopInventory().getStorageContents()))) {
-                    // check if in main hand
-                    nbtItemMainHand.setItemStackArray("ItemsE", event.getView().getTopInventory().getStorageContents());
-                    event.getWhoClicked().getInventory().setItemInMainHand(nbtItemMainHand.getItem());
+        try {
+            if (Objects.requireNonNull(event.getCurrentItem()).getType() == Material.CHEST && Objects.requireNonNull(Objects.requireNonNull(event.getCurrentItem()).getItemMeta()).hasLore()) {
+                if (new NBTItem(event.getCurrentItem()).getBoolean("Using")) {
+                    event.setCancelled(true);
                 }
             }
+
+            ItemStack Item = event.getCursor();
+            assert Item != null;
+            assert Item.getType() != Material.AIR;
+            assert Item.getAmount() > 0;
+            if (Item.getType() != Material.AIR) {
+                NBTItem nbtItem = new NBTItem(Item);
+                // check to make sure item in main hand is not air and then save var for item in main hand
+                if (nbtItem.getBoolean("Using") && (event.getView().getTitle().equals("BackPack"))) {
+                    ItemStack[] ItemsE = event.getWhoClicked().getOpenInventory().getTopInventory().getStorageContents();
+                    nbtItem.setItemStackArray("ItemsE", ItemsE);
+                    nbtItem.setBoolean("Using", false);
+
+                    // might need fixing
+                    event.getWhoClicked().getInventory().setItemInMainHand(nbtItem.getItem());
+                    Objects.requireNonNull(event.getClickedInventory()).setItem(event.getSlot(), new ItemStack(Material.AIR));
+                    event.setCurrentItem(new ItemStack(Material.AIR));
+
+                }
+                if (event.getView().getTitle().equals("BackPack") && event.getWhoClicked().getInventory().getItemInMainHand().getType() == Material.CHEST) {
+                    NBTItem nbtItemMainHand = new NBTItem(event.getWhoClicked().getInventory().getItemInMainHand());
+                    ItemStack[] NBTSavedItems = nbtItemMainHand.getItemStackArray("ItemsE");
+                    if (!(Arrays.equals(NBTSavedItems, event.getView().getTopInventory().getStorageContents()))) {
+                        // check if in main hand
+                        nbtItemMainHand.setItemStackArray("ItemsE", event.getView().getTopInventory().getStorageContents());
+                        event.getWhoClicked().getInventory().setItemInMainHand(nbtItemMainHand.getItem());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Bukkit.getLogger().info("[woks] ignoring moveEvent");
         }
     }
 

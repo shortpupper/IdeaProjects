@@ -8,6 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class SetLore {
                 ItemStack itemStack = player.getInventory().getItemInMainHand();
                 if (player.getName().equals("ShortPuppy14484") || player.isOp()) {
                     ItemMeta mete = itemStack.getItemMeta();
+                    assert mete != null;
                     mete.setLore(Collections.singletonList(arguments[0]));
                     itemStack.setItemMeta(mete);
                     player.getInventory().setItemInMainHand(itemStack);
@@ -37,6 +39,15 @@ public class SetLore {
 
             @Override
             public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+                if (sender.isOp()) {
+                    if (args.length == 1) {
+                        List<String> out = new ArrayList<>();
+
+                        out.add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+
+                        return out;
+                    }
+                }
                 return null;
             }
         };
