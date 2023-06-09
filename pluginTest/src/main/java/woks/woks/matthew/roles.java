@@ -35,6 +35,7 @@ public class roles implements Listener {
             if (dataContainer.get(_quest_id_integer, PersistentDataType.INTEGER) == 2 && dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) < 100.0d) {
                 dataContainer.set(_quest_percent_done, PersistentDataType.DOUBLE, 100.0d);
                 Msg.send(player, "§bQuest completed!§r");
+                Msg.send(player, "§bFor Quest help do /qh.§r");
             }
         }
     }
@@ -43,10 +44,6 @@ public class roles implements Listener {
 
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
 
-//        // COULD DO THIS ON JOIN
-//        if (!dataContainer.has(_namespacedKeyNumberRank, PersistentDataType.INTEGER)) {
-//            dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
-//        }
 
         Integer role_rank_air_number = dataContainer.get(_namespacedKeyNumberRank, PersistentDataType.INTEGER);
         String role_rank_air = Ranks[role_rank_air_number];
@@ -59,21 +56,6 @@ public class roles implements Listener {
 
 
         return admin + "[" + role_rank_air + "]";
-
-
-        // old stuff
-//        if (player.getScoreboardTags().contains("roleAdmin")) {
-//            return "[ADMIN]";
-//        } else if (player.getScoreboardTags().contains("roleVeteran")) {
-//            return "[Veteran]";
-//        } else if (player.getScoreboardTags().contains("rolePlebe")) {
-//            return "[Plebe]";
-//        } else if (player.getScoreboardTags().contains("roleRecruit")) {
-//            return "[Recruit]";
-//        }
-
-//        Bukkit.getLogger().info("[woks] player tags, "+player.getScoreboardTags());
-//        return "";
     }
 }
 

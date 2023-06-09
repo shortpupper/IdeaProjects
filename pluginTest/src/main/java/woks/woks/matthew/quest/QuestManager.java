@@ -1,10 +1,9 @@
 package woks.woks.matthew.quest;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static woks.woks.WOKS.questManager;
 import static woks.woks.WOKS.uuid3Generator;
@@ -31,16 +30,65 @@ public class QuestManager {
         IndexQuests          = new HashMap<>();
     }
 
-    public void registerQuest(String questId, Integer questIdInteger, ItemStack[] rewardItems, int rewardExpAmount, String name, Integer[] requiredQuests) {
-        Quest quest = new Quest(questId, questIdInteger, rewardItems, rewardExpAmount, name, requiredQuests);
+
+
+    public void registerQuest(String questId, Integer questIdInteger, ItemStack[] rewardItems,
+                              int rewardExpAmount, String name, Integer[] requiredQuests,
+                              Material material, String description, String requirements) {
+        Quest quest = new Quest(
+                questId,          questIdInteger,  rewardItems,
+                rewardExpAmount,  name,            requiredQuests,
+                material,         description,     requirements);
 
         activeQuests.put(questId, quest);
         activeQuestsInteger.put(questIdInteger, questId);
         IndexQuests.put(questManager.activeQuests.size(), questId);
     }
+    public void registerQuest(String questId,       Integer questIdInteger,  ItemStack[] rewardItems,
+                              int rewardExpAmount,  String name,             Integer[] requiredQuests,
+                              Material material,    String description) {
 
-    public void registerQuest(String questId, Integer questIdInteger, ItemStack[] rewardItems, int rewardExpAmount, String name) {
-        registerQuest(questId, questIdInteger, rewardItems, rewardExpAmount, name, DefaultRequiredQuests);
+        registerQuest(
+                questId,          questIdInteger,  rewardItems,
+                rewardExpAmount,  name,            requiredQuests,
+                material,         description,     "None");
+    }
+
+    public void registerQuest(String questId,       Integer questIdInteger,  ItemStack[] rewardItems,
+                              int rewardExpAmount,  String name,             Material material,
+                              String description) {
+        registerQuest(
+                questId,          questIdInteger,  rewardItems,
+                rewardExpAmount,  name,            DefaultRequiredQuests,
+                material,         description,     "None");
+    }
+
+    public List<Quest> getActiveQuestsAsListQuest() {
+        return (List<Quest>) activeQuests.values();
+    }
+
+//    public List<Quest> getActiveQuestsAsListQuestFromIntegerList() {
+//        return (List<Quest>) activeQuests.values();
+//    }
+
+    public Map<String, Quest> getActiveQuests() {
+        return activeQuests;
+    }
+
+    public static Integer[] getDefaultRequiredQuests() {
+        return DefaultRequiredQuests;
+    }
+
+    public Map<Integer, String> getActiveQuestsInteger() {
+        return activeQuestsInteger;
+    }
+
+    public Map<Integer, String> getIndexQuests() {
+        return IndexQuests;
+    }
+
+    public static void setDefaultRequiredQuests(Integer[] defaultRequiredQuests) {
+        DefaultRequiredQuests = defaultRequiredQuests;
     }
 
     public Quest getQuestById(String questId) {
@@ -71,13 +119,34 @@ class Quest {
     private final Integer questIdInteger;
     private final Integer[] requiredQuests;
 
-    public Quest(String questId, Integer questIdInteger, ItemStack[] RewardItems, int RewardExpAmount, String name, Integer[] requiredQuests) {
+    private final Material material;
+    private final String description;
+    private final String requirements;
+
+    public Quest(String questId,       Integer questIdInteger,  ItemStack[] RewardItems,
+                 int RewardExpAmount,  String name,             Integer[] requiredQuests,
+                 Material material,    String description,      String requirements) {
         this.questId         = questId;
         this.questIdInteger  = questIdInteger;
         this.RewardItems     = RewardItems;
         this.RewardExpAmount = RewardExpAmount;
         this.name            = name;
         this.requiredQuests  = requiredQuests;
+        this.material = material;
+        this.description = description;
+        this.requirements = requirements;
+    }
+
+    public String getRequirements() {
+        return requirements;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Material getMaterial() {
+        return material;
     }
 
 

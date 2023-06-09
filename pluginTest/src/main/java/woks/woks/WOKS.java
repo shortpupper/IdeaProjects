@@ -20,6 +20,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import woks.woks.commands.*;
 import woks.woks.dam.bannedWhat;
 import woks.woks.handlers.*;
@@ -204,6 +205,8 @@ public final class WOKS extends JavaPlugin implements Listener {
         if (config.getBoolean("Quests")) {
             new QuestManager();
 
+//            new QuestGUI(this);
+
             new claimReward();
 //            Objects.requireNonNull(Bukkit.getPluginCommand("claimreward")).setTabCompleter(new claimReward());
 
@@ -212,6 +215,8 @@ public final class WOKS extends JavaPlugin implements Listener {
             new CommandNextQuest();
             new ResetQuestCommand();
             new CmdGetPerStorage();
+
+            new QuestHelpCommand();
 
             Bukkit.getLogger().info("[woks] Quests are on.");
 
@@ -229,6 +234,28 @@ public final class WOKS extends JavaPlugin implements Listener {
 
 
 
+    }
+
+    public static PersistentDataType<?, ?> stringToPersistentDataType(String string) {
+        String dataTypeString = string.toLowerCase(); // Convert to lowercase
+
+
+        PersistentDataType<?, ?> dataType = switch (dataTypeString) {
+            case "integer" -> PersistentDataType.INTEGER;
+            case "integer_array" -> PersistentDataType.INTEGER_ARRAY;
+            case "double" -> PersistentDataType.DOUBLE;
+            case "byte" -> PersistentDataType.BYTE;
+            case "byte_array" -> PersistentDataType.BYTE_ARRAY;
+            case "float" -> PersistentDataType.FLOAT;
+            case "long" -> PersistentDataType.LONG;
+            case "long_array" -> PersistentDataType.LONG_ARRAY;
+            case "short" -> PersistentDataType.SHORT;
+            case "tag_container" -> PersistentDataType.TAG_CONTAINER;
+            case "tag_container_array" -> PersistentDataType.TAG_CONTAINER_ARRAY;
+            default -> PersistentDataType.STRING;
+        };
+
+        return dataType;
     }
 
     public static NamespacedKey parseStringNameSpaceKey(String input) {
@@ -669,9 +696,39 @@ public final class WOKS extends JavaPlugin implements Listener {
             items = new ItemStack[]{new ItemStack(Material.SPRUCE_LOG, 16)};
             expAmount = 5;
 
-            questManager.registerQuest("Join_sever_first_time", 1, items, expAmount, "Join the sever");
-            questManager.registerQuest("Say_Hello", 2, DefaultItemStacks, DefaultExpAmounts,"Talking In Chat");
-            questManager.registerQuest("3", 3, items, expAmount, "Github", new Integer[]{1,2});
+            questManager.registerQuest(
+                    "Join_sever_first_time",
+                    1,
+                    items,
+                    expAmount,
+                    "Join the sever",
+                    new Integer[]{},
+                    Material.OAK_DOOR,
+                    "Be a part of the sever.",
+                    "Joining the sever for the first time"
+            );
+            questManager.registerQuest(
+                    "Say_Hello",
+                    2,
+                    DefaultItemStacks,
+                    DefaultExpAmounts,
+                    "Talking In Chat",
+                    new Integer[]{1},
+                    Material.REDSTONE_TORCH,
+                    "Say hello meat someone new.",
+                    "Typing 'Hello' into chat just by its self."
+            );
+            questManager.registerQuest(
+                    "Quest_Help",
+                    3,
+                    new ItemStack[]{},
+                    1,
+                    "/questhelp",
+                    new Integer[]{1,2},
+                    Material.STRUCTURE_BLOCK,
+                    "Getting used to Quests.",
+                    "Executing the command '/questhelp'."
+            );
 
             Bukkit.getLogger().info(String.valueOf(questManager.activeQuests.size()));
             Bukkit.getLogger().info(String.valueOf(questManager.activeQuestsInteger.size()));

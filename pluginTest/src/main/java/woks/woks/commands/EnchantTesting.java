@@ -75,6 +75,23 @@ public class EnchantTesting {
                         }
 
                         return out;
+                    } else if (args.length == 3) {
+                        List<String> out = new ArrayList<>();
+
+                        out.add("1");
+                        out.add("2");
+                        out.add("3");
+                        out.add("4");
+                        out.add("5");
+                        out.add("10");
+                        out.add("15");
+                        out.add("20");
+                        out.add("25");
+                        out.add("50");
+                        out.add("100");
+                        out.add("500");
+
+                        return out;
                     }
                 }
                 return null;

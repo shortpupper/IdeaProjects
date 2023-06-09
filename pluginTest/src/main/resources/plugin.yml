@@ -15,11 +15,7 @@ commands:
     aliases:
       - sxp
       - spx
-  claimreward:
-    description: Description of the claimreward command
-    aliases: [qclaim, qreward]
-#    usage: /claimreward <arguments>
-#    permission: woks.claimreward
+
   openplayerinv:
     description: Open a players inventory
     permission: op
@@ -32,21 +28,7 @@ commands:
       - op
       - woks.op
 #    aliases: [qclaim, qreward]
-  resetquest:
-    description: resetquest for testing.
-    permission: op
-    aliases:
-      - questadminpanel
-      - qadmin
-  #    aliases: [qclaim, qreward]
-  nextquest:
-    description: Get your next quest!
-#    permission: op
-    aliases:
-      - nquest
-      - nextq
-      - qnext
-      - questnext
+
 
   CmdGetPerStorage:
     description: Get your Persistent storage.
@@ -104,10 +86,52 @@ commands:
   pardonall:
     description: Pardons everyone.
     permission: op
+    aliases:
+      - pardonfull
 
   AccessLegacyBackPack:
     description: Access your backpack with a command.
     permission: op
+
+  resetquest:
+    description: resetquest for testing. It is just an admin panel type thing, mostly for debugging.
+    permission: op
+    aliases:
+      - questadminpanel
+      - qadmin
+  #    aliases: [qclaim, qreward]
+
+  claimreward:
+    description: Claim your quest reward!
+    aliases:
+      - qc
+      - qr
+      - qclaim
+      - qreward
+  #    usage: /claimreward <arguments>
+  #    permission: woks.claimreward
+
+  nextquest:
+    description: Get your next quest!
+    aliases:
+      - qn
+      - nq
+      - nquest
+      - nextq
+      - qnext
+      - questnext
+
+  QuestHelp:
+    description: Get help with quests!
+    aliases:
+      - qh
+      - hq
+      - helpquest
+      - qhelp
+      - questh
+      - whattheduckisaquest
+      - whattheduckisaquestihavenotideawhatthisisorhowtouseitjusttellmewhatyouarepleaseitwouldhelpalotyouknow
+
 
 
 permissions:
