@@ -78,7 +78,7 @@ public class QuestManager {
 //    }
 
     public List<Quest> getActiveQuestsAsListQuest() {
-        return (List<Quest>) activeQuests.values();
+        return new ArrayList<>(activeQuests.values());
     }
 
 //    public List<Quest> getActiveQuestsAsListQuestFromIntegerList() {

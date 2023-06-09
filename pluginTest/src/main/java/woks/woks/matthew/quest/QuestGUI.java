@@ -17,8 +17,7 @@ import woks.woks.WOKS;
 import java.util.ArrayList;
 import java.util.List;
 
-import static woks.woks.WOKS._quest_completed_array;
-import static woks.woks.WOKS.questManager;
+import static woks.woks.WOKS.*;
 
 public class QuestGUI implements Listener {
     private final Player player;
@@ -171,7 +170,10 @@ public class QuestGUI implements Listener {
                     currentPage2++;
                     openGUI(questList, currentPage2);
                 } else if (clickedItem.getType() == Material.FEATHER) {
-                    openGUI(questManager.getActiveQuestsAsListQuest(), currentPage, "Quests");
+                    int[] canDo = dataContainer.get(_quest_can_array, PersistentDataType.INTEGER_ARRAY);
+
+                    assert canDo != null;
+                    openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(canDo)), currentPage, "Quests");
                 }
             }
         }

@@ -9,6 +9,7 @@ import woks.woks.Msg;
 
 import java.util.Objects;
 
+import static woks.woks.TypeConversionUtils.castIntegerArrayToIntArray;
 import static woks.woks.WOKS.*;
 import static woks.woks.items.CustomExpBottle.customExpBottle;
 
@@ -21,7 +22,7 @@ public class rewordQuest {
 
         Quest questById = questManager.getQuestById(questId);
 
-        Msg.send(player, questById.toString());
+//        Msg.send(player, questById.toString());
 
         player.getInventory().addItem(questById.getItems());
         player.getInventory().addItem(customExpBottle(questById.getExpAmount()));
@@ -29,9 +30,10 @@ public class rewordQuest {
         Msg.send(player, "You claimed " + questById.getName() + " Quest [" + questById.getQuestId() + "].");
 
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
-//        Bukkit.getLogger().info("[woks] hello?");
         dataContainer.set(_quest_completed_array, PersistentDataType.INTEGER_ARRAY, addArrays(Objects.requireNonNull(dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY)), new int[]{questById.getQuestIntegerId()}));
-//        Bukkit.getLogger().info("[woks] bye?");
+        Bukkit.getLogger().info("[woks] hello?");
+        dataContainer.set(_quest_can_array, PersistentDataType.INTEGER_ARRAY, addArrays(Objects.requireNonNull(dataContainer.get(_quest_can_array, PersistentDataType.INTEGER_ARRAY)), castIntegerArrayToIntArray(questById.getCanDoQuests())));
+        Bukkit.getLogger().info("[woks] bye?");
 
         Bukkit.getLogger().info("Quest reward given.");
     }

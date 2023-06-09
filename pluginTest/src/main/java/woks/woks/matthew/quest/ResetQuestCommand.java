@@ -3,7 +3,6 @@ package woks.woks.matthew.quest;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -16,7 +15,7 @@ import java.util.Objects;
 
 import static woks.woks.WOKS.*;
 
-public class ResetQuestCommand implements TabCompleter {
+public class ResetQuestCommand {
     public ResetQuestCommand() {
         new CommandBase("resetquest", 0, 5, true) {
             @Override
@@ -93,71 +92,73 @@ public class ResetQuestCommand implements TabCompleter {
                 return "/resetquest";
             }
 
-        };
-    }
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+            @Override
+            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
-        if (args.length == 1) {
-            List<String> out = new ArrayList<>();
+                if (args.length == 1) {
+                    List<String> out = new ArrayList<>();
 
-            out.add("0");
-            out.add("percent");
+                    out.add("0");
+                    out.add("percent");
 
-            out.add("1");
-            out.add("newPlayerJoin");
+                    out.add("1");
+                    out.add("newPlayerJoin");
 
-            out.add("2");
-            out.add("newPlayerJoinOnJoinSever");
+                    out.add("2");
+                    out.add("newPlayerJoinOnJoinSever");
 
-            out.add("3");
-            out.add("getActiveQuests");
+                    out.add("3");
+                    out.add("getActiveQuests");
 
-            out.add("4");
-            out.add("getActiveQuestsGet1");
+                    out.add("4");
+                    out.add("getActiveQuestsGet1");
 
-            out.add("5");
-            out.add("extraGetter");
+                    out.add("5");
+                    out.add("extraGetter");
 
-            return out;
-        } else if (args.length == 2) {
-            List<String> out = new ArrayList<>();
+                    return out;
+                } else if (args.length == 2) {
+                    List<String> out = new ArrayList<>();
 
-            out.add("0");
-            out.add("getActiveAndStringId");
+                    out.add("0");
+                    out.add("getActiveAndStringId");
 
-            out.add("1");
-            out.add("getActiveQuestsInteger");
+                    out.add("1");
+                    out.add("getActiveQuestsInteger");
 
-            out.add("2");
-            out.add("getIndexQuests");
+                    out.add("2");
+                    out.add("getIndexQuests");
 
-            return out;
-        } else if (args.length == 3) {
-            List<String> out = new ArrayList<>();
+                    return out;
+                } else if (args.length == 3) {
+                    List<String> out = new ArrayList<>();
 
-            switch (args[1]) {
-                case "0":
-                case "getActiveAndStringId":
-                    out.addAll(questManager.activeQuests.keySet());
-                    break;
-                case "1":
-                case "getActiveQuestsInteger":
-                    for (Integer key : questManager.activeQuestsInteger.keySet()) {
-                        out.add(String.valueOf(key));
+                    switch (args[1]) {
+                        case "0":
+                        case "getActiveAndStringId":
+                            out.addAll(questManager.activeQuests.keySet());
+                            break;
+                        case "1":
+                        case "getActiveQuestsInteger":
+                            for (Integer key : questManager.activeQuestsInteger.keySet()) {
+                                out.add(String.valueOf(key));
+                            }
+                            break;
+                        case "2":
+                        case "getIndexQuests":
+                            for (int i = 0; i < questManager.IndexQuests.size(); i++) {
+                                out.add(String.valueOf(i));
+                            }
+                            break;
                     }
-                    break;
-                case "2":
-                case "getIndexQuests":
-                    for (int i = 0; i < questManager.IndexQuests.size(); i++) {
-                        out.add(String.valueOf(i));
-                    }
-                    break;
+
+                    return out;
+                }
+
+                return null;
             }
 
-            return out;
-        }
-
-        return null;
+        };
     }
+
 }
