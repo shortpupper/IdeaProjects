@@ -21,7 +21,7 @@ import static woks.woks.WOKS._quest_id_integer;
 import static woks.woks.WOKS.questManager;
 
 public class GUIManager implements Listener {
-    private final Map<Integer, questGUI> guiMap;
+    private final Map<Integer, questGUIToolClass> guiMap;
 
     public GUIManager() {
         WOKS plugin = WOKS.getInstance();
@@ -32,10 +32,10 @@ public class GUIManager implements Listener {
     public void registerGUI(int id, String title, ItemStack[] items) {
         Inventory inventory = Bukkit.createInventory(null, 54, title);
         inventory.setContents(items);
-        guiMap.put(id, new questGUI(inventory, title, id));
+        guiMap.put(id, new questGUIToolClass(inventory, title));
     }
 
-    public questGUI getGUIByIntegerID(int id) {
+    public questGUIToolClass getGUIByIntegerID(int id) {
         return guiMap.get(id);
     }
 
@@ -51,7 +51,7 @@ public class GUIManager implements Listener {
         if (clickedInventory != null && guiMap.containsValue(clickedInventory)) {
             event.setCancelled(true);
             // Handle the click event for the registered GUI
-            int id = getKeyByValue(guiMap, clickedInventory);
+            int id = getKeyByValue(guiMap, new questGUIToolClass(clickedInventory, clickedInventory.getViewers().get(0).getOpenInventory().getTitle()));
             if (id != -1) {
                 PersistentDataContainer dataContainer = player.getPersistentDataContainer();
                 // Perform the action based on the GUI ID
@@ -73,7 +73,11 @@ public class GUIManager implements Listener {
                     }
                 } else if (id == 2) {
                     // current quest menu/gui
-
+                    // TODO your gettigng off focuse rn so im quitying for today
+                    // TODO You were working on how to set up the guis for invonoyts you wanted to maek a gui maneger but couldn't make one
+                    // TODO that worked to well for the id wouldn't be good my be just do it some other way for current quest cus of the change
+                    // TODO -ing things so quests did work but now not or not as well have yet to test more
+                    // TODO 6/9/2023
                 }
             }
         }

@@ -376,50 +376,66 @@ public final class WOKS extends JavaPlugin implements Listener {
     }
 
 
-    private Inventory createQuestInventory() {
+    private Inventory createCurrentQuestInventory(Player player) {
+        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+
         // Create the inventory
-        Inventory inventory = Bukkit.createInventory(null, 54, "Temple Quest");
+        Inventory inventory = Bukkit.createInventory(null, 54, "Current Quest");
+
+
+        //TODO change some of the items so they do the stuffs
 
         // Set items in the inventory
         ItemStack painting = new ItemStack(Material.PAINTING);
         ItemMeta paintingMeta = painting.getItemMeta();
+        assert paintingMeta != null;
         paintingMeta.setDisplayName("Temple Quest Name");
         painting.setItemMeta(paintingMeta);
         inventory.setItem(4, painting);
 
         ItemStack requirementsBook = new ItemStack(Material.WRITTEN_BOOK);
-        BookMeta requirementsBookMeta = (BookMeta) requirementsBook.getItemMeta();
-        requirementsBookMeta.setTitle("Requirements");
+        ItemMeta requirementsBookMeta =  requirementsBook.getItemMeta();
+        assert requirementsBookMeta != null;
+        requirementsBookMeta.setDisplayName("Requirements");
         requirementsBook.setItemMeta(requirementsBookMeta);
         inventory.setItem(11, requirementsBook);
 
         ItemStack rewardsChest = new ItemStack(Material.CHEST);
         ItemMeta rewardsChestMeta = rewardsChest.getItemMeta();
+        assert rewardsChestMeta != null;
         rewardsChestMeta.setDisplayName("Rewards");
         rewardsChest.setItemMeta(rewardsChestMeta);
         inventory.setItem(15, rewardsChest);
 
         ItemStack descriptionPaper = new ItemStack(Material.PAPER);
         ItemMeta descriptionPaperMeta = descriptionPaper.getItemMeta();
+        assert descriptionPaperMeta != null;
         descriptionPaperMeta.setDisplayName("Description");
         descriptionPaper.setItemMeta(descriptionPaperMeta);
         inventory.setItem(22, descriptionPaper);
 
-        ItemStack claimGlassPane = new ItemStack(getClaimGlassPaneMaterial());
+        double questPercentDone = dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE); // Replace with your quest percent done value
+        Integer questClaimed = dataContainer.get(_quest_claimed, PersistentDataType.INTEGER); // Replace with your quest claimed value
+
+        ItemStack claimGlassPane = new ItemStack(getClaimGlassPaneMaterial(questPercentDone, questClaimed));
         ItemMeta claimGlassPaneMeta = claimGlassPane.getItemMeta();
-        double questPercentDone = 50.0; // Replace with your quest percent done value
-        int questClaimed = 0; // Replace with your quest claimed value
+
 
         if (questClaimed == 1) {
+            assert claimGlassPaneMeta != null;
             claimGlassPaneMeta.setDisplayName("Claimed Quest");
         } else if (questPercentDone >= 100.0 && questClaimed == 0) {
+            assert claimGlassPaneMeta != null;
             claimGlassPaneMeta.setDisplayName("Claim Quest");
             // Set green glass pane
-            setGlassPaneColor(claimGlassPaneMeta, Material.GREEN_STAINED_GLASS_PANE);
+            claimGlassPane.setType(Material.GREEN_STAINED_GLASS_PANE);
+//            setGlassPaneColor(claimGlassPaneMeta, Material.GREEN_STAINED_GLASS_PANE);
         } else if (questPercentDone < 100.0 && questClaimed == 0) {
+            assert claimGlassPaneMeta != null;
             claimGlassPaneMeta.setDisplayName("Claim Quest");
             // Set red glass pane
-            setGlassPaneColor(claimGlassPaneMeta, Material.RED_STAINED_GLASS_PANE);
+            claimGlassPane.setType(Material.RED_STAINED_GLASS_PANE);
+//            setGlassPaneColor(claimGlassPaneMeta, Material.RED_STAINED_GLASS_PANE);
             claimGlassPaneMeta.setLore(List.of("You need to have 100% of the quest done."));
         }
 
@@ -427,15 +443,32 @@ public final class WOKS extends JavaPlugin implements Listener {
         inventory.setItem(31, claimGlassPane);
 
         // Create glass panes with different colors based on quest percent done
-        createGlassPanes(inventory, questPercentDone);
+        int[] percentIndexes = {28, 37, 46, 47, 48, 49, 50, 51, 52, 43, 34};
+        double[] percentValues = {0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0};
+
+        for (int i = 0; i < percentIndexes.length; i++) {
+            int index = percentIndexes[i];
+            double percentValue = percentValues[i];
+
+            ItemStack glassPane = new ItemStack(getGlassPaneMaterial(percentValue, questPercentDone));
+            ItemMeta glassPaneMeta = glassPane.getItemMeta();
+
+            // Set display name based on percent value
+            assert glassPaneMeta != null;
+            if (percentValue == 100.0 && questPercentDone >= 100.0) {
+                glassPaneMeta.setDisplayName("Claim Quest");
+            } else {
+                glassPaneMeta.setDisplayName(percentValue + "%");
+            }
+
+            glassPane.setItemMeta(glassPaneMeta);
+            inventory.setItem(index, glassPane);
+        }
 
         return inventory;
     }
 
-    private Material getClaimGlassPaneMaterial() {
-        double questPercentDone = 50.0; // Replace with your quest percent done value
-        int questClaimed = 0; // Replace with your quest claimed value
-
+    private Material getClaimGlassPaneMaterial(double questPercentDone, Integer questClaimed) {
         if (questClaimed == 1) {
             return Material.RED_STAINED_GLASS_PANE;
         } else if (questPercentDone >= 100.0 && questClaimed == 0) {
@@ -447,16 +480,15 @@ public final class WOKS extends JavaPlugin implements Listener {
         return Material.RED_STAINED_GLASS_PANE; // Default to red if none of the conditions match
     }
 
-    private void setGlassPaneColor(ItemMeta itemMeta, Material colorMaterial) {
-        if (itemMeta instanceof BannerMeta) {
-            BannerMeta bannerMeta = (BannerMeta) itemMeta;
-            List<Pattern> patterns = new ArrayList<>();
-            patterns.add(new Pattern(colorMaterial, PatternType.STRIPE_MIDDLE));
-            bannerMeta.setPatterns(patterns);
-        }
-    }
+//    private void setGlassPaneColor(ItemMeta itemMeta, Material colorMaterial) {
+//        if (itemMeta instanceof BannerMeta bannerMeta) {
+//            List<Pattern> patterns = new ArrayList<>();
+//            patterns.add(new Pattern(colorMaterial, PatternType.STRIPE_MIDDLE));
+//            bannerMeta.setPatterns(patterns);
+//        }
+//    }
 
-    private void createGlassPanes(Inventory inventory, double questPercentDone) {
+    private Inventory createGlassPanes(Inventory inventory, double questPercentDone) {
         int[] percentIndexes = {28, 37, 46, 47, 48, 49, 50, 51, 52, 43, 34};
         double[] percentValues = {0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0};
 
@@ -464,10 +496,11 @@ public final class WOKS extends JavaPlugin implements Listener {
             int index = percentIndexes[i];
             double percentValue = percentValues[i];
 
-            ItemStack glassPane = new ItemStack(getGlassPaneMaterial(percentValue));
+            ItemStack glassPane = new ItemStack(getGlassPaneMaterial(percentValue, questPercentDone));
             ItemMeta glassPaneMeta = glassPane.getItemMeta();
 
             // Set display name based on percent value
+            assert glassPaneMeta != null;
             if (percentValue == 100.0 && questPercentDone >= 100.0) {
                 glassPaneMeta.setDisplayName("Claim Quest");
             } else {
@@ -477,10 +510,11 @@ public final class WOKS extends JavaPlugin implements Listener {
             glassPane.setItemMeta(glassPaneMeta);
             inventory.setItem(index, glassPane);
         }
+        return inventory;
     }
 
-    private Material getGlassPaneMaterial(double percentValue) {
-        double questPercentDone = 50.0; // Replace with your quest percent done value
+    private Material getGlassPaneMaterial(double percentValue, double questPercentDone) {
+//        double questPercentDone = questPercentDone; // Replace with your quest percent done value
 
         if (percentValue == 100.0 && questPercentDone >= 100.0) {
             return Material.GREEN_STAINED_GLASS_PANE;

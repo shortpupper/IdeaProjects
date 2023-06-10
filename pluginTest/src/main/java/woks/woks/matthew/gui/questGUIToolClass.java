@@ -3,16 +3,16 @@ package woks.woks.matthew.gui;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class questGUI {
+public class questGUIToolClass {
     private Inventory inventory;
     private String title;
     private Integer integerId;
 
 
-    public questGUI(Inventory inventory, String title, Integer integerId) {
+    public questGUIToolClass(Inventory inventory, String title) {
         this.inventory = inventory;
         this.title     = title;
-        this.integerId = integerId;
+//        this.integerId = integerId;
     }
 
 
