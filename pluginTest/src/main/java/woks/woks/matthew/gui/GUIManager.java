@@ -59,10 +59,13 @@ public class GUIManager implements Listener {
             NBTItem nbtItem = new NBTItem(item);
             guiId = (nbtItem.getInteger("GuiLoc") != null) ? nbtItem.getInteger("GuiLoc") : 0;
         } catch (Exception exception) {
-            Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]int guiId failed, " + exception);
+            if (config.getBoolean("log__GUIManager_java_onInventoryClick__int_guiId_failed")) {
+                Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]int guiId failed, " + exception);
+            }
         }
-        Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]uhmm the guiId is: " + guiId);
-
+        if (config.getBoolean("log__GUIManager_java_onInventoryClick__uhmm_the_guiId_is") && guiId != 0) {
+            Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]uhmm the guiId is: " + guiId);
+        }
         if (clickedInventory != null) { //  && guiMap.containsValue(clickedInventory)
             event.setCancelled(true);
             // Handle the click event for the registered GUI
@@ -71,7 +74,9 @@ public class GUIManager implements Listener {
                 try {
                     id = getKeyByValue(guiMap, new questGUIToolClass(clickedInventory, clickedInventory.getViewers().get(0).getOpenInventory().getTitle()));
                 } catch (Exception e) {
-                    Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]int id failed, " + e);
+                    if (config.getBoolean("log__GUIManager_java_onInventoryClick__int_id_failed")) {
+                        Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]int id failed, " + e);
+                    }
                 }
 
                 if (id != -1 || guiId != -1) {
@@ -111,7 +116,8 @@ public class GUIManager implements Listener {
 
 
 
-                    } else if (id == 2 || guiId == 2) {
+                    }
+                    else if (id == 2 || guiId == 2) {
                         // current quest menu/gui
                         // TODO your gettigng off focuse rn so im quitying for today
                         // TODO You were working on how to set up the guis for invonoyts you wanted to maek a gui maneger but couldn't make one
@@ -129,17 +135,23 @@ public class GUIManager implements Listener {
                             items.add(customExpBottle(currentQuest.getExpAmount()));
 
                             RewardChestGUI.openGUIChest(player, "Current Quest Rewards", items, currentPage3);
-                            Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]CHEST");
+                            if (config.getBoolean("log__GUIManager_java_onInventoryClick__CHEST")) {
+                                Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]CHEST");
+                            }
                         }
 //                        player.openInventory(createCurrentQuestInventory(player));
-                        Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]Should work.");
+                        if (config.getBoolean("log__GUIManager_java_onInventoryClick__Should_work")) {
+                            Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]Should work.");
+                        }
                     } else if (id == 3 || guiId == 3) {
                         Quest currentQuest = questManager.getQuestById(dataContainer.get(_quest_id, PersistentDataType.STRING));
                         List<ItemStack> items = new ArrayList<>(List.of(currentQuest.getRewardItems()));
                         items.add(customExpBottle(currentQuest.getExpAmount()));
 
                         // something, like, current rewards
-                        Bukkit.getLogger().info("[WOKS][GUIManager.java][v6.12.2023]marko");
+                        if (config.getBoolean("log__GUIManager_java_onInventoryClick__marko")) {
+                            Bukkit.getLogger().info("[WOKS][GUIManager.java][v6.12.2023]marko");
+                        }
     //                    ItemStack item = event.getCurrentItem().getType();
                         // for next page
 
@@ -154,8 +166,8 @@ public class GUIManager implements Listener {
                         } else if (item.getType() == Material.FEATHER) {
                             player.openInventory(createCurrentQuestInventory(player));
                         }
-                    } else {
-
+                    } else if (id == 0 || guiId == 0) {
+                        event.setCancelled(false);
                     }
                 }
 //            } catch (Exception exception) {

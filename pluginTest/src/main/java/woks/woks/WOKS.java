@@ -33,6 +33,7 @@ import woks.woks.items.PRQ.Obamanium.*;
 import woks.woks.matthew.ImAnAdmin;
 import woks.woks.matthew.gui.GUIManager;
 import woks.woks.matthew.permote;
+import woks.woks.matthew.persistantStorageManager.StorageManager;
 import woks.woks.matthew.quest.*;
 import woks.woks.matthew.roles;
 
@@ -53,7 +54,7 @@ import static woks.woks.matthew.quest.rewordQuest.DefaultExpAmounts;
 public final class WOKS extends JavaPlugin implements Listener {
     private static WOKS instance;
     public static boolean AFC = false;
-    FileConfiguration config = this.getConfig();
+    public static FileConfiguration config;
 
     public static NamespacedKey _jsonSmells;
     public static NamespacedKey _admin;
@@ -67,6 +68,7 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static NamespacedKey _quest_can_array;
     public static QuestManager questManager;
     public static GUIManager guiManager;
+    public static StorageManager storageManager;
 
     // logging vars
     public static boolean LogDrag;
@@ -116,9 +118,11 @@ public final class WOKS extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        config = this.getConfig();
         instance = this;
         // Plugin startup logic
         Bukkit.getLogger().info("Starting, ShortPuppy14484 plugin.");
+
 
         _admin                   = new NamespacedKey(this, "_admin");
         _jsonSmells              = new NamespacedKey(this, "_jsonSmells");
@@ -131,7 +135,21 @@ public final class WOKS extends JavaPlugin implements Listener {
         _quest_completed_array   = new NamespacedKey(this, "_quest_completed_array");
         _quest_can_array         = new NamespacedKey(this, "_quest_can_array");
 
+        storageManager.registerNewStorage(_admin,                   PersistentDataType.INTEGER);
+        storageManager.registerNewStorage(_jsonSmells,              PersistentDataType.INTEGER);
+        storageManager.registerNewStorage(_namespacedKeyNumberRank, PersistentDataType.INTEGER);
+        storageManager.registerNewStorage(_quest_id,                PersistentDataType.INTEGER);
+        storageManager.registerNewStorage(_quest_id_integer,        PersistentDataType.INTEGER);
+        storageManager.registerNewStorage(_quest_percent_done,      PersistentDataType.INTEGER);
+        storageManager.registerNewStorage(_quest_claimed,           PersistentDataType.INTEGER);
+        storageManager.registerNewStorage(_quest_completed,         PersistentDataType.INTEGER);
+        storageManager.registerNewStorage(_quest_completed_array,   PersistentDataType.INTEGER);
+        storageManager.registerNewStorage(_quest_can_array,         PersistentDataType.INTEGER);
 
+
+
+        // TODO make a gui for config
+        // v2023.6.13
 
         config.addDefault("PlayerWalkPath", false);
         config.addDefault("GoodDayMSG", true);
@@ -141,10 +159,21 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("Killer", true);
         config.addDefault("Quests", true);
         config.addDefault("Gui", true);
-        config.addDefault("LogDrag", true);
-        config.addDefault("LogMovement", true);
-        config.addDefault("LogQuestRegisterOnEnable", true);
         config.addDefault("devQuestForTesting", true);
+        config.addDefault("StorageManager_DONTCHANGE", true);
+
+        config.addDefault("log__", true);
+        boolean clog__;
+        clog__ = config.getBoolean("log__");
+        config.addDefault("LogDrag", clog__);
+        config.addDefault("LogMovement", clog__);
+        config.addDefault("LogQuestRegisterOnEnable", clog__);
+        config.addDefault("log__GUIManager_java_onInventoryClick__int_guiId_failed", clog__);
+        config.addDefault("log__GUIManager_java_onInventoryClick__int_id_failed", clog__);
+        config.addDefault("log__GUIManager_java_onInventoryClick__uhmm_the_guiId_is", clog__);
+        config.addDefault("log__GUIManager_java_onInventoryClick__CHEST", clog__);
+        config.addDefault("log__GUIManager_java_onInventoryClick__Should_work", clog__);
+        config.addDefault("log__GUIManager_java_onInventoryClick__marko", clog__);
 
         config.options().copyDefaults(true);
         saveConfig();
@@ -346,6 +375,10 @@ public final class WOKS extends JavaPlugin implements Listener {
             guiManager.registerGUI(2, "Current Quest", getItemsForCurrentQuestGUI());
 
             Bukkit.getLogger().info("[WOKS][v6.9.2023] GUI added.");
+        }
+
+        if (config.getBoolean("StorageManager_DONTCHANGE")) {
+            storageManager = new StorageManager();
         }
 
 
