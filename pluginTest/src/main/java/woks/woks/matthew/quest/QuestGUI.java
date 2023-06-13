@@ -14,17 +14,20 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import woks.woks.TypeConversionUtils;
 import woks.woks.WOKS;
+import woks.woks.matthew.gui.RewardChestGUI;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static woks.woks.WOKS.*;
+import static woks.woks.items.CustomExpBottle.customExpBottle;
 
 public class QuestGUI implements Listener {
     private final Player player;
     private final List<String> quest;
     private int currentPage;
     private int currentPage2;
+    public static int currentPage3;
 
 
 
@@ -35,6 +38,7 @@ public class QuestGUI implements Listener {
         this.quest = getQuests();
         this.currentPage = 0;
         this.currentPage2 = 0;
+        currentPage3 = 0;
     }
 
 
@@ -60,19 +64,19 @@ public class QuestGUI implements Listener {
     }
 
     public void openGUI(List<Quest> quests) {
-        openGUI(quests, 0, "Quests", true);
+        openGUI(quests, 0, "Quests", true, "Completed Quests");
     }
 
     public void openGUI(List<Quest> quests, Integer currentPage) {
-        openGUI(quests, currentPage, "Quests", true);
+        openGUI(quests, currentPage, "Quests", true, "Completed Quests");
     }
     public void openGUI(List<Quest> quests, Integer currentPage, String title) {
-        openGUI(quests, currentPage, title, true);
+        openGUI(quests, currentPage, title, true, "Completed Quests");
     }
     public void openGUI(List<Quest> quests, Integer currentPage, Boolean feather) {
-        openGUI(quests, currentPage, "Quests", feather);
+        openGUI(quests, currentPage, "Quests", feather, "Completed Quests");
     }
-    public void openGUI(List<Quest> quests, Integer currentPage, String title, Boolean feather) {
+    public void openGUI(List<Quest> quests, Integer currentPage, String title, Boolean feather, String featherName) {
         Inventory gui = Bukkit.createInventory(null, 54, title);
 
         // Add quest items to the GUI
@@ -95,7 +99,7 @@ public class QuestGUI implements Listener {
 
 
             NBTItem nbtItem = new NBTItem(questItem);
-            nbtItem.setObject("QuestObject", currentQuest);
+//            nbtItem.setObject("QuestObject", currentQuest);
             nbtItem.setInteger("intId", currentQuest.getQuestIntegerId());
             nbtItem.setString("stringId", currentQuest.getQuestId());
 
@@ -135,7 +139,7 @@ public class QuestGUI implements Listener {
 
             assert featherMeta != null;
 
-            featherMeta.setDisplayName("Completed Quests");
+            featherMeta.setDisplayName(featherName);
     //        featherMeta.setLore(completedQuests);
 
             completedFeather.setItemMeta(featherMeta);
@@ -160,16 +164,16 @@ public class QuestGUI implements Listener {
 
                 if (clickedItem.getType() == Material.RED_STAINED_GLASS_PANE && currentPage > 0) {
                     currentPage--;
-                    openGUI(questList, currentPage);
+                    openGUI(questList, currentPage, "Quests", true, "Quests");
                 } else if (clickedItem.getType() == Material.GREEN_STAINED_GLASS_PANE && currentPage < (questList.size() - 1) / 45) {
                     currentPage++;
-                    openGUI(questList, currentPage);
+                    openGUI(questList, currentPage, "Quests", true, "Quests");
                 } else if (clickedItem.getType() == Material.FEATHER) {
                     PersistentDataContainer dataContainer = player.getPersistentDataContainer();
                     int[] numbers = dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY);
 
                     assert numbers != null;
-                    openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(numbers)), currentPage2, "Completed Quests");
+                    openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(numbers)), currentPage2, "Completed Quests", true, "Completed Quests");
                 }
             } else if (event.getView().getTitle().equals("Completed Quests")) {
                 event.setCancelled(true);
@@ -187,15 +191,43 @@ public class QuestGUI implements Listener {
 
                 if (clickedItem.getType() == Material.RED_STAINED_GLASS_PANE && currentPage2 > 0) {
                     currentPage2--;
-                    openGUI(questList, currentPage2, "Completed Quests", true);
+                    openGUI(questList, currentPage2, "Completed Quests", true, "Completed Quests");
                 } else if (clickedItem.getType() == Material.GREEN_STAINED_GLASS_PANE && currentPage2 < (questList.size() - 1) / 45) {
                     currentPage2++;
-                    openGUI(questList, currentPage2, "Completed Quests", true);
+                    openGUI(questList, currentPage2, "Completed Quests", true, "Completed Quests");
                 } else if (clickedItem.getType() == Material.FEATHER) {
                     int[] canDo = dataContainer.get(_quest_can_array, PersistentDataType.INTEGER_ARRAY);
 
                     assert canDo != null;
-                    openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(canDo)), currentPage, "Quests", true);
+                    openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(canDo)), currentPage, "Quests", true, "Quests");
+                }
+            } else if (event.getView().getTitle().equals("Current Quest Rewards")) {
+                event.setCancelled(true);
+
+                Bukkit.getLogger().info("[WOKS][QuestGUI.java][v6.12.2023] here");
+
+                ItemStack clickedItem = event.getCurrentItem();
+                if (clickedItem == null || clickedItem.getType() == Material.AIR) {
+                    return;
+                }
+                PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+//                List<Quest> questList = questManager.getActiveQuestsAsListQuest();
+                Quest currentQuest = questManager.getQuestById(dataContainer.get(_quest_id, PersistentDataType.STRING));
+                List<ItemStack> items = new ArrayList<>(List.of(currentQuest.getRewardItems()));
+                items.add(customExpBottle(currentQuest.getExpAmount()));
+
+                if (clickedItem.getType() == Material.RED_STAINED_GLASS_PANE && currentPage3 > 0) {
+                    currentPage3--;
+                    RewardChestGUI.openGUIChest(player, "Current Quest Rewards", items, currentPage3);
+//                    openGUI(questList, currentPage, "Quests", true, "Quests");
+                } else if (clickedItem.getType() == Material.GREEN_STAINED_GLASS_PANE && currentPage3 < (items.size() - 1) / 28) {
+                    currentPage3++;
+                    RewardChestGUI.openGUIChest(player, "Current Quest Rewards", items, currentPage3);
+
+//                    openGUI(questList, currentPage, "Quests", true, "Quests");
+                } else if (clickedItem.getType() == Material.BARRIER) {
+                    // TODO: names for the items else they will be badded
+                    player.openInventory(createCurrentQuestInventory(player));
                 }
             }
         }

@@ -13,6 +13,9 @@ import woks.woks.WOKS;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static woks.woks.WOKS.LogDrag;
+import static woks.woks.WOKS.LogMovement;
+
 //InventoryMoveItemEventHandler
 public class InventoryMoveItemEventHandler implements Listener {
     public InventoryMoveItemEventHandler(WOKS plugin) {
@@ -57,17 +60,26 @@ public class InventoryMoveItemEventHandler implements Listener {
                 }
             }
         } catch (Exception e) {
-            Bukkit.getLogger().info("[woks] ignoring moveEvent");
+            if (LogMovement) {
+                Bukkit.getLogger().info("[woks] ignoring moveEvent");
+            }
         }
     }
 
     @EventHandler
     public void onDragItem(final InventoryDragEvent event) {
+        try {
+
         ItemStack Item = event.getCursor();
         assert (Item != null ? Item.getAmount() : 0) > 0;
         NBTItem nbtItem = new NBTItem(Item);
         if (nbtItem.getBoolean("Using")) {
             event.setCancelled(true);
+        }
+        } catch (Exception exception) {
+            if (LogDrag) {
+                Bukkit.getLogger().info("[WOKS][InventoryMoveItemEventHandler.java][v6.12.2023]Drag failed");
+            }
         }
     }
 }

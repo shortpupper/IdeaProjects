@@ -1,5 +1,6 @@
 package woks.woks;
 
+import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -37,10 +38,7 @@ import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static woks.woks.items.EnchantedCrying_Obsidian.EnchantedCrying_Obsidian;
 import static woks.woks.items.EnchantedDiamond.EnchantedDiamond;
@@ -51,7 +49,6 @@ import static woks.woks.items.EnchantedLeather.EnchantedLeather;
 import static woks.woks.items.PRQ.Obamanium.Obamanium_Ingot.Obamanium_Ingot;
 import static woks.woks.matthew.quest.giveQuest.GiveQuest;
 import static woks.woks.matthew.quest.rewordQuest.DefaultExpAmounts;
-import static woks.woks.matthew.quest.rewordQuest.DefaultItemStacks;
 
 public final class WOKS extends JavaPlugin implements Listener {
     private static WOKS instance;
@@ -70,6 +67,15 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static NamespacedKey _quest_can_array;
     public static QuestManager questManager;
     public static GUIManager guiManager;
+
+    // logging vars
+    public static boolean LogDrag;
+    public static boolean LogMovement;
+    public static boolean LogQuestRegisterOnEnable;
+
+    // dev stuff / testing things
+    public static boolean devQuestForTesting;
+
 
 
     public static String[] Ranks = {
@@ -135,9 +141,20 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("Killer", true);
         config.addDefault("Quests", true);
         config.addDefault("Gui", true);
+        config.addDefault("LogDrag", true);
+        config.addDefault("LogMovement", true);
+        config.addDefault("LogQuestRegisterOnEnable", true);
+        config.addDefault("devQuestForTesting", true);
 
         config.options().copyDefaults(true);
         saveConfig();
+
+        // Logging stuff, really burning
+        LogDrag = config.getBoolean("LogDrag");
+        LogMovement = config.getBoolean("LogMovement");
+
+
+        // commands
 
 //        new Feed();
         new SaveEXP(this);
@@ -235,6 +252,14 @@ public final class WOKS extends JavaPlugin implements Listener {
 
             items = new ItemStack[]{new ItemStack(Material.SPRUCE_LOG, 16)};
             expAmount = 5;
+            
+            Material[] DEVSTACKm;
+            DEVSTACKm = (Material.values());
+
+            ItemStack[] DEVSTACK = new ItemStack[DEVSTACKm.length-1];
+            for (int i = 0; i < DEVSTACKm.length-1; i++) {
+                DEVSTACK[i] = new ItemStack(DEVSTACKm[i], 1);
+            }
 
             questManager.registerQuest(
                     "Join_sever_first_time",
@@ -251,7 +276,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             questManager.registerQuest(
                     "Say_Hello",
                     2,
-                    DefaultItemStacks,
+                    DEVSTACK,
                     DefaultExpAmounts,
                     "Talking In Chat",
                     new Integer[]{1},
@@ -270,9 +295,46 @@ public final class WOKS extends JavaPlugin implements Listener {
                     Material.STRUCTURE_BLOCK,
                     "Getting used to Quests.",
                     "Executing the command '/questhelp'.",
-                    new Integer[]{4,5,6}
+                    new Integer[]{4,5,6, 7}
             );
-
+            if (config.getBoolean("devQuestForTesting")) {
+                questManager.registerQuest(
+                        "DevQuestForTesting_a",
+                        4,
+                        new ItemStack[]{},
+                        1,
+                        "/next plz",
+                        new Integer[]{},
+                        Material.PAPER,
+                        "Testing Quest.",
+                        "Do /nextquest",
+                        new Integer[]{}
+                );
+                questManager.registerQuest(
+                        "DevQuestForTesting_b",
+                        5,
+                        new ItemStack[]{},
+                        1,
+                        "/next plz",
+                        new Integer[]{},
+                        Material.PAPER,
+                        "Testing Quest.",
+                        "Do /nextquest",
+                        new Integer[]{}
+                );
+                questManager.registerQuest(
+                        "DevQuestForTesting_c",
+                        6,
+                        new ItemStack[]{},
+                        1,
+                        "/next plz",
+                        new Integer[]{},
+                        Material.PAPER,
+                        "Testing Quest.",
+                        "Do /nextquest",
+                        new Integer[]{}
+                );
+            }
         }
 
         if (config.getBoolean("Gui")) {
@@ -375,8 +437,33 @@ public final class WOKS extends JavaPlugin implements Listener {
         return items;
     }
 
+    public static boolean codeLinear(int input) {
+        if ((input >= 10 && input <= 16) ||
+                (input >= 19 && input <= 25) ||
+                (input >= 28 && input <= 34) ||
+                (input >= 37 && input <= 43)) {
+            return true;
+        }
+        return false;
+    }
 
-    private Inventory createCurrentQuestInventory(Player player) {
+    public static int mapNumber(int number) {
+        if (number >= 0 && number <= 6) {
+            return number + 10;  // Range: 10-16
+        } else if (number >= 7 && number <= 13) {
+            return number + 12;  // Range: 19-25
+        } else if (number >= 14 && number <= 20) {
+            return number + 14;  // Range: 28-34
+        } else if (number >= 21 && number <= 27) {
+            return number + 16;  // Range: 37-43
+        } else {
+            throw new IllegalArgumentException("Invalid number. Must be between 0 and 27.");
+        }
+    }
+
+
+    public static Inventory createCurrentQuestInventory(Player player) {
+        // GUI OF 2
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
 
         // Create the inventory
@@ -385,34 +472,69 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         //TODO change some of the items so they do the stuffs
 
+
+        //v6.12.2023 im mad cus just I have to put stuff here
+        // public static double x = ( -b + || - sqrt(4ac)) / 2a
+        Integer questIdInteger = dataContainer.get(_quest_id_integer, PersistentDataType.INTEGER);
+
+        Quest currentQuest = questManager.getQuestByIntegerId(questIdInteger);
+
+
         // Set items in the inventory
-        ItemStack painting = new ItemStack(Material.PAINTING);
+        ItemStack painting = new ItemStack(currentQuest.getMaterial());
         ItemMeta paintingMeta = painting.getItemMeta();
+
         assert paintingMeta != null;
-        paintingMeta.setDisplayName("Temple Quest Name");
+
+        paintingMeta.setDisplayName(currentQuest.getName());
         painting.setItemMeta(paintingMeta);
+
+        NBTItem nbtItemPainting = new NBTItem(painting);
+        nbtItemPainting.setInteger("GuiLoc", 2);
+        painting = nbtItemPainting.getItem();
+
         inventory.setItem(4, painting);
 
-        ItemStack requirementsBook = new ItemStack(Material.WRITTEN_BOOK);
+        //book
+        ItemStack requirementsBook = new ItemStack(Material.BOOK);
         ItemMeta requirementsBookMeta =  requirementsBook.getItemMeta();
         assert requirementsBookMeta != null;
         requirementsBookMeta.setDisplayName("Requirements");
+        requirementsBookMeta.setLore(Collections.singletonList(currentQuest.getRequirements()));
         requirementsBook.setItemMeta(requirementsBookMeta);
+
+        NBTItem nbtItemrequirementsBook = new NBTItem(requirementsBook);
+        nbtItemrequirementsBook.setInteger("GuiLoc", 2);
+        requirementsBook = nbtItemrequirementsBook.getItem();
+
         inventory.setItem(11, requirementsBook);
 
+        //chrest
         ItemStack rewardsChest = new ItemStack(Material.CHEST);
         ItemMeta rewardsChestMeta = rewardsChest.getItemMeta();
         assert rewardsChestMeta != null;
         rewardsChestMeta.setDisplayName("Rewards");
         rewardsChest.setItemMeta(rewardsChestMeta);
+
+        NBTItem nbtItemrewardsChest = new NBTItem(rewardsChest);
+        nbtItemrewardsChest.setInteger("GuiLoc", 2);
+        rewardsChest = nbtItemrewardsChest.getItem();
+
         inventory.setItem(15, rewardsChest);
 
+        //paper
         ItemStack descriptionPaper = new ItemStack(Material.PAPER);
         ItemMeta descriptionPaperMeta = descriptionPaper.getItemMeta();
         assert descriptionPaperMeta != null;
         descriptionPaperMeta.setDisplayName("Description");
         descriptionPaper.setItemMeta(descriptionPaperMeta);
+
+        NBTItem nbtItemdescriptionPaper = new NBTItem(descriptionPaper);
+        nbtItemdescriptionPaper.setInteger("GuiLoc", 2);
+        descriptionPaper = nbtItemdescriptionPaper.getItem();
+
         inventory.setItem(22, descriptionPaper);
+
 
         double questPercentDone = dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE); // Replace with your quest percent done value
         Integer questClaimed = dataContainer.get(_quest_claimed, PersistentDataType.INTEGER); // Replace with your quest claimed value
@@ -428,11 +550,11 @@ public final class WOKS extends JavaPlugin implements Listener {
             assert claimGlassPaneMeta != null;
             claimGlassPaneMeta.setDisplayName("Claim Quest");
             // Set green glass pane
-            claimGlassPane.setType(Material.GREEN_STAINED_GLASS_PANE);
+            claimGlassPane.setType(Material.LIME_STAINED_GLASS_PANE);
 //            setGlassPaneColor(claimGlassPaneMeta, Material.GREEN_STAINED_GLASS_PANE);
         } else if (questPercentDone < 100.0 && questClaimed == 0) {
             assert claimGlassPaneMeta != null;
-            claimGlassPaneMeta.setDisplayName("Claim Quest");
+            claimGlassPaneMeta.setDisplayName("Claim Quest " + questPercentDone + "%");
             // Set red glass pane
             claimGlassPane.setType(Material.RED_STAINED_GLASS_PANE);
 //            setGlassPaneColor(claimGlassPaneMeta, Material.RED_STAINED_GLASS_PANE);
@@ -440,6 +562,13 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
 
         claimGlassPane.setItemMeta(claimGlassPaneMeta);
+
+        NBTItem nbtItemclaimGlassPane = new NBTItem(claimGlassPane);
+        nbtItemclaimGlassPane.setInteger("GuiLoc", 2);
+        claimGlassPane = nbtItemclaimGlassPane.getItem();
+
+
+
         inventory.setItem(31, claimGlassPane);
 
         // Create glass panes with different colors based on quest percent done
@@ -455,24 +584,25 @@ public final class WOKS extends JavaPlugin implements Listener {
 
             // Set display name based on percent value
             assert glassPaneMeta != null;
-            if (percentValue == 100.0 && questPercentDone >= 100.0) {
-                glassPaneMeta.setDisplayName("Claim Quest");
-            } else {
-                glassPaneMeta.setDisplayName(percentValue + "%");
-            }
+            glassPaneMeta.setDisplayName(percentValue + "%");
 
             glassPane.setItemMeta(glassPaneMeta);
+
+            NBTItem nbtItemglassPane = new NBTItem(glassPane);
+            nbtItemglassPane.setInteger("GuiLoc", 2);
+            glassPane = nbtItemglassPane.getItem();
+
             inventory.setItem(index, glassPane);
         }
 
         return inventory;
     }
 
-    private Material getClaimGlassPaneMaterial(double questPercentDone, Integer questClaimed) {
+    private static Material getClaimGlassPaneMaterial(double questPercentDone, Integer questClaimed) {
         if (questClaimed == 1) {
             return Material.RED_STAINED_GLASS_PANE;
         } else if (questPercentDone >= 100.0 && questClaimed == 0) {
-            return Material.GREEN_STAINED_GLASS_PANE;
+            return Material.LIME_STAINED_GLASS_PANE;
         } else if (questPercentDone < 100.0 && questClaimed == 0) {
             return Material.RED_STAINED_GLASS_PANE;
         }
@@ -480,15 +610,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         return Material.RED_STAINED_GLASS_PANE; // Default to red if none of the conditions match
     }
 
-//    private void setGlassPaneColor(ItemMeta itemMeta, Material colorMaterial) {
-//        if (itemMeta instanceof BannerMeta bannerMeta) {
-//            List<Pattern> patterns = new ArrayList<>();
-//            patterns.add(new Pattern(colorMaterial, PatternType.STRIPE_MIDDLE));
-//            bannerMeta.setPatterns(patterns);
-//        }
-//    }
-
-    private Inventory createGlassPanes(Inventory inventory, double questPercentDone) {
+    private static Inventory createGlassPanes(Inventory inventory, double questPercentDone) {
         int[] percentIndexes = {28, 37, 46, 47, 48, 49, 50, 51, 52, 43, 34};
         double[] percentValues = {0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0};
 
@@ -513,13 +635,13 @@ public final class WOKS extends JavaPlugin implements Listener {
         return inventory;
     }
 
-    private Material getGlassPaneMaterial(double percentValue, double questPercentDone) {
+    private static Material getGlassPaneMaterial(double percentValue, double questPercentDone) {
 //        double questPercentDone = questPercentDone; // Replace with your quest percent done value
 
         if (percentValue == 100.0 && questPercentDone >= 100.0) {
-            return Material.GREEN_STAINED_GLASS_PANE;
+            return Material.LIME_STAINED_GLASS_PANE;
         } else if (questPercentDone >= percentValue) {
-            return Material.GREEN_STAINED_GLASS_PANE;
+            return Material.LIME_STAINED_GLASS_PANE;
         } else {
             return Material.RED_STAINED_GLASS_PANE;
         }

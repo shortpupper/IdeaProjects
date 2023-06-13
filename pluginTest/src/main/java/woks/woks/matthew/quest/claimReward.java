@@ -1,5 +1,6 @@
 package woks.woks.matthew.quest;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -46,28 +47,50 @@ public class claimReward {
 
 
                         return true;
+                    } else if (arguments[0].equalsIgnoreCase("testCurrentQuest")) {
+                        // TODO - make this admin only
+                        player.openInventory(createCurrentQuestInventory(player));
+                        Bukkit.getLogger().info("[WOKS][claimReward.java]This should have workeds");
+                    } else if (arguments[0].equalsIgnoreCase("testCurrentQuestWithCurrentQuest")) {
+                        if (arguments.length >= 2) {
+                            try {
+                                // just get the quest
+                                Quest currentQuest = questManager.getQuestByIntegerId(dataContainer.get(_quest_id_integer, PersistentDataType.INTEGER));
+
+                                if (currentQuest == null) {
+                                    throw new RuntimeException("Can't have null quest.");
+                                }
+                            } catch (Exception e) {
+                                Bukkit.getLogger().warning("[WOKS][claimReward.java][Exception][error]" + e);
+//                                Bukkit.getLogger().info("[WOKS]");
+                            }
+                            Msg.send(player, "This is now redundant, probably.");
+//                            Bukkit.getLogger().info("[WOKS][claimReward.java]");
+                        }
                     }
-                }
-//                Bukkit.getLogger().info("[woks] ok 3");
-
-
-                // check if they hav11e 100% it
-                if (dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) >= 100.0d && dataContainer.get(_quest_claimed, PersistentDataType.INTEGER) == 0) {
-                    Msg.send(sender, "Good job.");
-//                    Bukkit.getLogger().info("[woks] Corn 3");
-
-
-                    dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 1);
-                    dataContainer.set(_quest_completed, PersistentDataType.INTEGER, dataContainer.get(_quest_completed, PersistentDataType.INTEGER) + 1);
-//                    dataContainer.set(_quest_completed, PersistentDataType.INTEGER, dataContainer.get(_quest_completed, PersistentDataType.INTEGER));
-
-                    RewordQuest(player, dataContainer.get(_quest_id, PersistentDataType.STRING));
-                } else if (dataContainer.get(_quest_claimed, PersistentDataType.INTEGER) == 1) {
-                    Msg.send(player, "You have already claim this quest.");
                 } else {
-                    Msg.send(player, "Your not done yet you've only done " + dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) + "%");
-                }
 
+    //                Bukkit.getLogger().info("[woks] ok 3");
+
+
+                    // check if they hav11e 100% it
+                    if (dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) >= 100.0d && dataContainer.get(_quest_claimed, PersistentDataType.INTEGER) == 0) {
+                        Msg.send(sender, "Good job.");
+    //                    Bukkit.getLogger().info("[woks] Corn 3");
+
+
+                        dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 1);
+                        dataContainer.set(_quest_completed, PersistentDataType.INTEGER, dataContainer.get(_quest_completed, PersistentDataType.INTEGER) + 1);
+    //                    dataContainer.set(_quest_completed, PersistentDataType.INTEGER, dataContainer.get(_quest_completed, PersistentDataType.INTEGER));
+
+                        RewordQuest(player, dataContainer.get(_quest_id, PersistentDataType.STRING));
+                    } else if (dataContainer.get(_quest_claimed, PersistentDataType.INTEGER) == 1) {
+                        Msg.send(player, "You have already claim this quest.");
+                    } else {
+                        Msg.send(player, "Your not done yet you've only done " + dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) + "%");
+                    }
+
+                }
                 return true;
             }
 
@@ -82,6 +105,7 @@ public class claimReward {
                     List<String> out = new ArrayList<>();
 
                     out.add("gui");
+                    out.add("testCurrentQuest");
 
                     return out;
                 }
