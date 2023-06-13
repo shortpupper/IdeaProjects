@@ -58,7 +58,7 @@ public class claimReward {
                                 Quest currentQuest = questManager.getQuestByIntegerId(dataContainer.get(_quest_id_integer, PersistentDataType.INTEGER));
 
                                 if (currentQuest == null) {
-                                    throw new RuntimeException("Can't have null quest.");
+                                    throw new Exception("Can't have null quest.");
                                 }
                             } catch (Exception e) {
                                 Bukkit.getLogger().warning("[WOKS][claimReward.java][Exception][error]" + e);

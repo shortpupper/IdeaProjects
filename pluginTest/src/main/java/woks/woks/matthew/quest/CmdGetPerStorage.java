@@ -7,16 +7,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static woks.woks.WOKS.parseStringNameSpaceKey;
-import static woks.woks.WOKS.stringToPersistentDataType;
+import static woks.woks.WOKS.storageManager;
 
 public class CmdGetPerStorage {
     public CmdGetPerStorage() {
@@ -25,44 +24,41 @@ public class CmdGetPerStorage {
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 Player player = (Player) sender;
 
-                if (arguments.length == 3) {
-                    player = Bukkit.getPlayer(arguments[2]);
-                    if (player == null) {
-                        try {
-                            for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-                                if (Objects.equals(offlinePlayer.getName(), arguments[2])) {
-                                    player = (Player) offlinePlayer;
+                try {
+                    if (arguments.length == 2) {
+                        player = Bukkit.getPlayer(arguments[1]);
+                        if (player == null) {
+                            try {
+                                for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+                                    if (Objects.equals(offlinePlayer.getName(), arguments[1])) {
+                                        player = (Player) offlinePlayer;
+                                    }
                                 }
-                            }
 
-                        } catch (Exception exception) {
-                            Msg.send(sender, "Can not find player.");
-                            return true;
+                            } catch (Exception exception) {
+                                Msg.send(sender, "Can not find player.");
+                                return true;
+                            }
                         }
                     }
+
+                    assert player != null;
+                    PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+
+                    NamespacedKey okey = NamespacedKey.fromString(arguments[0]);
+                    String value = processInput(storageManager.getValueWithNamespacedKey(dataContainer, okey));
+                    Msg.send(sender, player.getName()
+                            + " : " + okey
+                            + " :" + value);
+                } catch (Exception exception) {
+                    Msg.send(sender, "error has occurred, " + exception);
                 }
-
-                assert player != null;
-                PersistentDataContainer dataContainer = player.getPersistentDataContainer();
-
-
-                String dataTypeString = arguments[1].toLowerCase(); // Convert to lowercase
-                PersistentDataType<?, ?> dataType = stringToPersistentDataType(dataTypeString);
-
-
-                // Determine the data type based on the lowercase string value
-
-                Object data = dataContainer.get(parseStringNameSpaceKey(arguments[0]), dataType);
-
-                Msg.send(sender, String.valueOf(data));
-
-
                 return true;
             }
 
             @Override
             public String getUsage() {
-                return "/CmdGetPerStorage <VarName> <VarType> <opt:playerName>";
+                return "/CmdGetPerStorage <VarName> <opt:playerName>";
             }
 
             @Override
@@ -74,30 +70,11 @@ public class CmdGetPerStorage {
                     List<String> out = new ArrayList<>();
 
                     for (NamespacedKey key : dataContainer.getKeys()) {
-                        out.add(key.getKey());
+                        out.add(String.valueOf(key));
                     }
 
                     return out;
                 } else if (args.length == 2) {
-                    // PersistentDataType.T
-                    List<String> out = new ArrayList<>();
-
-                    out.add("Integer");
-                    out.add("String");
-                    out.add("Integer_Array");
-                    out.add("Double");
-
-                    out.add("Byte");
-                    out.add("Byte_Array");
-                    out.add("Float");
-                    out.add("Long");
-                    out.add("Long_Array");
-                    out.add("Short");
-                    out.add("Tag_Container");
-                    out.add("Tag_Container_Array");
-
-                    return out;
-                } else if (args.length == 3) {
 //            List<String> out = new ArrayList<>();
 //
 //            out.add("");
@@ -111,5 +88,16 @@ public class CmdGetPerStorage {
 
         };
     }
-
+    public static String processInput(Object input) {
+        if (input instanceof Double doubleInput) {
+            return " " + (doubleInput);
+        } else if (input instanceof String stringInput) {
+            return " " + (stringInput);
+        } else if (input instanceof Integer integerInput) {
+            return " " + (integerInput);
+        } else if (input instanceof int[] arrayInput) {
+            return " " + Arrays.toString(arrayInput);
+        }
+        return "Invalid input type!";
+    }
 }

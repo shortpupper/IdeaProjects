@@ -23,6 +23,7 @@ import java.util.Map;
 import static woks.woks.WOKS.*;
 import static woks.woks.items.CustomExpBottle.customExpBottle;
 import static woks.woks.matthew.quest.QuestGUI.currentPage3;
+import static woks.woks.matthew.quest.rewordQuest.RewordQuest;
 
 public class GUIManager implements Listener {
     private final Map<Integer, questGUIToolClass> guiMap;
@@ -129,6 +130,7 @@ public class GUIManager implements Listener {
     //                    Integer currentQuestIntegerId = dataContainer.get(_quest_id_integer, PersistentDataType.INTEGER);
     //
     //                    Quest quest = questManager.getQuestByIntegerId(currentQuestIntegerId);
+
                         if (item.getType() == Material.CHEST) {
                             Quest currentQuest = questManager.getQuestById(dataContainer.get(_quest_id, PersistentDataType.STRING));
                             List<ItemStack> items = new ArrayList<>(List.of(currentQuest.getRewardItems()));
@@ -137,6 +139,35 @@ public class GUIManager implements Listener {
                             RewardChestGUI.openGUIChest(player, "Current Quest Rewards", items, currentPage3);
                             if (config.getBoolean("log__GUIManager_java_onInventoryClick__CHEST")) {
                                 Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]CHEST");
+                            }
+                        } else if (item.getType() == Material.FEATHER) {
+                            // make sure it's not null
+                            try {
+                                nbtItem = new NBTItem(item);
+                            } catch (Exception e) {
+                                Bukkit.getLogger().info("[WOKS][v2023.6.13][GUIManager#onInventoryClick] exception: " + e);
+                            }
+                        } else if (item.getType() == Material.PAPER) {
+
+                        } else if (item.getType() == Material.BOOK) {
+
+                        } else if (item.getType() == Material.LIME_STAINED_GLASS_PANE) {
+                            // just a backup case
+                            NBTItem nbtItem = new NBTItem(new ItemStack(Material.LIME_STAINED_GLASS_PANE));
+                            // make sure it's not null
+                            try {
+                                nbtItem = new NBTItem(item);
+                            } catch (Exception e) {
+                                Bukkit.getLogger().info("[WOKS][v2023.6.13][GUIManager#onInventoryClick] exception: " + e);
+                            }
+                            if (nbtItem.getBoolean("canClaim")) {
+                                // now give the rewards and remove it from the can do array
+                                storageManager.removeIdInIntegerArray(dataContainer, _quest_can_array, nbtItem.getInteger("questIntId"));
+                                // give the items
+                                dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 1);
+                                dataContainer.set(_quest_completed, PersistentDataType.INTEGER, dataContainer.get(_quest_completed, PersistentDataType.INTEGER) + 1);
+
+                                RewordQuest(player, dataContainer.get(_quest_id, PersistentDataType.STRING));
                             }
                         }
 //                        player.openInventory(createCurrentQuestInventory(player));
@@ -166,7 +197,14 @@ public class GUIManager implements Listener {
                         } else if (item.getType() == Material.FEATHER) {
                             player.openInventory(createCurrentQuestInventory(player));
                         }
-                    } else if (id == 0 || guiId == 0) {
+                    }
+                    else if (id == 4 || guiId == 4) {
+                        // this is the /quest gui
+
+
+                    }
+
+                    else if (id == 0 || guiId == 0) {
                         event.setCancelled(false);
                     }
                 }

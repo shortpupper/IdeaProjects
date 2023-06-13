@@ -25,8 +25,10 @@ public class questCommand implements Listener {
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 Player player = (Player) sender;
 
-                if (arguments[0].equalsIgnoreCase("testingGui") && arguments.length >= 2) {
+                if (arguments.length >= 2 && arguments[0].equalsIgnoreCase("testingGui")) {
                     player.openInventory(guiManager.getGUIInventoryByIntegerID(Integer.parseInt(arguments[1])));
+                } else {
+
                 }
 
                 return true;

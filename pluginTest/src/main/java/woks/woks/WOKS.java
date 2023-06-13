@@ -124,29 +124,6 @@ public final class WOKS extends JavaPlugin implements Listener {
         Bukkit.getLogger().info("Starting, ShortPuppy14484 plugin.");
 
 
-        _admin                   = new NamespacedKey(this, "_admin");
-        _jsonSmells              = new NamespacedKey(this, "_jsonSmells");
-        _namespacedKeyNumberRank = new NamespacedKey(this, "_role_rank_air_number");
-        _quest_id                = new NamespacedKey(this, "_quest_id");
-        _quest_id_integer        = new NamespacedKey(this, "_quest_id_integer");
-        _quest_percent_done      = new NamespacedKey(this, "_quest_percent_done");
-        _quest_claimed           = new NamespacedKey(this, "_quest_claimed");
-        _quest_completed         = new NamespacedKey(this, "_quest_completed");
-        _quest_completed_array   = new NamespacedKey(this, "_quest_completed_array");
-        _quest_can_array         = new NamespacedKey(this, "_quest_can_array");
-
-        storageManager.registerNewStorage(_admin,                   PersistentDataType.INTEGER);
-        storageManager.registerNewStorage(_jsonSmells,              PersistentDataType.INTEGER);
-        storageManager.registerNewStorage(_namespacedKeyNumberRank, PersistentDataType.INTEGER);
-        storageManager.registerNewStorage(_quest_id,                PersistentDataType.INTEGER);
-        storageManager.registerNewStorage(_quest_id_integer,        PersistentDataType.INTEGER);
-        storageManager.registerNewStorage(_quest_percent_done,      PersistentDataType.INTEGER);
-        storageManager.registerNewStorage(_quest_claimed,           PersistentDataType.INTEGER);
-        storageManager.registerNewStorage(_quest_completed,         PersistentDataType.INTEGER);
-        storageManager.registerNewStorage(_quest_completed_array,   PersistentDataType.INTEGER);
-        storageManager.registerNewStorage(_quest_can_array,         PersistentDataType.INTEGER);
-
-
 
         // TODO make a gui for config
         // v2023.6.13
@@ -177,6 +154,36 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         config.options().copyDefaults(true);
         saveConfig();
+
+
+        _admin                   = new NamespacedKey(this, "_admin");
+        _jsonSmells              = new NamespacedKey(this, "_jsonSmells");
+        _namespacedKeyNumberRank = new NamespacedKey(this, "_role_rank_air_number");
+        _quest_id                = new NamespacedKey(this, "_quest_id");
+        _quest_id_integer        = new NamespacedKey(this, "_quest_id_integer");
+        _quest_percent_done      = new NamespacedKey(this, "_quest_percent_done");
+        _quest_claimed           = new NamespacedKey(this, "_quest_claimed");
+        _quest_completed         = new NamespacedKey(this, "_quest_completed");
+        _quest_completed_array   = new NamespacedKey(this, "_quest_completed_array");
+        _quest_can_array         = new NamespacedKey(this, "_quest_can_array");
+
+
+
+
+        if (config.getBoolean("StorageManager_DONTCHANGE")) {
+            storageManager = new StorageManager();
+            storageManager.registerNewStorage(_admin,                   PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_jsonSmells,              PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_namespacedKeyNumberRank, PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_quest_id,                PersistentDataType.STRING);
+            storageManager.registerNewStorage(_quest_id_integer,        PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_quest_percent_done,      PersistentDataType.DOUBLE);
+            storageManager.registerNewStorage(_quest_claimed,           PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_quest_completed,         PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_quest_completed_array,   PersistentDataType.INTEGER_ARRAY);
+            storageManager.registerNewStorage(_quest_can_array,         PersistentDataType.INTEGER_ARRAY);
+        }
+
 
         // Logging stuff, really burning
         LogDrag = config.getBoolean("LogDrag");
@@ -377,9 +384,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             Bukkit.getLogger().info("[WOKS][v6.9.2023] GUI added.");
         }
 
-        if (config.getBoolean("StorageManager_DONTCHANGE")) {
-            storageManager = new StorageManager();
-        }
+
 
 
 
@@ -403,18 +408,31 @@ public final class WOKS extends JavaPlugin implements Listener {
         ItemMeta redStoneMeta = Objects.requireNonNull(redStone.getItemMeta());
         redStoneMeta.setDisplayName("Current Quest");
         redStone.setItemMeta(redStoneMeta);
+        NBTItem nbtItem = new NBTItem(redStone);
+        nbtItem.setInteger("GuiLoc", 1);
+        redStone = nbtItem.getItem();
+
 
         ItemMeta tntMeta = Objects.requireNonNull(tnt.getItemMeta());
         tntMeta.setDisplayName("Claim Quest");
         tnt.setItemMeta(tntMeta);
+        NBTItem nbtItem2 = new NBTItem(tnt);
+        nbtItem2.setInteger("GuiLoc", 1);
+        tnt = nbtItem2.getItem();
 
         ItemMeta barrelMeta = Objects.requireNonNull(barrel.getItemMeta());
         barrelMeta.setDisplayName("Completed Quests");
         barrel.setItemMeta(barrelMeta);
+        NBTItem nbtItem3 = new NBTItem(barrel);
+        nbtItem3.setInteger("GuiLoc", 1);
+        barrel = nbtItem3.getItem();
 
         ItemMeta bookMeta = Objects.requireNonNull(book.getItemMeta());
         bookMeta.setDisplayName("Stats");
         book.setItemMeta(bookMeta);
+        NBTItem nbtItem4 = new NBTItem(book);
+        nbtItem4.setInteger("GuiLoc", 1);
+        book = nbtItem4.getItem();
 
         // Create the item array for the GUI
         ItemStack[] items = new ItemStack[54];
@@ -494,8 +512,41 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
     }
 
+    public static int[] removeValueFromArray(int[] array, int valueToRemove) {
+        int count = 0; // Counter to track the number of occurrences of the value to remove
 
+        // Count the number of occurrences of the value to remove
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == valueToRemove) {
+                count++;
+            }
+        }
+
+        // If no occurrences found, return the original array
+        if (count == 0) {
+            return array;
+        }
+
+        int[] newArray = new int[array.length - count];
+        int newIndex = 0; // Index for the new array
+
+        // Copy the elements from the original array to the new array, excluding the value to remove
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != valueToRemove) {
+                newArray[newIndex++] = array[i];
+            }
+        }
+
+        return newArray;
+    }
+
+
+    // GUI OF 2
     public static Inventory createCurrentQuestInventory(Player player) {
+        return createCurrentQuestInventory(player, null);
+    }
+
+    public static Inventory createCurrentQuestInventory(Player player, Integer prevGUI) {
         // GUI OF 2
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
 
@@ -524,6 +575,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         NBTItem nbtItemPainting = new NBTItem(painting);
         nbtItemPainting.setInteger("GuiLoc", 2);
+        nbtItemPainting.setInteger("prevGUI", prevGUI);
         painting = nbtItemPainting.getItem();
 
         inventory.setItem(4, painting);
@@ -538,6 +590,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         NBTItem nbtItemrequirementsBook = new NBTItem(requirementsBook);
         nbtItemrequirementsBook.setInteger("GuiLoc", 2);
+        nbtItemrequirementsBook.setInteger("prevGUI", prevGUI);
         requirementsBook = nbtItemrequirementsBook.getItem();
 
         inventory.setItem(11, requirementsBook);
@@ -551,6 +604,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         NBTItem nbtItemrewardsChest = new NBTItem(rewardsChest);
         nbtItemrewardsChest.setInteger("GuiLoc", 2);
+        nbtItemrewardsChest.setInteger("prevGUI", prevGUI);
         rewardsChest = nbtItemrewardsChest.getItem();
 
         inventory.setItem(15, rewardsChest);
@@ -564,6 +618,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         NBTItem nbtItemdescriptionPaper = new NBTItem(descriptionPaper);
         nbtItemdescriptionPaper.setInteger("GuiLoc", 2);
+        nbtItemdescriptionPaper.setInteger("prevGUI", prevGUI);
         descriptionPaper = nbtItemdescriptionPaper.getItem();
 
         inventory.setItem(22, descriptionPaper);
@@ -574,19 +629,18 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         ItemStack claimGlassPane = new ItemStack(getClaimGlassPaneMaterial(questPercentDone, questClaimed));
         ItemMeta claimGlassPaneMeta = claimGlassPane.getItemMeta();
+        boolean hasClaim = false;
 
-
+        assert claimGlassPaneMeta != null;
         if (questClaimed == 1) {
-            assert claimGlassPaneMeta != null;
             claimGlassPaneMeta.setDisplayName("Claimed Quest");
         } else if (questPercentDone >= 100.0 && questClaimed == 0) {
-            assert claimGlassPaneMeta != null;
             claimGlassPaneMeta.setDisplayName("Claim Quest");
+            hasClaim = true;
             // Set green glass pane
             claimGlassPane.setType(Material.LIME_STAINED_GLASS_PANE);
 //            setGlassPaneColor(claimGlassPaneMeta, Material.GREEN_STAINED_GLASS_PANE);
         } else if (questPercentDone < 100.0 && questClaimed == 0) {
-            assert claimGlassPaneMeta != null;
             claimGlassPaneMeta.setDisplayName("Claim Quest " + questPercentDone + "%");
             // Set red glass pane
             claimGlassPane.setType(Material.RED_STAINED_GLASS_PANE);
@@ -598,9 +652,11 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         NBTItem nbtItemclaimGlassPane = new NBTItem(claimGlassPane);
         nbtItemclaimGlassPane.setInteger("GuiLoc", 2);
+        nbtItemclaimGlassPane.setInteger("prevGUI", prevGUI);
+        nbtItemclaimGlassPane.setBoolean("canClaim", hasClaim);
+        nbtItemclaimGlassPane.setInteger("questIntId", currentQuest.getQuestIntegerId());
+
         claimGlassPane = nbtItemclaimGlassPane.getItem();
-
-
 
         inventory.setItem(31, claimGlassPane);
 
@@ -623,6 +679,8 @@ public final class WOKS extends JavaPlugin implements Listener {
 
             NBTItem nbtItemglassPane = new NBTItem(glassPane);
             nbtItemglassPane.setInteger("GuiLoc", 2);
+            nbtItemglassPane.setInteger("prevGUI", prevGUI);
+            nbtItemglassPane.setBoolean("Done", true);
             glassPane = nbtItemglassPane.getItem();
 
             inventory.setItem(index, glassPane);
@@ -685,7 +743,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         String dataTypeString = string.toLowerCase(); // Convert to lowercase
 
 
-        PersistentDataType<?, ?> dataType = switch (dataTypeString) {
+        return switch (dataTypeString) {
             case "integer" -> PersistentDataType.INTEGER;
             case "integer_array" -> PersistentDataType.INTEGER_ARRAY;
             case "double" -> PersistentDataType.DOUBLE;
@@ -699,8 +757,6 @@ public final class WOKS extends JavaPlugin implements Listener {
             case "tag_container_array" -> PersistentDataType.TAG_CONTAINER_ARRAY;
             default -> PersistentDataType.STRING;
         };
-
-        return dataType;
     }
 
     public static NamespacedKey parseStringNameSpaceKey(String input) {
@@ -1090,7 +1146,9 @@ public final class WOKS extends JavaPlugin implements Listener {
         Msg.send(player, "Hello " + player.getName() + ", to keep my plugin alive");
         Msg.send(player, "or to request me to add something, please visit my github repo");
         Msg.send(player, "https://github.com/shortpupper/IdeaProjects");
-        Msg.send(player, "This plugin uses a resource pack, So make sure you are using optifine.");
+        Msg.send(player, "This plugin uses a resource pack, So make sure you are using optifine," +
+                                 " or a fabric mod that can render item change via name");
+
         if (config.getBoolean("GoodDayMSG")) {
             Msg.send(player, "Good day.");
         } else {
@@ -1100,37 +1158,26 @@ public final class WOKS extends JavaPlugin implements Listener {
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
 
         // COULD DO THIS ON JOIN
-        if (!dataContainer.has(_namespacedKeyNumberRank, PersistentDataType.INTEGER)) {
-            dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
-        }
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _namespacedKeyNumberRank, 0);
+
         // this is like how much is done
-        if (!dataContainer.has(_quest_percent_done, PersistentDataType.DOUBLE)) {
-            dataContainer.set(_quest_percent_done, PersistentDataType.DOUBLE, 0.0d);
-        }
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_percent_done, 0.0d);
+
         // the id so you can get it
-        if (!dataContainer.has(_quest_id, PersistentDataType.STRING)) {
-            dataContainer.set(_quest_id, PersistentDataType.STRING, "0");
-        }
-        if (!dataContainer.has(_quest_id_integer, PersistentDataType.INTEGER)) {
-            dataContainer.set(_quest_id_integer, PersistentDataType.INTEGER, 0);
-        }
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_id, "0");
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_id_integer, 0);
+
         // have they claimed the reward
-        if (!dataContainer.has(_quest_claimed, PersistentDataType.INTEGER)) {
-            dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);
-        }
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_claimed, 0);
+
         // how many total quest they have done
-        if (!dataContainer.has(_quest_completed, PersistentDataType.INTEGER)) {
-            dataContainer.set(_quest_completed, PersistentDataType.INTEGER, 0);
-        }
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_completed, 0);
 
         // which quests they have done
-        if (!dataContainer.has(_quest_completed_array, PersistentDataType.INTEGER_ARRAY)) {
-            dataContainer.set(_quest_completed_array, PersistentDataType.INTEGER_ARRAY, new int[]{0});
-        }
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_completed_array, new int[]{0});
+
         // which quests they CAN do
-        if (!dataContainer.has(_quest_can_array, PersistentDataType.INTEGER_ARRAY)) {
-            dataContainer.set(_quest_can_array, PersistentDataType.INTEGER_ARRAY, new int[]{1});
-        }
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_can_array, new int[]{1});
 
         // ban him for why not, he called me a loser
 //        if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
