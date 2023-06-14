@@ -28,7 +28,7 @@ public class questCommand implements Listener {
                 if (arguments.length >= 2 && arguments[0].equalsIgnoreCase("testingGui")) {
                     player.openInventory(guiManager.getGUIInventoryByIntegerID(Integer.parseInt(arguments[1])));
                 } else {
-
+                    player.openInventory(guiManager.getGUIInventoryByIntegerID(1));
                 }
 
                 return true;

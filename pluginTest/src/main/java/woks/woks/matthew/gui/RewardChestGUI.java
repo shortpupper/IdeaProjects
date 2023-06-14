@@ -13,7 +13,7 @@ import java.util.List;
 import static woks.woks.WOKS.mapNumber;
 
 public class RewardChestGUI {
-    public static void openGUIChest(Player player, String title, List<ItemStack> items, Integer currentPage) {
+    public static void openGUIChest(Player player, String title, List<ItemStack> items, Integer currentPage, Integer prevGUI) {
         Inventory gui = Bukkit.createInventory(null, 54, title);
 
 //        List<ItemStack> items = List.of(items2);
@@ -73,6 +73,7 @@ public class RewardChestGUI {
 
         NBTItem nbtItemcompletedFeather = new NBTItem(completedFeather);
         nbtItemcompletedFeather.setInteger("GuiLoc", 3);
+        nbtItemcompletedFeather.setInteger("prevGUI", prevGUI);
         completedFeather = nbtItemcompletedFeather.getItem();
 
         gui.setItem(49, completedFeather);

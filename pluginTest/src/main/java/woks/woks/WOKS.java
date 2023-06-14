@@ -70,6 +70,10 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static GUIManager guiManager;
     public static StorageManager storageManager;
 
+    public static int currentPage  = 0;
+    public static int currentPage2 = 0;
+    public static int currentPage3 = 0;
+
     // logging vars
     public static boolean LogDrag;
     public static boolean LogMovement;
@@ -379,7 +383,8 @@ public final class WOKS extends JavaPlugin implements Listener {
             guiManager = new GUIManager();
 
             guiManager.registerGUI(1, "Quests", getItemsRegisterGUIExample());
-            guiManager.registerGUI(2, "Current Quest", getItemsForCurrentQuestGUI());
+            guiManager.registerGUI(2, "Quests2", getItemsRegisterGUIExample());
+//            guiManager.registerGUI(2, "Current Quest", getItemsForCurrentQuestGUI());
 
             Bukkit.getLogger().info("[WOKS][v6.9.2023] GUI added.");
         }
@@ -436,9 +441,9 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         // Create the item array for the GUI
         ItemStack[] items = new ItemStack[54];
-        for (int i = 0; i < 54; i++) {
-            items[i] = blankItem;
-        }
+//        for (int i = 0; i < 54; i++) {
+//            items[i] = blankItem;
+//        }
         items[13] = redStone;
         items[20] = tnt;
         items[24] = barrel;
@@ -449,6 +454,7 @@ public final class WOKS extends JavaPlugin implements Listener {
     }
 
     private ItemStack[] getItemsForCurrentQuestGUI() {
+        Integer prevGUI = 1;
         // Create the ItemStacks for the GUI
         ItemStack blankItem = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
 
@@ -457,28 +463,55 @@ public final class WOKS extends JavaPlugin implements Listener {
         ItemStack barrel    = new ItemStack(Material.BARREL);
         ItemStack book      = new ItemStack(Material.BOOK);
 
+        // idk
+        NBTItem nbtItemPainting;
+
         // Set display names for the items
         ItemMeta redStoneMeta = Objects.requireNonNull(redStone.getItemMeta());
         redStoneMeta.setDisplayName("Current Quest");
         redStone.setItemMeta(redStoneMeta);
 
+         nbtItemPainting = new NBTItem(redStone);
+        nbtItemPainting.setInteger("GuiLoc", 1);
+        nbtItemPainting.setInteger("prevGUI", prevGUI);
+        redStone = nbtItemPainting.getItem();
+
+
         ItemMeta tntMeta = Objects.requireNonNull(tnt.getItemMeta());
         tntMeta.setDisplayName("Claim Quest");
         tnt.setItemMeta(tntMeta);
+
+         nbtItemPainting = new NBTItem(tnt);
+        nbtItemPainting.setInteger("GuiLoc", 2);
+        nbtItemPainting.setInteger("prevGUI", prevGUI);
+        tnt = nbtItemPainting.getItem();
+
 
         ItemMeta barrelMeta = Objects.requireNonNull(barrel.getItemMeta());
         barrelMeta.setDisplayName("Completed Quests");
         barrel.setItemMeta(barrelMeta);
 
+         nbtItemPainting = new NBTItem(barrel);
+        nbtItemPainting.setInteger("GuiLoc", 2);
+        nbtItemPainting.setInteger("prevGUI", prevGUI);
+        barrel = nbtItemPainting.getItem();
+
+
         ItemMeta bookMeta = Objects.requireNonNull(book.getItemMeta());
         bookMeta.setDisplayName("Stats");
         book.setItemMeta(bookMeta);
 
+         nbtItemPainting = new NBTItem(book);
+        nbtItemPainting.setInteger("GuiLoc", 2);
+        nbtItemPainting.setInteger("prevGUI", prevGUI);
+        book = nbtItemPainting.getItem();
+
+
         // Create the item array for the GUI
         ItemStack[] items = new ItemStack[54];
-        for (int i = 0; i < 54; i++) {
-            items[i] = blankItem;
-        }
+//        for (int i = 0; i < 54; i++) {
+//            items[i] = blankItem;
+//        }
         items[13] = redStone;
         items[20] = tnt;
         items[24] = barrel;
@@ -661,7 +694,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         inventory.setItem(31, claimGlassPane);
 
         // Create glass panes with different colors based on quest percent done
-        int[] percentIndexes = {28, 37, 46, 47, 48, 49, 50, 51, 52, 43, 34};
+        int[] percentIndexes = {28, 37, 46, 47, 48, 40, 50, 51, 52, 43, 34};
         double[] percentValues = {0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0};
 
         for (int i = 0; i < percentIndexes.length; i++) {
@@ -685,6 +718,19 @@ public final class WOKS extends JavaPlugin implements Listener {
 
             inventory.setItem(index, glassPane);
         }
+
+        ItemStack item = new ItemStack(Material.FEATHER);
+        ItemMeta itemMeta = item.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setDisplayName("Back");
+        item.setItemMeta(itemMeta);
+
+        NBTItem nbtItem = new NBTItem(item);
+        nbtItem.setInteger("GuiLoc", 2);
+        nbtItem.setInteger("prevGUI", prevGUI);
+
+        item = nbtItem.getItem();
+        inventory.setItem(49, item);
 
         return inventory;
     }
