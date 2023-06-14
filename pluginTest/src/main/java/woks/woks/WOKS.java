@@ -66,13 +66,17 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static NamespacedKey _quest_completed;
     public static NamespacedKey _quest_completed_array;
     public static NamespacedKey _quest_can_array;
+    public static NamespacedKey _quest_can_array_index;
+    public static NamespacedKey _quest_gui_currentPage1_index;
+    public static NamespacedKey _quest_gui_currentPage2_index;
+    public static NamespacedKey _quest_gui_currentPage3_index;
     public static QuestManager questManager;
     public static GUIManager guiManager;
     public static StorageManager storageManager;
 
-    public static int currentPage  = 0;
-    public static int currentPage2 = 0;
-    public static int currentPage3 = 0;
+//    public static int currentPage  = 0;
+//    public static int currentPage2 = 0;
+//    public static int currentPage3 = 0;
 
     // logging vars
     public static boolean LogDrag;
@@ -160,32 +164,40 @@ public final class WOKS extends JavaPlugin implements Listener {
         saveConfig();
 
 
-        _admin                   = new NamespacedKey(this, "_admin");
-        _jsonSmells              = new NamespacedKey(this, "_jsonSmells");
-        _namespacedKeyNumberRank = new NamespacedKey(this, "_role_rank_air_number");
-        _quest_id                = new NamespacedKey(this, "_quest_id");
-        _quest_id_integer        = new NamespacedKey(this, "_quest_id_integer");
-        _quest_percent_done      = new NamespacedKey(this, "_quest_percent_done");
-        _quest_claimed           = new NamespacedKey(this, "_quest_claimed");
-        _quest_completed         = new NamespacedKey(this, "_quest_completed");
-        _quest_completed_array   = new NamespacedKey(this, "_quest_completed_array");
-        _quest_can_array         = new NamespacedKey(this, "_quest_can_array");
+        _admin                        = new NamespacedKey(this, "_admin");
+        _jsonSmells                   = new NamespacedKey(this, "_jsonSmells");
+        _namespacedKeyNumberRank      = new NamespacedKey(this, "_role_rank_air_number");
+        _quest_id                     = new NamespacedKey(this, "_quest_id");
+        _quest_id_integer             = new NamespacedKey(this, "_quest_id_integer");
+        _quest_percent_done           = new NamespacedKey(this, "_quest_percent_done");
+        _quest_claimed                = new NamespacedKey(this, "_quest_claimed");
+        _quest_completed              = new NamespacedKey(this, "_quest_completed");
+        _quest_completed_array        = new NamespacedKey(this, "_quest_completed_array");
+        _quest_can_array              = new NamespacedKey(this, "_quest_can_array");
+        _quest_can_array_index        = new NamespacedKey(this, "_quest_can_array_index");
+        _quest_gui_currentPage1_index = new NamespacedKey(this, "_quest_gui_currentPage1_index");
+        _quest_gui_currentPage2_index = new NamespacedKey(this, "_quest_gui_currentPage2_index");
+        _quest_gui_currentPage3_index = new NamespacedKey(this, "_quest_gui_currentPage3_index");
 
 
 
 
         if (config.getBoolean("StorageManager_DONTCHANGE")) {
             storageManager = new StorageManager();
-            storageManager.registerNewStorage(_admin,                   PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_jsonSmells,              PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_namespacedKeyNumberRank, PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_quest_id,                PersistentDataType.STRING);
-            storageManager.registerNewStorage(_quest_id_integer,        PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_quest_percent_done,      PersistentDataType.DOUBLE);
-            storageManager.registerNewStorage(_quest_claimed,           PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_quest_completed,         PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_quest_completed_array,   PersistentDataType.INTEGER_ARRAY);
-            storageManager.registerNewStorage(_quest_can_array,         PersistentDataType.INTEGER_ARRAY);
+            storageManager.registerNewStorage(_admin,                          PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_jsonSmells,                     PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_namespacedKeyNumberRank,        PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_quest_id,                       PersistentDataType.STRING);
+            storageManager.registerNewStorage(_quest_id_integer,               PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_quest_percent_done,             PersistentDataType.DOUBLE);
+            storageManager.registerNewStorage(_quest_claimed,                  PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_quest_completed,                PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_quest_completed_array,          PersistentDataType.INTEGER_ARRAY);
+            storageManager.registerNewStorage(_quest_can_array,                PersistentDataType.INTEGER_ARRAY);
+            storageManager.registerNewStorage(_quest_can_array_index,          PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_quest_gui_currentPage1_index,   PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_quest_gui_currentPage2_index,   PersistentDataType.INTEGER);
+            storageManager.registerNewStorage(_quest_gui_currentPage3_index,   PersistentDataType.INTEGER);
         }
 
 
@@ -1224,6 +1236,10 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         // which quests they CAN do
         storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_can_array, new int[]{1});
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_can_array_index, 0);
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_gui_currentPage1_index, 0);
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_gui_currentPage2_index, 0);
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_gui_currentPage3_index, 0);
 
         // ban him for why not, he called me a loser
 //        if (player.getName().equals("PlaneDestroyer") && player.isOp()) {

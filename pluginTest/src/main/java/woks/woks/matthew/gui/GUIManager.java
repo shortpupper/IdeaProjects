@@ -85,6 +85,9 @@ public class GUIManager implements Listener {
 
                 if (id != -1 || guiId != -1) {
                     PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+                    Integer currentPage3 = (Integer) storageManager.getValueWithNamespacedKey(dataContainer, _quest_gui_currentPage3_index);
+                    Integer currentPage2 = (Integer) storageManager.getValueWithNamespacedKey(dataContainer, _quest_gui_currentPage2_index);
+                    Integer currentPage = (Integer) storageManager.getValueWithNamespacedKey(dataContainer, _quest_gui_currentPage1_index);
                     // Perform the action based on the GUI ID
                     if (id == 1 || guiId == 1) {
                         // Handle GUI with ID 1
