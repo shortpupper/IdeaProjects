@@ -213,7 +213,7 @@ public class GUIManager implements Listener {
                         }
                     }
                     else if (id == 4 || guiId == 4) {
-                        // this is Quests gui
+                        // this is Quests gui || ClaimQuest gui
 
                         ItemStack clickedItem = event.getCurrentItem();
                         if (clickedItem == null || clickedItem.getType() == Material.AIR) {
@@ -290,6 +290,7 @@ public class GUIManager implements Listener {
                     }
                     else if (id == 6 || guiId == 6) {
                         // this is the quest for when claim use
+                        // so these are is the can quest
                         ItemStack clickedItem = event.getCurrentItem();
 
 
