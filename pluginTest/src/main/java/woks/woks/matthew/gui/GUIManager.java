@@ -17,10 +17,7 @@ import woks.woks.WOKS;
 import woks.woks.matthew.quest.Quest;
 import woks.woks.matthew.quest.QuestGUI;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.bukkit.persistence.PersistentDataType.INTEGER_ARRAY;
 import static woks.woks.WOKS.*;
@@ -294,23 +291,86 @@ public class GUIManager implements Listener {
                         ItemStack clickedItem = event.getCurrentItem();
 
 
-                        int[] numbers = dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY);
+//                        int[] numbers = dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY);
 
-                        assert numbers != null;
-                        List<Quest> questList = getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(numbers));
+//                        assert numbers != null;
+//                        List<Quest> questList = getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(numbers));
 
-                        QuestGUI questGUI = new QuestGUI(player);
+//                        QuestGUI questGUI = new QuestGUI(player);
 
-
+                        NBTItem nbtItem = new NBTItem(clickedItem);
+                        String title = event.getView().getTitle();
                         if (clickedItem.getType() == Material.RED_STAINED_GLASS_PANE) {
+                            // "Quest Claimed"
+                            Msg.send(player, "You have already done this quest.");
+                        }
+                        else if (clickedItem.getType() == Material.GREEN_STAINED_GLASS_PANE) {
+                            // "Embark on quest"
+                            // check to make sure that the current quest is done and claimed and percent done is 100%
+                            // thats already checked
+                            // setting the current quest
 
-                        } else if (clickedItem.getType() == Material.GREEN_STAINED_GLASS_PANE) {
+                            // made the quest not appear in the claim quest gui.
+                            storageManager.setValueWithNamespacedKey(
+                                dataContainer,
+                                _quest_can_array,
+                                removeValueFromArray(
+                                    (int[]) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array),
+                                    nbtItem.getInteger("questIntId")
+                                )
+                            );
+                            String stringId = nbtItem.getString("questId");
+                            storageManager.setValueWithNamespacedKey(dataContainer, _quest_claimed, 0);
+                            storageManager.setValueWithNamespacedKey(dataContainer, _quest_id, stringId);
+                            storageManager.setValueWithNamespacedKey(dataContainer, _quest_id_integer, nbtItem.getString("questIntId"));
 
-                        } else if (clickedItem.getType() == Material.PAPER) {
+                            // now reload the thing
+                            player.openInventory(ClaimNewQuestGUI.getGuiClaim(dataContainer, questManager.getQuestById(stringId)));
+                        }
+                        // this might be redundant
+                        else if (clickedItem.getType() == Material.LIME_STAINED_GLASS_PANE) {
+                            // "Claim Quest"
+                            dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 1);
+                            dataContainer.set(_quest_completed, PersistentDataType.INTEGER, dataContainer.get(_quest_completed, PersistentDataType.INTEGER) + 1);
 
-                        }  else if (clickedItem.getType() == Material.FEATHER) {
+                            RewordQuest(player, dataContainer.get(_quest_id, PersistentDataType.STRING));
+                            // now reload
+                            player.openInventory(ClaimNewQuestGUI.getGuiClaim(dataContainer, questManager.getQuestById(title)));
+                        }
+                        else if (clickedItem.getType() == Material.ORANGE_STAINED_GLASS_PANE) {
+                            // "Can't do Quest"
+                            Msg.send(player, "Do your current quest before you cna do another.");
+
+                            // now reload
+//                            player.openInventory(ClaimNewQuestGUI.getGuiClaim(dataContainer, questManager.getQuestById(Objects.requireNonNull(event.getClickedInventory()).getViewers().get(0).getOpenInventory().getTitle())));
+                        }
+                        else if (clickedItem.getType() == Material.PAPER) {
+                            Msg.send(player, Objects.requireNonNull(Objects.requireNonNull(clickedItem.getItemMeta()).getLore()).toString());
+                        }
+                        else if (clickedItem.getType() == Material.ECHO_SHARD) {
+                            // prev page
+                            int IndexItem = nbtItem.getInteger("ItemIndex");
+                            int[] can_array = (int[]) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array);
+                            Quest quest = questManager.getQuestByIntegerId(can_array[IndexItem+1]);
+
+                            Inventory inv = ClaimNewQuestGUI.getGuiClaim(dataContainer, quest);
+
+                            // reload
+                            player.openInventory(inv);
+                        }
+                        else if (clickedItem.getType() == Material.AMETHYST_SHARD) {
+                            // next page
+                            int IndexItem = nbtItem.getInteger("ItemIndex");
+                            int[] can_array = (int[]) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array);
+                            Quest quest = questManager.getQuestByIntegerId(can_array[IndexItem-1]);
+
+                            Inventory inv = ClaimNewQuestGUI.getGuiClaim(dataContainer, quest);
+
+                            // reload
+                            player.openInventory(inv);
+                        }
+                        else if (clickedItem.getType() == Material.FEATHER) {
                             // get nbt
-                            NBTItem nbtItem = new NBTItem(clickedItem);
                             Integer prevGUI = nbtItem.getInteger("prevGUI");
 
                             // ignore this >> // if the gui is 1 or current quest cus its custom

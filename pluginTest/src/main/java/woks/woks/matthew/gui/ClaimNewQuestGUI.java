@@ -17,29 +17,35 @@ import static woks.woks.WOKS.*;
 
 public class ClaimNewQuestGUI {
     public static ItemStack feather = makeGuiItem(Material.FEATHER, "Back", 6, 4);
-    public static ItemStack chest   = makeGuiItem(Material.CHEST, "Rewards", 6, 4, Collections.singletonList("Click Me"));
-    public static ItemStack book           = makeGuiItem(Material.BOOK, "Requirements", 6, 4);
-    public static ItemStack paper          = makeGuiItem(Material.PAPER, "Description", 6, 4);
+    public static ItemStack chest = makeGuiItem(Material.CHEST, "Rewards", 6, 4, Collections.singletonList("Click Me"));
+    public static ItemStack book = makeGuiItem(Material.BOOK, "Requirements", 6, 4);
+    public static ItemStack paper = makeGuiItem(Material.PAPER, "Description", 6, 4);
+    public static ItemStack glass_pane = makeGuiItem(Material.ORANGE_STAINED_GLASS_PANE, "Can't do Quest", 6, 4);
 
-    public static Inventory getGui(PersistentDataContainer dataContainer, Quest quest) {
+    public static Inventory getGuiClaim(PersistentDataContainer dataContainer, Quest quest) {
         ItemStack questItem      = makeGuiItem(quest.getMaterial(), quest.getName(), 6, 4);
         book  = setItemLore(book, Collections.singletonList(quest.getRequirements()));
         paper = setItemLore(paper, Collections.singletonList(quest.getDescription()));
 
         // this checks if the player can claim the
-        Material glass           = Material.GREEN_STAINED_GLASS_PANE;
-        String   glassName       = "Embark on quest";
         int questClaimed         = (int) storageManager.getValueWithNamespacedKey(dataContainer, _quest_claimed);
         double questPercentDone  = (double) storageManager.getValueWithNamespacedKey(dataContainer, _quest_percent_done);
+        NBTItem glass_paneNBT    = new NBTItem(glass_pane);
+        glass_paneNBT.setInteger("questIntId", quest.getQuestIntegerId());
+        glass_paneNBT.setString("questId",     quest.getQuestId());
+
+        glass_pane = glass_paneNBT.getItem();
+
         if (questClaimed == 1) {
-            glassName = "Quest Claimed";
-            glass     = Material.RED_STAINED_GLASS_PANE;
+            glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.RED_STAINED_GLASS_PANE, "Quest Claimed");
         }
         else if (questPercentDone >= 100.0 && questClaimed == 0) {
-            glassName = "Claim Quest";
-            glass     = Material.LIME_STAINED_GLASS_PANE;
+            glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.LIME_STAINED_GLASS_PANE, "Claim Quest");
         }
-        ItemStack glass_pane      = makeGuiItem(glass, glassName, 6, 4);
+        else if (questPercentDone < 100.0d || questClaimed == 0) {
+            glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.GREEN_STAINED_GLASS_PANE, "Embark on quest");
+        }
+
 
         int quest_can_array_index = (int) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array_index);
         int lengthIntArray = ((int[]) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array)).length;

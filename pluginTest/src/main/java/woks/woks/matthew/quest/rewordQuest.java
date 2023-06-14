@@ -31,11 +31,11 @@ public class rewordQuest {
 
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
         dataContainer.set(_quest_completed_array, PersistentDataType.INTEGER_ARRAY, addArrays(Objects.requireNonNull(dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY)), new int[]{questById.getQuestIntegerId()}));
-        Bukkit.getLogger().info("[woks] hello?");
+//        Bukkit.getLogger().info("[woks] hello?");
         dataContainer.set(_quest_can_array, PersistentDataType.INTEGER_ARRAY, addArrays(Objects.requireNonNull(dataContainer.get(_quest_can_array, PersistentDataType.INTEGER_ARRAY)), castIntegerArrayToIntArray(questById.getCanDoQuests())));
-        Bukkit.getLogger().info("[woks] bye?");
+//        Bukkit.getLogger().info("[woks] bye?");
 
-        Bukkit.getLogger().info("Quest reward given.");
+//        Bukkit.getLogger().info("Quest reward given.");
     }
 
     // These might just be useless
