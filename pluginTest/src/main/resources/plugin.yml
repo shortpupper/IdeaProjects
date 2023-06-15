@@ -138,6 +138,14 @@ commands:
     aliases:
       - q
 
+  giveQuestPlayer:
+    description: Give player's quests.
+    permission: op
+    aliases:
+      - questgive
+      - qgive
+      - qg
+
 
 
 permissions:

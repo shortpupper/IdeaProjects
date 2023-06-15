@@ -13,7 +13,10 @@ import java.util.List;
 import static woks.woks.WOKS.mapNumber;
 
 public class RewardChestGUI {
-    public static void openGUIChest(Player player, String title, List<ItemStack> items, Integer currentPage, Integer prevGUI) {
+    public static void openGUIChest (Player player, String title, List<ItemStack> items, Integer currentPage, Integer prevGUI) {
+        openGUIChest(player, title, items, currentPage,  prevGUI, 3);
+    }
+    public static void openGUIChest(Player player, String title, List<ItemStack> items, Integer currentPage, Integer prevGUI, Integer GuiLoc) {
         Inventory gui = Bukkit.createInventory(null, 54, title);
 
 //        List<ItemStack> items = List.of(items2);
@@ -23,7 +26,7 @@ public class RewardChestGUI {
             ItemStack questItem = items.get(i);
             if (questItem.getType() != Material.AIR) {
                 NBTItem nbtItem = new NBTItem(questItem);
-                nbtItem.setInteger("GuiLoc", 3);
+                nbtItem.setInteger("GuiLoc", GuiLoc);
 
                 questItem = nbtItem.getItem();
 
@@ -41,7 +44,7 @@ public class RewardChestGUI {
                 prevButton.setItemMeta(prevMeta);
 
                 NBTItem nbtItem2 = new NBTItem(prevButton);
-                nbtItem2.setInteger("GuiLoc", 3);
+                nbtItem2.setInteger("GuiLoc", GuiLoc);
                 prevButton = nbtItem2.getItem();
 
                 gui.setItem(48, prevButton);
@@ -54,7 +57,7 @@ public class RewardChestGUI {
                 nextButton.setItemMeta(nextMeta);
 
                 NBTItem nbtItemnextButton = new NBTItem(nextButton);
-                nbtItemnextButton.setInteger("GuiLoc", 3);
+                nbtItemnextButton.setInteger("GuiLoc", GuiLoc);
                 nextButton = nbtItemnextButton.getItem();
 
                 gui.setItem(50, nextButton);
@@ -72,7 +75,7 @@ public class RewardChestGUI {
         completedFeather.setItemMeta(featherMeta);
 
         NBTItem nbtItemcompletedFeather = new NBTItem(completedFeather);
-        nbtItemcompletedFeather.setInteger("GuiLoc", 3);
+        nbtItemcompletedFeather.setInteger("GuiLoc", GuiLoc);
         nbtItemcompletedFeather.setInteger("prevGUI", prevGUI);
         completedFeather = nbtItemcompletedFeather.getItem();
 

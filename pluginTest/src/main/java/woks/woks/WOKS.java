@@ -35,6 +35,7 @@ import woks.woks.matthew.gui.GUIManager;
 import woks.woks.matthew.permote;
 import woks.woks.matthew.persistantStorageManager.StorageManager;
 import woks.woks.matthew.quest.*;
+import woks.woks.matthew.quest.commands.giveQuestPlayer;
 import woks.woks.matthew.roles;
 
 import java.lang.reflect.Field;
@@ -291,6 +292,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             new CommandNextQuest();
             new ResetQuestCommand();
             new CmdGetPerStorage();
+            new giveQuestPlayer();
 
             new QuestHelpCommand();
 
@@ -396,6 +398,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
             guiManager.registerGUI(1, "Quests", getItemsRegisterGUIExample());
             guiManager.registerGUI(2, "Quests2", getItemsRegisterGUIExample());
+
 //            guiManager.registerGUI(2, "Current Quest", getItemsForCurrentQuestGUI());
 
             Bukkit.getLogger().info("[WOKS][v6.9.2023] GUI added.");

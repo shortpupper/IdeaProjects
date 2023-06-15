@@ -72,32 +72,39 @@ public class QuestGUI implements Listener {
 
         // Add quest items to the GUI
         for (int i = currentPage * 45; i < Math.min((currentPage + 1) * 45, quests.size()); i++) {
-            Quest currentQuest = quests.get(i);
-            String quest = currentQuest.getName();
+            ItemStack questItem;
+            try {
+                Quest  currentQuest = quests.get(i);
+                String quest        = currentQuest.getName();
 
-            ItemStack questItem = new ItemStack(currentQuest.getMaterial());
-            ItemMeta meta = questItem.getItemMeta();
+                questItem = new ItemStack(currentQuest.getMaterial());
+                ItemMeta  meta      = questItem.getItemMeta();
 
-            assert meta != null;
-
-
-            List<String> lores = new ArrayList<>();
-            lores.add("§f" + currentQuest.getDescription() + "§r");
-
-            meta.setLore(lores);
-            meta.setDisplayName(quest);
-            questItem.setItemMeta(meta);
+                assert meta != null;
 
 
-            NBTItem nbtItem = new NBTItem(questItem);
+                List<String> lores = new ArrayList<>();
+                lores.add("§f" + currentQuest.getDescription() + "§r");
+
+                meta.setLore(lores);
+                meta.setDisplayName(quest);
+                questItem.setItemMeta(meta);
+
+
+                NBTItem nbtItem = new NBTItem(questItem);
 //            nbtItem.setObject("QuestObject", currentQuest);
-            nbtItem.setInteger("intId", currentQuest.getQuestIntegerId());
-            nbtItem.setInteger("GuiLoc", guiId);
-            nbtItem.setString("stringId", currentQuest.getQuestId());
+                nbtItem.setInteger("intId", currentQuest.getQuestIntegerId());
+                nbtItem.setInteger("GuiLoc", guiId);
+                nbtItem.setString("stringId", currentQuest.getQuestId());
+                nbtItem.setBoolean("IsCanQuest", true);
 
-            // TODO make a thing so that user can click item to then open a gui with the info of the quest
+                // TODO make a thing so that user can click item to then open a gui with the info of the quest
 
-            questItem = nbtItem.getItem();
+                questItem = nbtItem.getItem();
+            }
+            catch (Exception e) {
+                questItem = null;
+            }
 
             gui.setItem(i % 45, questItem);
         }

@@ -36,28 +36,28 @@ public class ClaimNewQuestGUI {
 
         glass_pane = glass_paneNBT.getItem();
 
-        if (questClaimed == 1) {
-            glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.RED_STAINED_GLASS_PANE, "Quest Claimed");
-        }
-        else if (questPercentDone >= 100.0 && questClaimed == 0) {
-            glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.LIME_STAINED_GLASS_PANE, "Claim Quest");
-        }
-        else if (questPercentDone < 100.0d || questClaimed == 0) {
+//        if (questClaimed == 1) {
+//            glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.RED_STAINED_GLASS_PANE, "Quest Claimed");
+//        }
+//        else if (questPercentDone >= 100.0 && questClaimed == 0) {
+//            glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.LIME_STAINED_GLASS_PANE, "Claim Quest");
+//        }
+//        else
+       if (questPercentDone >= 100.0d && questClaimed == 1) {
             glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.GREEN_STAINED_GLASS_PANE, "Embark on quest");
         }
 
 
-        int quest_can_array_index = (int) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array_index);
         int lengthIntArray = ((int[]) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array)).length;
         int QuestIndex = (int) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array_index);
         ItemStack echo_shard = null;
         ItemStack amethyst_shard = null;
         if (lengthIntArray > 1) {
             if (QuestIndex + 1 < lengthIntArray) {
-                amethyst_shard  = makeGuiItem(Material.AMETHYST_SHARD, "Next", 6, 4, quest_can_array_index);
+                amethyst_shard  = makeGuiItem(Material.AMETHYST_SHARD, "Next", 6, 4, QuestIndex);
             }
             if (QuestIndex != 0) {
-                echo_shard = makeGuiItem(Material.ECHO_SHARD, "Previous", 6, 4, quest_can_array_index);
+                echo_shard = makeGuiItem(Material.ECHO_SHARD, "Previous", 6, 4, QuestIndex);
             }
         }
 
