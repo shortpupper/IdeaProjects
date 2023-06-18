@@ -22,8 +22,11 @@ public class ClaimNewQuestGUI {
     public static ItemStack paper = makeGuiItem(Material.PAPER, "Description", 6, 4);
     public static ItemStack glass_pane = makeGuiItem(Material.ORANGE_STAINED_GLASS_PANE, "Can't do Quest", 6, 4);
 
-    public static Inventory getGuiClaim(PersistentDataContainer dataContainer, Quest quest) {
-        ItemStack questItem      = makeGuiItem(quest.getMaterial(), quest.getName(), 6, 4);
+    public static Inventory getGuiClaim(PersistentDataContainer dataContainer, Quest quest, Boolean doGlass) {
+        return getGuiClaim(dataContainer, quest, doGlass, 6, 4);
+    }
+    public static Inventory getGuiClaim(PersistentDataContainer dataContainer, Quest quest, Boolean doGlass, Integer guiId, Integer prevGUI) {
+        ItemStack questItem      = makeGuiItem(quest.getMaterial(), quest.getName(), guiId, prevGUI);
         book  = setItemLore(book, Collections.singletonList(quest.getRequirements()));
         paper = setItemLore(paper, Collections.singletonList(quest.getDescription()));
 
@@ -54,20 +57,29 @@ public class ClaimNewQuestGUI {
         ItemStack amethyst_shard = null;
         if (lengthIntArray > 1) {
             if (QuestIndex + 1 < lengthIntArray) {
-                amethyst_shard  = makeGuiItem(Material.AMETHYST_SHARD, "Next", 6, 4, QuestIndex);
+                amethyst_shard  = makeGuiItem(Material.AMETHYST_SHARD, "Next", guiId, prevGUI, QuestIndex);
             }
             if (QuestIndex != 0) {
-                echo_shard = makeGuiItem(Material.ECHO_SHARD, "Previous", 6, 4, QuestIndex);
+                echo_shard = makeGuiItem(Material.ECHO_SHARD, "Previous", guiId, prevGUI, QuestIndex);
             }
         }
 
         Inventory inventory = Bukkit.createInventory(null, 54, quest.getQuestId());
 
+        if (prevGUI != 4 && guiId != 6) {
+            book = setItemPrevGUIandGuiLoc(book, guiId, prevGUI);
+            chest = setItemPrevGUIandGuiLoc(chest, guiId, prevGUI);
+            paper = setItemPrevGUIandGuiLoc(paper, guiId, prevGUI);
+            feather = setItemPrevGUIandGuiLoc(feather, guiId, prevGUI);
+        }
+
         inventory.setItem(4,  questItem);
         inventory.setItem(11, book);
         inventory.setItem(15, chest);
         inventory.setItem(22, paper);
-        inventory.setItem(40, glass_pane);
+        if (doGlass) {
+            inventory.setItem(40, glass_pane);
+        }
         inventory.setItem(48, echo_shard);
         inventory.setItem(49, feather);
         inventory.setItem(50, amethyst_shard);
@@ -150,5 +162,13 @@ public class ClaimNewQuestGUI {
         item.setType(material);
 
         return item;
+    }
+    public static ItemStack setItemPrevGUIandGuiLoc(ItemStack item, Integer guiId, Integer prevGUI) {
+        NBTItem nbtItem = new NBTItem(item);
+
+        nbtItem.setInteger("GuiLoc", guiId);
+        nbtItem.setInteger("prevGUI", prevGUI != null ? prevGUI : 1);
+
+        return nbtItem.getItem();
     }
 }

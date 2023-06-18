@@ -81,6 +81,7 @@ public class GUIManager implements Listener {
 //                }
 
             PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+            Integer currentPage4 = (Integer) storageManager.getValueWithNamespacedKey(dataContainer, _quest_gui_currentPage4_index);
             Integer currentPage3 = (Integer) storageManager.getValueWithNamespacedKey(dataContainer, _quest_gui_currentPage3_index);
             Integer currentPage2 = (Integer) storageManager.getValueWithNamespacedKey(dataContainer, _quest_gui_currentPage2_index);
             Integer currentPage = (Integer) storageManager.getValueWithNamespacedKey(dataContainer, _quest_gui_currentPage1_index);
@@ -199,13 +200,13 @@ public class GUIManager implements Listener {
                 // for next page
 
                 if (item.getType() == Material.LIME_STAINED_GLASS_PANE) {
-                    currentPage3++;
-                    RewardChestGUI.openGUIChest(player, "Current Quest Rewards", items, currentPage3, 2);
+                    currentPage6++;
+                    RewardChestGUI.openGUIChest(player, "Current Quest Rewards", items, currentPage6, 2);
                 }
                 // fro prevuis item
                 else if (item.getType() == Material.RED_STAINED_GLASS_PANE) {
-                    currentPage3--;
-                    RewardChestGUI.openGUIChest(player, "Current Quest Rewards", items, currentPage3, 2);
+                    currentPage6--;
+                    RewardChestGUI.openGUIChest(player, "Current Quest Rewards", items, currentPage6, 2);
                 } else if (item.getType() == Material.FEATHER) {
                     player.openInventory(createCurrentQuestInventory(player, 1));
                 }
@@ -239,7 +240,7 @@ public class GUIManager implements Listener {
                 else if (nbtItem.getBoolean("IsCanQuest")) {
                     storageManager.setValueWithNamespacedKey(dataContainer, _quest_can_array_index, event.getRawSlot() + ((int) storageManager.getValueWithNamespacedKey(dataContainer, _quest_gui_currentPage2_index) * 45));
                     player.openInventory(ClaimNewQuestGUI.getGuiClaim(dataContainer,
-                                                                      questManager.getQuestById(nbtItem.getString("stringId"))));
+                                                                      questManager.getQuestById(nbtItem.getString("stringId")), true));
                 }
                 else if (item.getType() == Material.PAPER) {
                     int[] canDo = dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY);
@@ -259,7 +260,7 @@ public class GUIManager implements Listener {
             }
             else if (guiId == 5) {
                 // this is the completed quest id gui/menu
-                ItemStack clickedItem = event.getCurrentItem();
+                NBTItem nbtItem = new NBTItem(item);
 
 
                 int[] numbers = dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY);
@@ -270,24 +271,38 @@ public class GUIManager implements Listener {
                 QuestGUI questGUI = new QuestGUI(player);
 
 
-                if (clickedItem.getType() == Material.RED_STAINED_GLASS_PANE && currentPage3 > 0) {
+                if (item.getType() == Material.RED_STAINED_GLASS_PANE && currentPage3 > 0) {
 //                            Bukkit.getLogger().info("[WOKS][v2023.6.13] cp2 : 1 : " + currentPage3);
                     currentPage3--;
 //                            Bukkit.getLogger().info("[WOKS][v2023.6.13] cp2 : 2 : " + currentPage3);
                     questGUI.openGUI(questList, currentPage3, "Completed Quests", 5, 1, "Quests");
-                } else if (clickedItem.getType() == Material.GREEN_STAINED_GLASS_PANE && currentPage3 < (questList.size() - 1) / 45) {
+                } else if (item.getType() == Material.GREEN_STAINED_GLASS_PANE && currentPage3 < (questList.size() - 1) / 45) {
 //                            Bukkit.getLogger().info("[WOKS][v2023.6.13] cp2 : 3 : " + currentPage3);
                     currentPage3++;
 //                            Bukkit.getLogger().info("[WOKS][v2023.6.13] cp2 : 4 : " + currentPage3);
                     questGUI.openGUI(questList, currentPage3, "Completed Quests", 5, 1, "Quests");
-                } else if (clickedItem.getType() == Material.PAPER) {
+                }
+                else if (nbtItem.getBoolean("IsCanQuest")) {
+                    storageManager.setValueWithNamespacedKey(dataContainer,
+                                 _quest_done_array_index,
+                                 event.getRawSlot() +
+                                 ((int) storageManager.getValueWithNamespacedKey(dataContainer, _quest_gui_currentPage3_index) * 45));
+
+                    player.openInventory(ClaimNewQuestGUI.getGuiClaim(
+                            dataContainer,
+                            questManager.getQuestById(nbtItem.getString("stringId")),
+                            true,
+                            7,
+                            5
+                    ));
+                }
+                else if (item.getType() == Material.PAPER) {
                     int[] canDo = dataContainer.get(_quest_can_array, PersistentDataType.INTEGER_ARRAY);
 
                     assert canDo != null;
                     questGUI.openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(canDo)), currentPage2, "Quests", 4, 1, "Completed Quests");
-                }  else if (clickedItem.getType() == Material.FEATHER) {
+                }  else if (item.getType() == Material.FEATHER) {
                     // get nbt
-                    NBTItem nbtItem = new NBTItem(clickedItem);
                     Integer prevGUI = nbtItem.getInteger("prevGUI");
 
                     // ignore this >> // if the gui is 1 or current quest cus its custom
@@ -298,30 +313,19 @@ public class GUIManager implements Listener {
             else if (guiId == 6) {
                 // this is the quest for when claim use
                 // so these are is the can quest
-                ItemStack clickedItem = event.getCurrentItem();
-
-
-//                        int[] numbers = dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY);
-
-//                        assert numbers != null;
-//                        List<Quest> questList = getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(numbers));
-
-//                        QuestGUI questGUI = new QuestGUI(player);
-
-
+                NBTItem nbtItem = new NBTItem(item);
                 String title = event.getView().getTitle();
-                if (clickedItem.getType() == Material.RED_STAINED_GLASS_PANE) {
+                if (item.getType() == Material.RED_STAINED_GLASS_PANE) {
                     // "Quest Claimed"
                     Msg.send(player, "You have already done this quest.");
                 }
-                else if (clickedItem.getType() == Material.GREEN_STAINED_GLASS_PANE) {
+                else if (item.getType() == Material.GREEN_STAINED_GLASS_PANE) {
                     // "Embark on quest"
                     // check to make sure that the current quest is done and claimed and percent done is 100%
                     // thats already checked
                     // setting the current quest
 
                     // made the quest not appear in the claim quest gui.
-                    NBTItem nbtItem = new NBTItem(clickedItem);
                     storageManager.setValueWithNamespacedKey(
                         dataContainer,
                         _quest_can_array,
@@ -332,14 +336,20 @@ public class GUIManager implements Listener {
                     );
                     String stringId = nbtItem.getString("questId");
                     storageManager.setValueWithNamespacedKey(dataContainer, _quest_claimed, 0);
+                    storageManager.setValueWithNamespacedKey(dataContainer, _quest_percent_done, 0.0d);
                     storageManager.setValueWithNamespacedKey(dataContainer, _quest_id, stringId);
                     storageManager.setValueWithNamespacedKey(dataContainer, _quest_id_integer, nbtItem.getInteger("questIntId"));
 
                     // now reload the thing
-                    player.openInventory(ClaimNewQuestGUI.getGuiClaim(dataContainer, questManager.getQuestById(stringId)));
+                    // be opening gui 4
+                    QuestGUI questGUI = new QuestGUI(player);
+                    int[] canDo = dataContainer.get(_quest_can_array, PersistentDataType.INTEGER_ARRAY);
+
+                    assert canDo != null;
+                    questGUI.openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(canDo)), currentPage2, "Quests", 4, 1, "Completed Quests");
                 }
                 // this might be redundant
-                else if (clickedItem.getType() == Material.LIME_STAINED_GLASS_PANE) {
+                else if (item.getType() == Material.LIME_STAINED_GLASS_PANE) {
                     // "Claim Quest"
                     dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 1);
                     dataContainer.set(_quest_completed, PersistentDataType.INTEGER,
@@ -347,38 +357,36 @@ public class GUIManager implements Listener {
 
                     RewordQuest(player, dataContainer.get(_quest_id, PersistentDataType.STRING));
                     // now reload
-                    player.openInventory(ClaimNewQuestGUI.getGuiClaim(dataContainer, questManager.getQuestById(title)));
+                    player.openInventory(ClaimNewQuestGUI.getGuiClaim(dataContainer, questManager.getQuestById(title), true));
                 }
-                else if (clickedItem.getType() == Material.ORANGE_STAINED_GLASS_PANE) {
+                else if (item.getType() == Material.ORANGE_STAINED_GLASS_PANE) {
                     // "Can't do Quest"
-                    Msg.send(player, "Do your current quest before you cna do another.");
+                    Msg.send(player, "Do your current quest before you can do another.");
                 }
-                else if (clickedItem.getType() == Material.CHEST) {
-                    Quest currentQuest = questManager.getQuestById(dataContainer.get(_quest_id, PersistentDataType.STRING));
+                else if (item.getType() == Material.CHEST) {
+                    Quest currentQuest = questManager.getQuestById(title);
                     List<ItemStack> items = new ArrayList<>(List.of(currentQuest.getRewardItems()));
                     items.add(customExpBottle(currentQuest.getExpAmount()));
 
-                    RewardChestGUI.openGUIChest(player, title + " Rewards", items, currentPage3, 2, 6);
+                    RewardChestGUI.openGUIChest(player, title + " Rewards", items, currentPage5, 2, 6);
                 }
-                else if (clickedItem.getType() == Material.PAPER) {
-                    Msg.send(player, Objects.requireNonNull(Objects.requireNonNull(clickedItem.getItemMeta()).getLore()).toString());
+                else if (item.getType() == Material.PAPER) {
+                    Msg.send(player, Objects.requireNonNull(Objects.requireNonNull(item.getItemMeta()).getLore()).toString());
                 }
-                else if (clickedItem.getType() == Material.ECHO_SHARD) {
+                else if (item.getType() == Material.ECHO_SHARD) {
                     // prev page
-                    NBTItem nbtItem = new NBTItem(clickedItem);
                     int IndexItem = nbtItem.getInteger("ItemIndex");
                     int[] can_array = (int[]) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array);
                     IndexItem--;
                     storageManager.setValueWithNamespacedKey(dataContainer, _quest_can_array_index, IndexItem);
                     Quest quest = questManager.getQuestByIntegerId(can_array[IndexItem]);
 
-                    Inventory inv = ClaimNewQuestGUI.getGuiClaim(dataContainer, quest);
+                    Inventory inv = ClaimNewQuestGUI.getGuiClaim(dataContainer, quest, true);
 
                     // reload
                     player.openInventory(inv);
                 }
-                else if (clickedItem.getType() == Material.AMETHYST_SHARD) {
-                    NBTItem nbtItem = new NBTItem(clickedItem);
+                else if (item.getType() == Material.AMETHYST_SHARD) {
                     // next page
                     int IndexItem = nbtItem.getInteger("ItemIndex");
                     int[] can_array = (int[]) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array);
@@ -386,12 +394,12 @@ public class GUIManager implements Listener {
                     storageManager.setValueWithNamespacedKey(dataContainer, _quest_can_array_index, IndexItem);
                     Quest quest = questManager.getQuestByIntegerId(can_array[IndexItem]);
 
-                    Inventory inv = ClaimNewQuestGUI.getGuiClaim(dataContainer, quest);
+                    Inventory inv = ClaimNewQuestGUI.getGuiClaim(dataContainer, quest, true);
 
                     // reload
                     player.openInventory(inv);
                 }
-                else if (clickedItem.getType() == Material.FEATHER) {
+                else if (item.getType() == Material.FEATHER) {
                     QuestGUI questGUI = new QuestGUI(player);
                     int[] canDo = dataContainer.get(_quest_can_array, PersistentDataType.INTEGER_ARRAY);
 
@@ -400,6 +408,87 @@ public class GUIManager implements Listener {
 
                 }
 
+            }
+            else if (guiId == 7) {
+                // this will be for the Completed
+
+                String title = event.getView().getTitle();
+                NBTItem nbtItem = new NBTItem(item);
+
+                if (item.getType() == Material.CHEST) {
+                    // TODO FIX
+                    Quest currentQuest = questManager.getQuestById(title);
+                    List<ItemStack> items = new ArrayList<>(List.of(currentQuest.getRewardItems()));
+                    items.add(customExpBottle(currentQuest.getExpAmount()));
+
+                    RewardChestGUI.openGUIChest(player, title + " Rewards", items, currentPage4, 7, 8);
+                }
+                else if (item.getType() == Material.PAPER) {
+                    Msg.send(player, Objects.requireNonNull(Objects.requireNonNull(item.getItemMeta()).getLore()).toString());
+                }
+                else if (item.getType() == Material.ECHO_SHARD) {
+                    // prev page
+
+                    int IndexItem = nbtItem.getInteger("ItemIndex");
+                    int[] can_array = (int[]) storageManager.getValueWithNamespacedKey(dataContainer, _quest_completed_array);
+                    IndexItem--;
+                    storageManager.setValueWithNamespacedKey(dataContainer, _quest_completed_array, IndexItem);
+                    Quest quest = questManager.getQuestByIntegerId(can_array[IndexItem]);
+
+                    Inventory inv = ClaimNewQuestGUI.getGuiClaim(dataContainer, quest, false, 7, 5);
+
+                    // reload
+                    player.openInventory(inv);
+                }
+                else if (item.getType() == Material.AMETHYST_SHARD) {
+                    // next page
+                    int IndexItem = nbtItem.getInteger("ItemIndex");
+                    int[] can_array = (int[]) storageManager.getValueWithNamespacedKey(dataContainer, _quest_completed_array);
+                    IndexItem++;
+                    storageManager.setValueWithNamespacedKey(dataContainer, _quest_completed_array, IndexItem);
+                    Quest quest = questManager.getQuestByIntegerId(can_array[IndexItem]);
+
+                    Inventory inv = ClaimNewQuestGUI.getGuiClaim(dataContainer, quest, false, 7, 5);
+
+                    // reload
+                    player.openInventory(inv);
+                }
+                else if (item.getType() == Material.FEATHER) {
+                    int[] numbers = dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY);
+
+                    assert numbers != null;
+                    List<Quest> questList = getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(numbers));
+
+                    QuestGUI questGUI = new QuestGUI(player);
+                    questGUI.openGUI(questList, currentPage3, "Completed Quests", 5, 1, "Quests");
+
+                }
+            }
+            else if (guiId == 8) {
+                // this is the chest thing?
+                // yes, it's the Current quest rewards.
+                Quest currentQuest = questManager.getQuestById(dataContainer.get(_quest_id, PersistentDataType.STRING));
+                List<ItemStack> items = new ArrayList<>(List.of(currentQuest.getRewardItems()));
+                items.add(customExpBottle(currentQuest.getExpAmount()));
+
+                // something, like, current rewards
+                if (config.getBoolean("log__GUIManager_java_onInventoryClick__marko")) {
+                    Bukkit.getLogger().info("[WOKS][GUIManager.java][v6.12.2023]marko");
+                }
+//                    ItemStack item = event.getCurrentItem().getType();
+                // for next page
+
+                if (item.getType() == Material.LIME_STAINED_GLASS_PANE) {
+                    currentPage++;
+                    RewardChestGUI.openGUIChest(player, "Quest Rewards", items, currentPage, 7);
+                }
+                // fro prevuis item
+                else if (item.getType() == Material.RED_STAINED_GLASS_PANE) {
+                    currentPage--;
+                    RewardChestGUI.openGUIChest(player, "Quest Rewards", items, currentPage, 7);
+                } else if (item.getType() == Material.FEATHER) {
+                    player.openInventory(createCurrentQuestInventory(player, 7));
+                }
             }
             else if (guiId == 0) {
                 event.setCancelled(false);

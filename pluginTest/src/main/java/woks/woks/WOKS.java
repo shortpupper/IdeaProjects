@@ -37,6 +37,8 @@ import woks.woks.matthew.persistantStorageManager.StorageManager;
 import woks.woks.matthew.quest.*;
 import woks.woks.matthew.quest.commands.giveQuestPlayer;
 import woks.woks.matthew.roles;
+import woks.woks.matthew.util.BooleanPersistentDataType;
+import woks.woks.matthew.util.ExtraDataContainer;
 
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
@@ -57,27 +59,9 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static boolean AFC = false;
     public static FileConfiguration config;
 
-    public static NamespacedKey _jsonSmells;
-    public static NamespacedKey _admin;
-    public static NamespacedKey _namespacedKeyNumberRank;
-    public static NamespacedKey _quest_id;
-    public static NamespacedKey _quest_id_integer;
-    public static NamespacedKey _quest_percent_done;
-    public static NamespacedKey _quest_claimed;
-    public static NamespacedKey _quest_completed;
-    public static NamespacedKey _quest_completed_array;
-    public static NamespacedKey _quest_can_array;
-    public static NamespacedKey _quest_can_array_index;
-    public static NamespacedKey _quest_gui_currentPage1_index;
-    public static NamespacedKey _quest_gui_currentPage2_index;
-    public static NamespacedKey _quest_gui_currentPage3_index;
+
     public static QuestManager questManager;
     public static GUIManager guiManager;
-    public static StorageManager storageManager;
-
-//    public static int currentPage  = 0;
-//    public static int currentPage2 = 0;
-//    public static int currentPage3 = 0;
 
     // logging vars
     public static boolean LogDrag;
@@ -86,6 +70,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
     // dev stuff / testing things
     public static boolean devQuestForTesting;
+    public static BooleanPersistentDataType booleanDataType = new BooleanPersistentDataType();
 
 
 
@@ -131,6 +116,9 @@ public final class WOKS extends JavaPlugin implements Listener {
         instance = this;
         // Plugin startup logic
         Bukkit.getLogger().info("Starting, ShortPuppy14484 plugin.");
+        // Register the custom PersistentDataType
+
+
 
 
 
@@ -164,42 +152,6 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.options().copyDefaults(true);
         saveConfig();
 
-
-        _admin                        = new NamespacedKey(this, "_admin");
-        _jsonSmells                   = new NamespacedKey(this, "_jsonSmells");
-        _namespacedKeyNumberRank      = new NamespacedKey(this, "_role_rank_air_number");
-        _quest_id                     = new NamespacedKey(this, "_quest_id");
-        _quest_id_integer             = new NamespacedKey(this, "_quest_id_integer");
-        _quest_percent_done           = new NamespacedKey(this, "_quest_percent_done");
-        _quest_claimed                = new NamespacedKey(this, "_quest_claimed");
-        _quest_completed              = new NamespacedKey(this, "_quest_completed");
-        _quest_completed_array        = new NamespacedKey(this, "_quest_completed_array");
-        _quest_can_array              = new NamespacedKey(this, "_quest_can_array");
-        _quest_can_array_index        = new NamespacedKey(this, "_quest_can_array_index");
-        _quest_gui_currentPage1_index = new NamespacedKey(this, "_quest_gui_currentPage1_index");
-        _quest_gui_currentPage2_index = new NamespacedKey(this, "_quest_gui_currentPage2_index");
-        _quest_gui_currentPage3_index = new NamespacedKey(this, "_quest_gui_currentPage3_index");
-
-
-
-
-        if (config.getBoolean("StorageManager_DONTCHANGE")) {
-            storageManager = new StorageManager();
-            storageManager.registerNewStorage(_admin,                          PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_jsonSmells,                     PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_namespacedKeyNumberRank,        PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_quest_id,                       PersistentDataType.STRING);
-            storageManager.registerNewStorage(_quest_id_integer,               PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_quest_percent_done,             PersistentDataType.DOUBLE);
-            storageManager.registerNewStorage(_quest_claimed,                  PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_quest_completed,                PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_quest_completed_array,          PersistentDataType.INTEGER_ARRAY);
-            storageManager.registerNewStorage(_quest_can_array,                PersistentDataType.INTEGER_ARRAY);
-            storageManager.registerNewStorage(_quest_can_array_index,          PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_quest_gui_currentPage1_index,   PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_quest_gui_currentPage2_index,   PersistentDataType.INTEGER);
-            storageManager.registerNewStorage(_quest_gui_currentPage3_index,   PersistentDataType.INTEGER);
-        }
 
 
         // Logging stuff, really burning
@@ -1219,10 +1171,12 @@ public final class WOKS extends JavaPlugin implements Listener {
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
 
         // COULD DO THIS ON JOIN
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _namespacedKeyNumberRank, 0);
+        ExtraDataContainer extraDataContainer = new ExtraDataContainer(dataContainer);
+
+        extraDataContainer.give(NKD.PLAYER_RANK.getK(), NKD.PLAYER_RANK.getT(), 0);
 
         // this is like how much is done
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_percent_done, 0.0d);
+        extraDataContainer.give(NKD.PERCENT_OF_DONE.getK(), NKD.PERCENT_OF_DONE.getT(), 0.0d);
 
         // the id so you can get it
         storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_id, "0");
@@ -1243,6 +1197,8 @@ public final class WOKS extends JavaPlugin implements Listener {
         storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_gui_currentPage1_index, 0);
         storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_gui_currentPage2_index, 0);
         storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_gui_currentPage3_index, 0);
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_done_array_index, 0);
+        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_gui_currentPage4_index, 0);
 
         // ban him for why not, he called me a loser
 //        if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
