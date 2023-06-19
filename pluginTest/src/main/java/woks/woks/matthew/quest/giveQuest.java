@@ -1,37 +1,31 @@
 package woks.woks.matthew.quest;
 
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import woks.woks.Msg;
+import woks.woks.NKD;
+import woks.woks.matthew.util.ExtraDataContainer;
 
-import static woks.woks.WOKS.*;
+import static woks.woks.WOKS.questManager;
 
 public class giveQuest {
 
     public static void GiveQuest(Player player, String questId) {
-        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
-        int isDone = dataContainer.get(_quest_claimed, PersistentDataType.INTEGER);
+        ExtraDataContainer dataContainer = new ExtraDataContainer(player.getPersistentDataContainer());
+        boolean            isDone        = dataContainer.get(NKD.HAS_BEEN_CLAIMED);
 
-        if (dataContainer.get(_quest_completed, PersistentDataType.INTEGER) == 0 && dataContainer.get(_quest_claimed, PersistentDataType.INTEGER) == 0) {
-            dataContainer.set(_quest_id, PersistentDataType.STRING, questId);
-            dataContainer.set(_quest_id_integer, PersistentDataType.INTEGER, questManager.getQuestById(questId).getQuestIntegerId());
-            dataContainer.set(_quest_percent_done, PersistentDataType.DOUBLE, 100.0d);
-            dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);
-
-            Msg.send(player, "Do /claimreward to claim your quest reward.");
-        } else if (isDone == 0) {
+        if (isDone && ((int) dataContainer.get(NKD.HOW_MANY_COMPLETED)) == 0) {
+            dataContainer.set(NKD.STRING_ID, questId);
+            dataContainer.set(NKD.INTEGER_ID, questManager.getQuestById(questId).getQuestIntegerId());
+            dataContainer.set(NKD.PERCENT_OF_DONE, 100.0d);
+            dataContainer.set(NKD.HAS_BEEN_CLAIMED, false);
+        } else if (!isDone) {
             Msg.send(player, "Claim your quest before you can get a new one.");
-        } else if (isDone == 1 && dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE) >= 100.0d) {
+        } else if (isDone && ((double) dataContainer.get(NKD.PERCENT_OF_DONE)) >= 100.0d) {
             // give a new quest via the quest id thing
-//            Msg.send(player, "Workin");
-            dataContainer.set(_quest_id, PersistentDataType.STRING, questId);
-//            Msg.send(player, questId);
-//            Msg.send(player, questManager.getQuestById(questId).toString());
-//            Msg.send(player, String.valueOf(questManager.getQuestById(questId).getQuestIntegerId()));
-            dataContainer.set(_quest_id_integer, PersistentDataType.INTEGER, questManager.getQuestById(questId).getQuestIntegerId());
-            dataContainer.set(_quest_percent_done, PersistentDataType.DOUBLE, 0.0d);
-            dataContainer.set(_quest_claimed, PersistentDataType.INTEGER, 0);
+            dataContainer.set(NKD.STRING_ID, questId);
+            dataContainer.set(NKD.INTEGER_ID, questManager.getQuestById(questId).getQuestIntegerId());
+            dataContainer.set(NKD.PERCENT_OF_DONE, 0.0d);
+            dataContainer.set(NKD.HAS_BEEN_CLAIMED, false);
             Msg.send(player, "New quest added!");
         } else {
             Msg.send(player, "You still have a quest going.");

@@ -7,13 +7,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import woks.woks.NKD;
 import woks.woks.matthew.quest.Quest;
+import woks.woks.matthew.util.ExtraDataContainer;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
-
-import static woks.woks.WOKS.*;
 
 public class ClaimNewQuestGUI {
     public static ItemStack feather = makeGuiItem(Material.FEATHER, "Back", 6, 4);
@@ -25,15 +25,17 @@ public class ClaimNewQuestGUI {
     public static Inventory getGuiClaim(PersistentDataContainer dataContainer, Quest quest, Boolean doGlass) {
         return getGuiClaim(dataContainer, quest, doGlass, 6, 4);
     }
-    public static Inventory getGuiClaim(PersistentDataContainer dataContainer, Quest quest, Boolean doGlass, Integer guiId, Integer prevGUI) {
+    public static Inventory getGuiClaim(PersistentDataContainer EdataContainer, Quest quest, Boolean doGlass, Integer guiId, Integer prevGUI) {
+        ExtraDataContainer dataContainer = new ExtraDataContainer(EdataContainer);
         ItemStack questItem      = makeGuiItem(quest.getMaterial(), quest.getName(), guiId, prevGUI);
         book  = setItemLore(book, Collections.singletonList(quest.getRequirements()));
         paper = setItemLore(paper, Collections.singletonList(quest.getDescription()));
 
         // this checks if the player can claim the
-        int questClaimed         = (int) storageManager.getValueWithNamespacedKey(dataContainer, _quest_claimed);
-        double questPercentDone  = (double) storageManager.getValueWithNamespacedKey(dataContainer, _quest_percent_done);
+        boolean questClaimed     = dataContainer.get(NKD.HAS_BEEN_CLAIMED);
+        double questPercentDone  = dataContainer.get(NKD.PERCENT_OF_DONE);
         NBTItem glass_paneNBT    = new NBTItem(glass_pane);
+
         glass_paneNBT.setInteger("questIntId", quest.getQuestIntegerId());
         glass_paneNBT.setString("questId",     quest.getQuestId());
 
@@ -46,13 +48,13 @@ public class ClaimNewQuestGUI {
 //            glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.LIME_STAINED_GLASS_PANE, "Claim Quest");
 //        }
 //        else
-       if (questPercentDone >= 100.0d && questClaimed == 1) {
+       if (questPercentDone >= 100.0d && questClaimed) {
             glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.GREEN_STAINED_GLASS_PANE, "Embark on quest");
         }
 
 
-        int lengthIntArray = ((int[]) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array)).length;
-        int QuestIndex = (int) storageManager.getValueWithNamespacedKey(dataContainer, _quest_can_array_index);
+        int lengthIntArray = ((int[]) dataContainer.get(NKD.CAN_DO_ARRAY)).length;
+        int QuestIndex = dataContainer.get(NKD.CAN_PAGE_INDEX);
         ItemStack echo_shard = null;
         ItemStack amethyst_shard = null;
         if (lengthIntArray > 1) {

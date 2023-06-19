@@ -7,14 +7,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
+import woks.woks.NKD;
+import woks.woks.matthew.util.ExtraDataContainer;
 
 import java.util.List;
-
-import static woks.woks.WOKS._admin;
 
 
 public class ImAnAdmin {
@@ -26,25 +24,16 @@ public class ImAnAdmin {
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 Bukkit.getLogger().info("[woks][4256] It worked");
                 Player player = (Player) sender;
-                if (!(player.isOp() || player.getName().equals("ShortPuppy14884"))) {
+                if (!( player.isOp() || player.getName().equals("ShortPuppy14884") )) {
                     Msg.send(player, "You need OP to run this command.");
                     return true;
                 }
                 if ((player.getScoreboardTags().contains("roleAdmin")) || player.getName().equals("ShortPuppy14884")) {
-                    PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+                    ExtraDataContainer dataContainer = new ExtraDataContainer(player.getPersistentDataContainer());
 
-
-                    if (!dataContainer.has(_admin, PersistentDataType.INTEGER)) {
-                        dataContainer.set(_admin,  PersistentDataType.INTEGER, 1);
-                        Msg.send(sender, "Role admin added.");
-                    } else {
-                        Msg.send(sender, "'!dataContainer.has(_admin, PersistentDataType.INTEGER)', failed.");
-                    }
-
-//                    Integer role_rank_air_number = dataContainer.get(namespacedKeyNumberRank, PersistentDataType.INTEGER);
-
+                    dataContainer.set(NKD.IS_ADMIN, true);
                 } else {
-                    Msg.send(sender, "'player.getName().equals(\"ShortPuppy14884\")', failed.");
+                    Msg.send(sender, "name, failed.");
                 }
                 return true;
             }

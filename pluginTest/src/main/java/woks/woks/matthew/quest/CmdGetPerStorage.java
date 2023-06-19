@@ -9,13 +9,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
+import woks.woks.NKD;
+import woks.woks.matthew.util.ExtraDataContainer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import static woks.woks.WOKS.storageManager;
 
 public class CmdGetPerStorage {
     public CmdGetPerStorage() {
@@ -43,10 +43,10 @@ public class CmdGetPerStorage {
                     }
 
                     assert player != null;
-                    PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+                    ExtraDataContainer dataContainer = new ExtraDataContainer(player.getPersistentDataContainer());
 
                     NamespacedKey okey = NamespacedKey.fromString(arguments[0]);
-                    String value = processInput(storageManager.getValueWithNamespacedKey(dataContainer, okey));
+                    String value = processInput(dataContainer.get(NKD.getNKD(okey)));
                     Msg.send(sender, player.getName()
                             + " : " + okey
                             + " :" + value);

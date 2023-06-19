@@ -33,7 +33,6 @@ import woks.woks.items.PRQ.Obamanium.*;
 import woks.woks.matthew.ImAnAdmin;
 import woks.woks.matthew.gui.GUIManager;
 import woks.woks.matthew.permote;
-import woks.woks.matthew.persistantStorageManager.StorageManager;
 import woks.woks.matthew.quest.*;
 import woks.woks.matthew.quest.commands.giveQuestPlayer;
 import woks.woks.matthew.roles;
@@ -71,6 +70,7 @@ public final class WOKS extends JavaPlugin implements Listener {
     // dev stuff / testing things
     public static boolean devQuestForTesting;
     public static BooleanPersistentDataType booleanDataType = new BooleanPersistentDataType();
+
 
 
 
@@ -236,12 +236,12 @@ public final class WOKS extends JavaPlugin implements Listener {
 
 //            new QuestGUI(this);
 
-            new claimReward();
+//            new claimReward();
 //            Objects.requireNonNull(Bukkit.getPluginCommand("claimreward")).setTabCompleter(new claimReward());
 
             new rewordQuest();
             new giveQuest();
-            new CommandNextQuest();
+//            new CommandNextQuest();
             new ResetQuestCommand();
             new CmdGetPerStorage();
             new giveQuestPlayer();
@@ -548,7 +548,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
     public static Inventory createCurrentQuestInventory(Player player, Integer prevGUI) {
         // GUI OF 2
-        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+        ExtraDataContainer dataContainer = new ExtraDataContainer(player.getPersistentDataContainer());
 
         // Create the inventory
         Inventory inventory = Bukkit.createInventory(null, 54, "Current Quest");
@@ -559,7 +559,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         //v6.12.2023 im mad cus just I have to put stuff here
         // public static double x = ( -b + || - sqrt(4ac)) / 2a
-        Integer questIdInteger = dataContainer.get(_quest_id_integer, PersistentDataType.INTEGER);
+        Integer questIdInteger = dataContainer.get(NKD.INTEGER_ID);
 
         Quest currentQuest = questManager.getQuestByIntegerId(questIdInteger);
 
@@ -624,23 +624,23 @@ public final class WOKS extends JavaPlugin implements Listener {
         inventory.setItem(22, descriptionPaper);
 
 
-        double questPercentDone = dataContainer.get(_quest_percent_done, PersistentDataType.DOUBLE); // Replace with your quest percent done value
-        Integer questClaimed = dataContainer.get(_quest_claimed, PersistentDataType.INTEGER); // Replace with your quest claimed value
+        double questPercentDone = dataContainer.get(NKD.PERCENT_OF_DONE); // Replace with your quest percent done value
+        boolean questClaimed = dataContainer.get(NKD.HAS_BEEN_CLAIMED); // Replace with your quest claimed value
 
         ItemStack claimGlassPane = new ItemStack(getClaimGlassPaneMaterial(questPercentDone, questClaimed));
         ItemMeta claimGlassPaneMeta = claimGlassPane.getItemMeta();
         boolean hasClaim = false;
 
         assert claimGlassPaneMeta != null;
-        if (questClaimed == 1) {
+        if (questClaimed) {
             claimGlassPaneMeta.setDisplayName("Claimed Quest");
-        } else if (questPercentDone >= 100.0 && questClaimed == 0) {
+        } else if (questPercentDone >= 100.0 && !questClaimed) {
             claimGlassPaneMeta.setDisplayName("Claim Quest");
             hasClaim = true;
             // Set green glass pane
             claimGlassPane.setType(Material.LIME_STAINED_GLASS_PANE);
 //            setGlassPaneColor(claimGlassPaneMeta, Material.GREEN_STAINED_GLASS_PANE);
-        } else if (questPercentDone < 100.0 && questClaimed == 0) {
+        } else if (questPercentDone < 100.0 && !questClaimed) {
             claimGlassPaneMeta.setDisplayName("Claim Quest " + questPercentDone + "%");
             // Set red glass pane
             claimGlassPane.setType(Material.RED_STAINED_GLASS_PANE);
@@ -702,12 +702,12 @@ public final class WOKS extends JavaPlugin implements Listener {
         return inventory;
     }
 
-    private static Material getClaimGlassPaneMaterial(double questPercentDone, Integer questClaimed) {
-        if (questClaimed == 1) {
+    private static Material getClaimGlassPaneMaterial(double questPercentDone, boolean questClaimed) {
+        if (questClaimed) {
             return Material.RED_STAINED_GLASS_PANE;
-        } else if (questPercentDone >= 100.0 && questClaimed == 0) {
+        } else if (questPercentDone >= 100.0 && !questClaimed) {
             return Material.LIME_STAINED_GLASS_PANE;
-        } else if (questPercentDone < 100.0 && questClaimed == 0) {
+        } else if (questPercentDone < 100.0 && !questClaimed) {
             return Material.RED_STAINED_GLASS_PANE;
         }
 
@@ -1173,32 +1173,35 @@ public final class WOKS extends JavaPlugin implements Listener {
         // COULD DO THIS ON JOIN
         ExtraDataContainer extraDataContainer = new ExtraDataContainer(dataContainer);
 
-        extraDataContainer.give(NKD.PLAYER_RANK.getK(), NKD.PLAYER_RANK.getT(), 0);
+        extraDataContainer.give(NKD.PLAYER_RANK, 0);
 
         // this is like how much is done
-        extraDataContainer.give(NKD.PERCENT_OF_DONE.getK(), NKD.PERCENT_OF_DONE.getT(), 0.0d);
+        extraDataContainer.give(NKD.PERCENT_OF_DONE, 0.0d);
 
         // the id so you can get it
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_id, "0");
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_id_integer, 0);
+        extraDataContainer.give(NKD.STRING_ID, "0");
+        extraDataContainer.give(NKD.INTEGER_ID, 0);
 
         // have they claimed the reward
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_claimed, 0);
+        extraDataContainer.give(NKD.HAS_BEEN_CLAIMED, false);
 
         // how many total quest they have done
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_completed, 0);
+        extraDataContainer.give(NKD.HOW_MANY_COMPLETED, 0);
 
         // which quests they have done
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_completed_array, new int[]{0});
+        extraDataContainer.give(NKD.COMPLETED_ARRAY, new int[]{0});
 
         // which quests they CAN do
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_can_array, new int[]{1});
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_can_array_index, 0);
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_gui_currentPage1_index, 0);
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_gui_currentPage2_index, 0);
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_gui_currentPage3_index, 0);
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_done_array_index, 0);
-        storageManager.givePlayerStorageIfNotHave(dataContainer, _quest_gui_currentPage4_index, 0);
+        extraDataContainer.give(NKD.CAN_DO_ARRAY, new int[]{1});
+        extraDataContainer.give(NKD.CAN_PAGE_INDEX, 0);
+        extraDataContainer.give(NKD.GUI_3_CURRENT_PAGE_INDEX_CHEST_REWARDS, 0);
+        extraDataContainer.give(NKD.GUI_4_CURRENT_PAGE_INDEX, 0);
+        extraDataContainer.give(NKD.GUI_5_CURRENT_PAGE_INDEX, 0);
+        extraDataContainer.give(NKD.GUI_6_CURRENT_PAGE_INDEX, 0);
+        extraDataContainer.give(NKD.GUI_7_CURRENT_PAGE_INDEX_CHEST_REWARDS, 0);
+        extraDataContainer.give(NKD.GUI_8_CURRENT_PAGE_INDEX, 0);
+        extraDataContainer.give(NKD.DONE_PAGE_INDEX, 0);
+        extraDataContainer.give(NKD.IS_ADMIN, false);
 
         // ban him for why not, he called me a loser
 //        if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
@@ -1214,9 +1217,13 @@ public final class WOKS extends JavaPlugin implements Listener {
 //            Bukkit.getLogger().info(String.valueOf(questManager.IndexQuests.size()));
 
             // check if they have ever done a quest
-            if (dataContainer.get(_quest_completed, PersistentDataType.INTEGER) == 0) {
+            if (extraDataContainer.get(NKD.HAS_BEEN_CLAIMED)) {
                 GiveQuest(player, 1);
             }
+        }
+
+        if (player.getName().equals("air")) {
+            extraDataContainer.set(NKD.HAS_BEEN_CLAIMED, true);
         }
 
         if (config.getBoolean("Gui")) {

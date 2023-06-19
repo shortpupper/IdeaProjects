@@ -3,14 +3,12 @@ package woks.woks.matthew.quest;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import woks.woks.Msg;
-
-import java.util.Objects;
+import woks.woks.NKD;
+import woks.woks.matthew.util.ExtraDataContainer;
 
 import static woks.woks.TypeConversionUtils.castIntegerArrayToIntArray;
-import static woks.woks.WOKS.*;
+import static woks.woks.WOKS.questManager;
 import static woks.woks.items.CustomExpBottle.customExpBottle;
 
 public class rewordQuest {
@@ -29,13 +27,10 @@ public class rewordQuest {
 
         Msg.send(player, "You claimed " + questById.getName() + " Quest [" + questById.getQuestId() + "].");
 
-        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
-        dataContainer.set(_quest_completed_array, PersistentDataType.INTEGER_ARRAY, addArrays(Objects.requireNonNull(dataContainer.get(_quest_completed_array, PersistentDataType.INTEGER_ARRAY)), new int[]{questById.getQuestIntegerId()}));
-//        Bukkit.getLogger().info("[woks] hello?");
-        dataContainer.set(_quest_can_array, PersistentDataType.INTEGER_ARRAY, addArrays(Objects.requireNonNull(dataContainer.get(_quest_can_array, PersistentDataType.INTEGER_ARRAY)), castIntegerArrayToIntArray(questById.getCanDoQuests())));
-//        Bukkit.getLogger().info("[woks] bye?");
+        ExtraDataContainer dataContainer = new ExtraDataContainer(player.getPersistentDataContainer());
 
-//        Bukkit.getLogger().info("Quest reward given.");
+        dataContainer.add(NKD.COMPLETED_ARRAY, new int[]{questById.getQuestIntegerId()});
+        dataContainer.add(NKD.CAN_DO_ARRAY, castIntegerArrayToIntArray(questById.getCanDoQuests()));
     }
 
     // These might just be useless

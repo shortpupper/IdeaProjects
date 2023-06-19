@@ -4,6 +4,10 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
 import woks.woks.matthew.util.BooleanPersistentDataType;
 
+import java.util.HashMap;
+import java.util.Map;
+
+//NamespacedKeyDefine.java
 public enum NKD {
     STRING_ID("_quest_id", PersistentDataType.STRING),
     PLAYER_RANK("_namespacedKeyNumberRank", PersistentDataType.INTEGER),
@@ -25,19 +29,35 @@ public enum NKD {
     IS_ADMIN("_admin", BooleanPersistentDataType.BYTE);
     // Add more keys here as needed
 
-    private final NamespacedKey      namespacedKey;
-    private final PersistentDataType type;
 
-    NKD(String key, PersistentDataType type) {
+    private final NamespacedKey namespacedKey;
+    private final PersistentDataType<?, ?> type;
+
+    NKD(String key, PersistentDataType<?, ?> type) {
         this.namespacedKey = new NamespacedKey(WOKS.getInstance(), key);
-        this.type          = type;
+        this.type = type;
     }
-    // get key
+
     public NamespacedKey getK() {
         return namespacedKey;
     }
-    // get type
-    public PersistentDataType getT() {
+
+    public PersistentDataType<?, ?> getT() {
         return type;
+    }
+
+    private static final Map<NamespacedKey, NKD> ENUM_MAP = new HashMap<>();
+
+    static {
+        for (NKD nkd : values()) {
+            ENUM_MAP.put(nkd.getK(), nkd);
+        }
+    }
+
+
+    // Rest of the enum definition
+
+    public static NKD getNKD(NamespacedKey key) {
+        return ENUM_MAP.get(key);
     }
 }

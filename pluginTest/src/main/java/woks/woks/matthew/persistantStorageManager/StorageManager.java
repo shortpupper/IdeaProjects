@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static woks.woks.WOKS.removeValueFromArray;
 
+@Deprecated
 public class StorageManager implements Listener {
     private Map<NamespacedKey, PersistentDataType> StorageMain;
     private Map<Integer, NamespacedKey> StorageSubMain;

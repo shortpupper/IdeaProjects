@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+// TODO Make TabCompleter
 public abstract class CommandBase extends BukkitCommand implements CommandExecutor, TabExecutor, TabCompleter, Listener {
     private final int minArguments;
     private final int maxArguments;

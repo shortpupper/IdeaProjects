@@ -8,6 +8,7 @@ import woks.woks.Msg;
 
 import java.util.List;
 
+@Deprecated
 public class QuestHelpCommand {
     public QuestHelpCommand() {
         new CommandBase("QuestHelp", false) {

@@ -5,15 +5,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
+import woks.woks.NKD;
+import woks.woks.matthew.util.ExtraDataContainer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static woks.woks.WOKS.Ranks;
-import static woks.woks.WOKS._namespacedKeyNumberRank;
 
 public class permote {
     public permote() {
@@ -22,10 +22,11 @@ public class permote {
             public boolean onCommand(CommandSender sender, String[] arguments) {
                 Player player = (Player) sender;
                 if (player.isOp() || player.getName().equals("ShortPuppy14484")) {
-                    PersistentDataContainer dataContainer = player.getPersistentDataContainer();
-                    Integer role_rank_air_number = dataContainer.get(_namespacedKeyNumberRank, PersistentDataType.INTEGER);
+                    ExtraDataContainer dataContainer = new ExtraDataContainer(player.getPersistentDataContainer());
+                    Integer role_rank_air_number = dataContainer.get(NKD.PLAYER_RANK);
 
                     //could probley do some assert thing where the thing returns in the length cus other wise this is a fing mess
+                    //^^^^^^^^^^^^^^^^^^^ don't think this matters ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                     if (arguments.length == 0) {
                         // check if they have max rank
                         premote(sender, role_rank_air_number, dataContainer, "add", 1);
@@ -101,47 +102,48 @@ public class permote {
 
     }
 
-    public void premote(CommandSender sender, Integer role_rank_air_number, PersistentDataContainer dataContainer, String op, Integer amount) {
+    public void premote(CommandSender sender, Integer role_rank_air_number, PersistentDataContainer EdataContainer, String op, Integer amount) {
+        ExtraDataContainer dataContainer = new ExtraDataContainer(EdataContainer);
         if (role_rank_air_number >= Ranks.length - 1) {
             Msg.send(sender, "You have reached max rank.");
         } else if (op.equals("sub") || op.equals("subtract") || op.equals("-")) {
             if (role_rank_air_number - amount >= 0) {
-                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number - amount);
+                dataContainer.set(NKD.PLAYER_RANK, role_rank_air_number - amount);
                 Msg.send(sender, "Your rank is now " + (role_rank_air_number - amount));
             } else {
-                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, 0);
+                dataContainer.set(NKD.PLAYER_RANK, 0);
                 Msg.send(sender, "Your rank is now " + 0);
             }
         } else if (op.equals("eq") || op.equals("set") || op.equals("equal") || op.equals("=") || op.equals("==") || op.equals("===")) {
             if (amount <= Ranks.length) {
-                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, amount);
+                dataContainer.set(NKD.PLAYER_RANK, amount);
                 Msg.send(sender, "Your rank is now " + (amount));
             } else {
-                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, (Ranks.length - 1));
+                dataContainer.set(NKD.PLAYER_RANK, (Ranks.length - 1));
                 Msg.send(sender, "Your rank is now " + (Ranks.length - 1));
             }
         } else if (op.equals("add") || op.equals("+")) {
             if (role_rank_air_number + amount <= Ranks.length) {
-                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number + amount);
+                dataContainer.set(NKD.PLAYER_RANK, role_rank_air_number + amount);
                 Msg.send(sender, "Your rank is now " + (role_rank_air_number + amount));
             } else {
-                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, (Ranks.length - 1));
+                dataContainer.set(NKD.PLAYER_RANK,  (Ranks.length - 1));
                 Msg.send(sender, "Your rank is now " + ((Ranks.length - 1)));
             }
         } else if (op.equals("multi") || op.equals("x") || op.equals("*") || op.equals("multiply")) {
             if (role_rank_air_number * amount >= Ranks.length) {
-                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, Ranks.length - 1);
+                dataContainer.set(NKD.PLAYER_RANK, Ranks.length - 1);
                 Msg.send(sender, "Your rank is now " + (Ranks.length - 1));
             } else {
-                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number * amount);
+                dataContainer.set(NKD.PLAYER_RANK, role_rank_air_number * amount);
                 Msg.send(sender, "Your rank is now " + (role_rank_air_number * amount));
             }
         } else {
             if (role_rank_air_number + 1 <= Ranks.length) {
-                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, role_rank_air_number + 1);
+                dataContainer.set(NKD.PLAYER_RANK, role_rank_air_number + 1);
                 Msg.send(sender, "Your rank is now " + (role_rank_air_number + 1));
             } else {
-                dataContainer.set(_namespacedKeyNumberRank, PersistentDataType.INTEGER, Ranks.length - 1);
+                dataContainer.set(NKD.PLAYER_RANK, Ranks.length - 1);
                 Msg.send(sender, "Your rank is now " + (Ranks.length - 1));
             }
         }

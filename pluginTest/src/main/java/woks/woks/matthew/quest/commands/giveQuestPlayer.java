@@ -4,16 +4,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import woks.woks.CommandBase;
 import woks.woks.Msg;
+import woks.woks.NKD;
+import woks.woks.matthew.util.ExtraDataContainer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import static woks.woks.WOKS.*;
+import static woks.woks.WOKS.questManager;
 import static woks.woks.matthew.gui.GUIManager.getKeyByValue;
 
 public class giveQuestPlayer {
@@ -30,15 +29,10 @@ public class giveQuestPlayer {
                         Msg.send(sender, "Player must be real");
                         return true;
                     }
-                    PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+                    ExtraDataContainer dataContainer = new ExtraDataContainer(player.getPersistentDataContainer());
                     try {
 
-                        dataContainer.set(_quest_can_array,
-                              PersistentDataType.INTEGER_ARRAY,
-                              addArrays(Objects.requireNonNull(dataContainer.get(_quest_can_array, PersistentDataType.INTEGER_ARRAY)),
-                                        new int[]{
-                                                (getKeyByValue(questManager.getActiveQuestsInteger(), arguments[0]))
-                              }));
+                        dataContainer.add(NKD.CAN_DO_ARRAY, new int[]{(getKeyByValue(questManager.getActiveQuestsInteger(), arguments[0]))});
                     }
                     catch (Exception e) {
                         Msg.send(sender, "Error make sure that the quests StrID is real : " + e);
