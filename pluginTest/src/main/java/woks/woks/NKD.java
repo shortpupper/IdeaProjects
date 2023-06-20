@@ -2,10 +2,11 @@ package woks.woks;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
-import woks.woks.matthew.util.BooleanPersistentDataType;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static woks.woks.WOKS.booleanT;
 
 //NamespacedKeyDefine.java
 public enum NKD {
@@ -13,7 +14,7 @@ public enum NKD {
     PLAYER_RANK("_namespacedKeyNumberRank", PersistentDataType.INTEGER),
     INTEGER_ID("_quest_id_integer", PersistentDataType.INTEGER),
     PERCENT_OF_DONE("_quest_percent_done", PersistentDataType.DOUBLE),
-    HAS_BEEN_CLAIMED("_quest_claimed", BooleanPersistentDataType.BYTE),
+    HAS_BEEN_CLAIMED("_quest_claimed", booleanT),
     HOW_MANY_COMPLETED("_quest_completed", PersistentDataType.INTEGER),
     COMPLETED_ARRAY("_quest_completed_array", PersistentDataType.INTEGER_ARRAY),
     CAN_DO_ARRAY("_quest_can_array", PersistentDataType.INTEGER_ARRAY),
@@ -26,7 +27,7 @@ public enum NKD {
     GUI_8_CURRENT_PAGE_INDEX("_quest_gui_currentPage1_index", PersistentDataType.INTEGER),
     DONE_PAGE_INDEX("_quest_done_array_index", PersistentDataType.INTEGER),
     JSON_SMELLS("_jsonSmells", PersistentDataType.INTEGER),
-    IS_ADMIN("_admin", BooleanPersistentDataType.BYTE);
+    IS_ADMIN("_admin", booleanT);
     // Add more keys here as needed
 
 

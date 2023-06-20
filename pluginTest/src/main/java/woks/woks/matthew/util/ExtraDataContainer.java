@@ -5,11 +5,14 @@ import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import woks.woks.NKD;
-import woks.woks.utils.ArrayUtils;
 
 import java.util.Set;
 
+import static woks.woks.utils.ArrayUtils.removeFirstInstance;
+
+
 public class ExtraDataContainer implements PersistentDataContainer {
+
 
     private final PersistentDataContainer dataContainer;
 
@@ -25,6 +28,11 @@ public class ExtraDataContainer implements PersistentDataContainer {
     public <Z> void set(NKD nkd, Z value) {
         NamespacedKey key = nkd.getK();
         PersistentDataType<NamespacedKey, Z> type = (PersistentDataType<NamespacedKey, Z>) nkd.getT();
+
+        if (value instanceof Boolean) {
+            dataContainer.set(key, type, value);
+        }
+
         dataContainer.set(key, type, value);
     }
 
@@ -45,6 +53,7 @@ public class ExtraDataContainer implements PersistentDataContainer {
     public <Z> Z get( NKD nkd) {
         NamespacedKey key = nkd.getK();
         PersistentDataType<NamespacedKey, Z> type = (PersistentDataType<NamespacedKey, Z>) nkd.getT();
+
         return dataContainer.get(key, type);
     }
 
@@ -81,9 +90,10 @@ public class ExtraDataContainer implements PersistentDataContainer {
         }
     }
 
-    public <Z> void rmVAufAry(NKD nkd, Z value) {
-        Z[] array = get(nkd);
-        set(nkd, ArrayUtils.removeFirstInstance(array, value));
+    public void rmVAufAry(NKD nkd, Integer value) {
+        int[] array = get(nkd); // Explicitly provide the type argument
+        int[] ar = removeFirstInstance(array, value);
+        set(nkd, ar);
     }
 
     public <Z> Z add(NKD nkd, Z value) {
@@ -115,13 +125,18 @@ public class ExtraDataContainer implements PersistentDataContainer {
     }
     @SuppressWarnings("unchecked")
     private <Z> Z castValue(Z value2, Z value) {
-        return switch (value) {
-            case Integer ignored -> (Z) Integer.valueOf(((Number) value2).intValue() + ((Number) value).intValue());
-            case Double ignored1 -> (Z) Double.valueOf(((Number) value2).doubleValue() + ((Number) value).doubleValue());
-            case Long ignored2 -> (Z) Long.valueOf(((Number) value2).longValue() + ((Number) value).longValue());
-            case Boolean aBoolean -> (Z) Boolean.valueOf((Boolean) value2 || aBoolean);
-            case String s -> (Z) ((String) value2).concat(s);
-            case null, default -> null;  // Or handle the unsupported type accordingly
-        };
+        if (value instanceof Integer) {
+            return (Z) Integer.valueOf(((Number) value2).intValue() + ((Number) value).intValue());
+        } else if (value instanceof Double) {
+            return (Z) Double.valueOf(((Number) value2).doubleValue() + ((Number) value).doubleValue());
+        } else if (value instanceof Long) {
+            return (Z) Long.valueOf(((Number) value2).longValue() + ((Number) value).longValue());
+        } else if (value instanceof Boolean) {
+            return (Z) Boolean.valueOf((Boolean) value2 || (Boolean) value);
+        } else if (value instanceof String) {
+            return (Z) ((String) value2).concat((String) value);
+        } else {
+            return null; // Or handle the unsupported type accordingly
+        }
     }
 }

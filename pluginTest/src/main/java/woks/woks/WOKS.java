@@ -69,7 +69,9 @@ public final class WOKS extends JavaPlugin implements Listener {
 
     // dev stuff / testing things
     public static boolean devQuestForTesting;
-    public static BooleanPersistentDataType booleanDataType = new BooleanPersistentDataType();
+//    public static BooleanPersistentDataType booleanDataType = new BooleanPersistentDataType();
+
+    public static PersistentDataType<Byte, Boolean> booleanT = new BooleanPersistentDataType();
 
 
 
@@ -117,6 +119,8 @@ public final class WOKS extends JavaPlugin implements Listener {
         // Plugin startup logic
         Bukkit.getLogger().info("Starting, ShortPuppy14484 plugin.");
         // Register the custom PersistentDataType
+
+        booleanT = new BooleanPersistentDataType();
 
 
 
@@ -1176,14 +1180,14 @@ public final class WOKS extends JavaPlugin implements Listener {
         extraDataContainer.give(NKD.PLAYER_RANK, 0);
 
         // this is like how much is done
-        extraDataContainer.give(NKD.PERCENT_OF_DONE, 0.0d);
+        extraDataContainer.give(NKD.PERCENT_OF_DONE, 100.0d);
 
         // the id so you can get it
         extraDataContainer.give(NKD.STRING_ID, "0");
         extraDataContainer.give(NKD.INTEGER_ID, 0);
 
         // have they claimed the reward
-        extraDataContainer.give(NKD.HAS_BEEN_CLAIMED, false);
+        extraDataContainer.give(NKD.HAS_BEEN_CLAIMED, true);
 
         // how many total quest they have done
         extraDataContainer.give(NKD.HOW_MANY_COMPLETED, 0);
@@ -1217,7 +1221,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 //            Bukkit.getLogger().info(String.valueOf(questManager.IndexQuests.size()));
 
             // check if they have ever done a quest
-            if (extraDataContainer.get(NKD.HAS_BEEN_CLAIMED)) {
+            if (((int) extraDataContainer.get(NKD.HOW_MANY_COMPLETED)) <= 0) {
                 GiveQuest(player, 1);
             }
         }
@@ -1240,4 +1244,5 @@ public final class WOKS extends JavaPlugin implements Listener {
             }
         }
     }
+
 }

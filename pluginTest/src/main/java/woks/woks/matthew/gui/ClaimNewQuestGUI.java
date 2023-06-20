@@ -41,16 +41,12 @@ public class ClaimNewQuestGUI {
 
         glass_pane = glass_paneNBT.getItem();
 
-//        if (questClaimed == 1) {
-//            glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.RED_STAINED_GLASS_PANE, "Quest Claimed");
-//        }
-//        else if (questPercentDone >= 100.0 && questClaimed == 0) {
-//            glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.LIME_STAINED_GLASS_PANE, "Claim Quest");
-//        }
-//        else
+
        if (questPercentDone >= 100.0d && questClaimed) {
-            glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.GREEN_STAINED_GLASS_PANE, "Embark on quest");
-        }
+           glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.GREEN_STAINED_GLASS_PANE, "Embark on quest");
+       } else {
+           glass_pane = setItemMaterialAndDisplayName(glass_pane, Material.ORANGE_STAINED_GLASS_PANE, "Can't do Quest");
+       }
 
 
         int lengthIntArray = ((int[]) dataContainer.get(NKD.CAN_DO_ARRAY)).length;

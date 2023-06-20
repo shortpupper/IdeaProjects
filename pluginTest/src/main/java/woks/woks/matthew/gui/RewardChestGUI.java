@@ -14,9 +14,11 @@ import static woks.woks.WOKS.mapNumber;
 
 public class RewardChestGUI {
     public static void openGUIChest (Player player, String title, List<ItemStack> items, Integer currentPage, Integer prevGUI) {
-        openGUIChest(player, title, items, currentPage,  prevGUI, 3);
+        openGUIChest(player, title, items, currentPage,  prevGUI, 3, null, null);
     }
-    public static void openGUIChest(Player player, String title, List<ItemStack> items, Integer currentPage, Integer prevGUI, Integer GuiLoc) {
+
+
+    public static void openGUIChest(Player player, String title, List<ItemStack> items, Integer currentPage, Integer prevGUI, Integer GuiLoc, String questStrId, Integer isClaim) {
         Inventory gui = Bukkit.createInventory(null, 54, title);
 
 //        List<ItemStack> items = List.of(items2);
@@ -45,6 +47,13 @@ public class RewardChestGUI {
 
                 NBTItem nbtItem2 = new NBTItem(prevButton);
                 nbtItem2.setInteger("GuiLoc", GuiLoc);
+                if (questStrId != null) {
+                    nbtItem2.setString("questId", questStrId);
+                }
+                if (isClaim != null) {
+                    nbtItem2.setInteger("WoAt", isClaim);
+                }
+
                 prevButton = nbtItem2.getItem();
 
                 gui.setItem(48, prevButton);
@@ -58,6 +67,12 @@ public class RewardChestGUI {
 
                 NBTItem nbtItemnextButton = new NBTItem(nextButton);
                 nbtItemnextButton.setInteger("GuiLoc", GuiLoc);
+                if (questStrId != null) {
+                    nbtItemnextButton.setString("questId", questStrId);
+                }
+                if (isClaim != null) {
+                    nbtItemnextButton.setInteger("WoAt", isClaim);
+                }
                 nextButton = nbtItemnextButton.getItem();
 
                 gui.setItem(50, nextButton);
@@ -77,6 +92,12 @@ public class RewardChestGUI {
         NBTItem nbtItemcompletedFeather = new NBTItem(completedFeather);
         nbtItemcompletedFeather.setInteger("GuiLoc", GuiLoc);
         nbtItemcompletedFeather.setInteger("prevGUI", prevGUI);
+        if (questStrId != null) {
+            nbtItemcompletedFeather.setString("questId", questStrId);
+        }
+        if (isClaim != null) {
+            nbtItemcompletedFeather.setInteger("WoAt", isClaim);
+        }
         completedFeather = nbtItemcompletedFeather.getItem();
 
         gui.setItem(49, completedFeather);

@@ -49,6 +49,8 @@ public class GUIManager implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        //FIXME you can put items in the gui lol
+
         Player player = (Player) event.getWhoClicked();
         Inventory clickedInventory = event.getClickedInventory();
         ItemStack item = event.getCurrentItem();
@@ -127,6 +129,7 @@ public class GUIManager implements Listener {
                     questGUI.openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(numbers)), currentPage3, "Completed Quests", 5, 1, "Quests");
                 } else if (itemStack.getType() == Material.BOOK) {
                     // this is the Stats GUI
+                    //TODO make this work by stats
 
                 }
 
@@ -311,7 +314,8 @@ public class GUIManager implements Listener {
                 // this is the quest for when claim use
                 // so these are is the can quest
                 NBTItem nbtItem = new NBTItem(item);
-                String title = event.getView().getTitle();
+                String  title   = event.getView().getTitle();
+                int[]   canDo;
                 if (item.getType() == Material.RED_STAINED_GLASS_PANE) {
                     // "Quest Claimed"
                     Msg.send(player, "You have already done this quest.");
@@ -321,7 +325,6 @@ public class GUIManager implements Listener {
                     // check to make sure that the current quest is done and claimed and percent done is 100%
                     // thats already checked
                     // setting the current quest
-
 
                     dataContainer.rmVAufAry(NKD.CAN_DO_ARRAY, nbtItem.getInteger("questIntId"));
 
@@ -334,7 +337,8 @@ public class GUIManager implements Listener {
                     // now reload the thing
                     // be opening gui 4
                     QuestGUI questGUI = new QuestGUI(player);
-                    int[] canDo = dataContainer.get(NKD.CAN_DO_ARRAY);
+                    canDo = dataContainer.get(NKD.CAN_DO_ARRAY);
+
 
                     assert canDo != null;
                     questGUI.openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(canDo)), currentPage2, "Quests", 4, 1, "Completed Quests");
@@ -354,18 +358,18 @@ public class GUIManager implements Listener {
                     Msg.send(player, "Do your current quest before you can do another.");
                 }
                 else if (item.getType() == Material.CHEST) {
-                    Quest currentQuest = questManager.getQuestById(title);
-                    List<ItemStack> items = new ArrayList<>(List.of(currentQuest.getRewardItems()));
+                    Quest           currentQuest = questManager.getQuestById(title);
+                    List<ItemStack> items        = new ArrayList<>(List.of(currentQuest.getRewardItems()));
                     items.add(customExpBottle(currentQuest.getExpAmount()));
 
-                    RewardChestGUI.openGUIChest(player, title + " Rewards", items, currentPage5, 2, 6);
+                    RewardChestGUI.openGUIChest(player, title + " Rewards", items, currentPage5, 2, 6, title, 1);
                 }
                 else if (item.getType() == Material.PAPER) {
                     Msg.send(player, Objects.requireNonNull(Objects.requireNonNull(item.getItemMeta()).getLore()).toString());
                 }
                 else if (item.getType() == Material.ECHO_SHARD) {
                     // prev page
-                    int IndexItem = nbtItem.getInteger("ItemIndex");
+                    int   IndexItem = nbtItem.getInteger("ItemIndex");
                     int[] can_array = dataContainer.get(NKD.CAN_DO_ARRAY);
                     IndexItem--;
                     dataContainer.set(NKD.CAN_PAGE_INDEX, IndexItem);
@@ -378,7 +382,7 @@ public class GUIManager implements Listener {
                 }
                 else if (item.getType() == Material.AMETHYST_SHARD) {
                     // next page
-                    int IndexItem = nbtItem.getInteger("ItemIndex");
+                    int   IndexItem = nbtItem.getInteger("ItemIndex");
                     int[] can_array = dataContainer.get(NKD.CAN_DO_ARRAY);
                     IndexItem++;
                     dataContainer.set(NKD.CAN_PAGE_INDEX, IndexItem);
@@ -391,7 +395,7 @@ public class GUIManager implements Listener {
                 }
                 else if (item.getType() == Material.FEATHER) {
                     QuestGUI questGUI = new QuestGUI(player);
-                    int[] canDo = dataContainer.get(NKD.CAN_DO_ARRAY);
+                    canDo = dataContainer.get(NKD.CAN_DO_ARRAY);
 
                     assert canDo != null;
                     questGUI.openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(canDo)), currentPage2, "Quests", 4, 1, "Completed Quests");
@@ -406,12 +410,12 @@ public class GUIManager implements Listener {
                 NBTItem nbtItem = new NBTItem(item);
 
                 if (item.getType() == Material.CHEST) {
-                    // TODO FIX
+                    // FIXME
                     Quest currentQuest = questManager.getQuestById(title);
                     List<ItemStack> items = new ArrayList<>(List.of(currentQuest.getRewardItems()));
                     items.add(customExpBottle(currentQuest.getExpAmount()));
 
-                    RewardChestGUI.openGUIChest(player, title + " Rewards", items, currentPage4, 7, 8);
+                    RewardChestGUI.openGUIChest(player, title + " Rewards", items, currentPage4, 7, 8, title, 0);
                 }
                 else if (item.getType() == Material.PAPER) {
                     Msg.send(player, Objects.requireNonNull(Objects.requireNonNull(item.getItemMeta()).getLore()).toString());
@@ -457,9 +461,12 @@ public class GUIManager implements Listener {
             else if (guiId == 8) {
                 // this is the chest thing?
                 // yes, it's the Current quest rewards.
+                // but this should be for the claimed or completed
                 Quest currentQuest = questManager.getQuestById(dataContainer.get(NKD.STRING_ID));
                 List<ItemStack> items = new ArrayList<>(List.of(currentQuest.getRewardItems()));
                 items.add(customExpBottle(currentQuest.getExpAmount()));
+
+                String title = event.getView().getTitle();
 
                 // something, like, current rewards
                 if (config.getBoolean("log__GUIManager_java_onInventoryClick__marko")) {
@@ -469,15 +476,26 @@ public class GUIManager implements Listener {
                 // for next page
 
                 if (item.getType() == Material.LIME_STAINED_GLASS_PANE) {
-                    currentPage++;
-                    RewardChestGUI.openGUIChest(player, "Quest Rewards", items, currentPage, 7);
+                    currentPage4++;
+                    RewardChestGUI.openGUIChest(player, title, items, currentPage4, 7, 8, title.replace(" Rewards", ""), 0);
                 }
                 // fro prevuis item
                 else if (item.getType() == Material.RED_STAINED_GLASS_PANE) {
-                    currentPage--;
-                    RewardChestGUI.openGUIChest(player, "Quest Rewards", items, currentPage, 7);
+                    currentPage4--;
+                    RewardChestGUI.openGUIChest(player, title, items, currentPage4, 7, 8, title.replace(" Rewards", ""), 0);
                 } else if (item.getType() == Material.FEATHER) {
-                    player.openInventory(createCurrentQuestInventory(player, 7));
+                    // FIXME this is the thingy
+                    NBTItem nbtItem = new NBTItem(item);
+                    String stringId = nbtItem.getString("questId");
+
+                    Quest quest = questManager.getQuestById(stringId);
+
+                    if (quest == null) {
+                        player.openInventory(guiManager.getGUIInventoryByIntegerID(1));
+                    } else {
+                        player.openInventory(ClaimNewQuestGUI.getGuiClaim(dataContainer, quest, false, 6, 4));
+                    }
+//                    player.openInventory(createCurrentQuestInventory(player, 7));
                 }
             }
             else if (guiId == 0) {
