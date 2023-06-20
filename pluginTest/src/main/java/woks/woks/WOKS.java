@@ -379,6 +379,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         ItemStack tnt = new ItemStack(Material.TNT);
         ItemStack barrel = new ItemStack(Material.BARREL);
         ItemStack book = new ItemStack(Material.BOOK);
+        ItemStack feather = new ItemStack(Material.FEATHER);
 
         // Set display names for the items
         ItemMeta redStoneMeta = Objects.requireNonNull(redStone.getItemMeta());
@@ -387,6 +388,13 @@ public final class WOKS extends JavaPlugin implements Listener {
         NBTItem nbtItem = new NBTItem(redStone);
         nbtItem.setInteger("GuiLoc", 1);
         redStone = nbtItem.getItem();
+
+        ItemMeta featherMeta = Objects.requireNonNull(feather.getItemMeta());
+        featherMeta.setDisplayName("Exit");
+        feather.setItemMeta(featherMeta);
+        NBTItem feathernbtItem = new NBTItem(feather);
+        feathernbtItem.setInteger("GuiLoc", 1);
+        feather = feathernbtItem.getItem();
 
 
         ItemMeta tntMeta = Objects.requireNonNull(tnt.getItemMeta());
@@ -419,6 +427,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         items[20] = tnt;
         items[24] = barrel;
         items[40] = book;
+        items[49] = feather;
 
         // Register the GUI with ID 1
         return items;
@@ -557,8 +566,6 @@ public final class WOKS extends JavaPlugin implements Listener {
         // Create the inventory
         Inventory inventory = Bukkit.createInventory(null, 54, "Current Quest");
 
-
-        //TODO change some of the items so they do the stuffs
 
 
         //v6.12.2023 im mad cus just I have to put stuff here

@@ -71,15 +71,6 @@ public class GUIManager implements Listener {
         if (clickedInventory != null) { //  && guiMap.containsValue(clickedInventory)
             event.setCancelled(true);
             // Handle the click event for the registered GUI
-//            try {
-//                int id = 0;
-//                try {
-////                    id = getKeyByValue(guiMap, new questGUIToolClass(clickedInventory, event.getView().getTitle()));
-//                } catch (Exception e) {
-//                    if (config.getBoolean("log__GUIManager_java_onInventoryClick__int_id_failed")) {
-//                        Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]int id failed, " + e);
-//                    }
-//                }
 
             ExtraDataContainer dataContainer = new ExtraDataContainer(player.getPersistentDataContainer());
             Integer            currentPage6  = dataContainer.get(NKD.GUI_3_CURRENT_PAGE_INDEX_CHEST_REWARDS);
@@ -131,6 +122,8 @@ public class GUIManager implements Listener {
                     // this is the Stats GUI
                     //TODO make this work by stats
 
+                } else if (itemStack.getType() == Material.FEATHER) {
+                    player.closeInventory();
                 }
 
 
