@@ -225,7 +225,7 @@ public class GUIManager implements Listener {
 
                 QuestGUI questGUI = new QuestGUI(player);
 //                        Bukkit.getLogger().info("[WOKS][v2023.6.13] cp1 : " + currentPage);
-                        Bukkit.getLogger().info("[WOKS][v2023.6.13] cp2 : " + currentPage2);
+//                Bukkit.getLogger().info("[WOKS][v2023.6.13] cp2 : " + currentPage2);
 //                        Bukkit.getLogger().info("[WOKS][v2023.6.13] cp3 : " + currentPage3);
                 NBTItem nbtItem = new NBTItem(item);
                 if (item.getType() == Material.RED_STAINED_GLASS_PANE && currentPage2 > 0) {
@@ -410,7 +410,6 @@ public class GUIManager implements Listener {
                 NBTItem nbtItem = new NBTItem(item);
 
                 if (item.getType() == Material.CHEST) {
-                    // FIXME
                     Quest currentQuest = questManager.getQuestById(title);
                     List<ItemStack> items = new ArrayList<>(List.of(currentQuest.getRewardItems()));
                     items.add(customExpBottle(currentQuest.getExpAmount()));
@@ -484,7 +483,6 @@ public class GUIManager implements Listener {
                     currentPage4--;
                     RewardChestGUI.openGUIChest(player, title, items, currentPage4, 7, 8, title.replace(" Rewards", ""), 0);
                 } else if (item.getType() == Material.FEATHER) {
-                    // FIXME this is the thingy
                     NBTItem nbtItem = new NBTItem(item);
                     String stringId = nbtItem.getString("questId");
 

@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import woks.woks.*;
 
-import java.util.*;
+import java.util.List;
 
 public class PlayerInteractEventHandler implements Listener {
     public PlayerInteractEventHandler(WOKS plugin) {
@@ -28,23 +28,22 @@ public class PlayerInteractEventHandler implements Listener {
             if (ItemType == Material.EXPERIENCE_BOTTLE) {
                 ItemStack item = event.getItem();
                 NBTItem nbtItem = new NBTItem(item);
-                if ((Objects.requireNonNull(item.getItemMeta())).hasLore()) {
-                    int exps = Integer.parseInt((Objects.requireNonNull(item.getItemMeta().getLore())).get(0));
-                    Bukkit.getLogger().info("[woks]"+String.valueOf(exps));
-                    ExperienceManager.setTotalExperience(player, ExperienceManager.getTotalExperience(player) + exps);
-                    event.setCancelled(true);
-                    if (event.getItem().getAmount() > 1) {
-                        event.getItem().setAmount(event.getItem().getAmount() - 1);
-                    } else {
-                        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                    }
-                } else if (nbtItem.hasNBTData()) {
+                if (nbtItem.hasNBTData()) {
                     ExperienceManager.setTotalExperience(player, ExperienceManager.getTotalExperience(player) + nbtItem.getInteger("Exp"));
                     event.setCancelled(true);
                     if (event.getItem().getAmount() > 1) {
                         event.getItem().setAmount(event.getItem().getAmount() - 1);
                     } else {
-                        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                        ItemStack mainHandItem = player.getInventory().getItemInMainHand();
+                        ItemStack offHandItem = player.getInventory().getItemInOffHand();
+                        ItemStack itemInUse = event.getItem();
+                        if (itemInUse.equals(mainHandItem)) {
+                            // Item in main hand is being used
+                            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                        } else if (itemInUse.equals(offHandItem)) {
+                            // Item in offhand is being used
+                            player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+                        }
                     }
                 } else {
                     return false;
