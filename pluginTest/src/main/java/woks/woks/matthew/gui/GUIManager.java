@@ -120,7 +120,7 @@ public class GUIManager implements Listener {
                     questGUI.openGUI(getActiveQuestFromListInteger(TypeConversionUtils.castIntArrayToList(numbers)), currentPage3, "Completed Quests", 5, 1, "Quests");
                 } else if (itemStack.getType() == Material.BOOK) {
                     // this is the Stats GUI
-                    //TODO make this work by stats
+                    //TODO make a gui for stats
 
                 } else if (itemStack.getType() == Material.FEATHER) {
                     player.closeInventory();

@@ -16,12 +16,6 @@ commands:
       - sxp
       - spx
 
-  openplayerinv:
-    description: Open a players inventory
-    permission: op
-#    aliases: [qclaim, qreward]
-#    permission: op woks.op
-    aliases: [qclaim, qreward]
   GiveBackPack:
     description: Give your self a backpack, (this is meant for testing).
     any:
@@ -45,11 +39,6 @@ commands:
   TestingPlugin:
     description: This is just if you want to foul around.
     permission: op
-#    aliases: [qclaim, qreward]
-
-  USetUsers:
-    description: Get your Persistent storage.
-#    permission: op woks.op
 #    aliases: [qclaim, qreward]
 
   setlore:
@@ -98,54 +87,26 @@ commands:
     permission: op
     aliases:
       - questadminpanel
-      - qadmin
   #    aliases: [qclaim, qreward]
 
-  claimreward:
-    description: Claim your quest reward!
-    aliases:
-      - qc
-      - qr
-      - qclaim
-      - qreward
-  #    usage: /claimreward <arguments>
-  #    permission: woks.claimreward
-
-  nextquest:
-    description: Get your next quest!
-    aliases:
-      - qn
-      - nq
-      - nquest
-      - nextq
-      - qnext
-      - questnext
-
-  QuestHelp:
-    description: Get help with quests!
-    aliases:
-      - qh
-      - hq
-      - helpquest
-      - qhelp
-      - questh
-      - whattheduckisaquest
-      - whattheduckisaquestihavenotideawhatthisisorhowtouseitjusttellmewhatyouarepleaseitwouldhelpalotyouknow
 
 
   quest:
     description: Opens a gui with quests!
     aliases:
       - q
+      - smallerversionoftextbutstillalongbitoftestthisusetobelikefivehundredcharslonglol
+#      - whattheduckisaquestihavenotideawhatthisisorhowtouseitjusttellmewhatyouarepleaseitwouldhelpalotyouknowthisisnowpartofthequestthingyouknowrightokthatsgoodmanforrealiwounderifthereisalimitthisremindedsmeofletsgameitouthedoesfunnythingslikethisitsfuntoseeifthereisalimitcusmaybethereismabyerthereisnotforthatistobeknownnedwellidoknowthatyoucantcallthiscommandunlessyouaretheseversoyoumightnotevenknowwhatisthistextsothatissadmaybeidontknowiknowididgobinkforfortysevenminuteswithmyomasothatwasfunwhichiscoolyeahmaybeidolikethezooitisqiukfrogsmellsearwaxqouickosomeshisutomadorarododamesokuduniwakonichiwahellogutantagdasistnichtmeinenameyaorderneindasismeinproblemdasistnichtsogutyadasisproblyderendofthistextfurme
 
   giveQuestPlayer:
     description: Give player's quests.
     permission: op
     aliases:
       - questgive
-      - qgive
-      - qg
-
+      - givequest
+  summonPlane:
+    description: summon a plane to fly!?!?!?
+    permission: op
 
 
 permissions:

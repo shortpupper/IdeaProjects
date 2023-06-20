@@ -27,6 +27,7 @@ public enum NKD {
     GUI_8_CURRENT_PAGE_INDEX("_quest_gui_currentPage1_index", PersistentDataType.INTEGER),
     DONE_PAGE_INDEX("_quest_done_array_index", PersistentDataType.INTEGER),
     JSON_SMELLS("_jsonSmells", PersistentDataType.INTEGER),
+    SPEED("_speed_at", PersistentDataType.DOUBLE),
     IS_ADMIN("_admin", booleanT);
     // Add more keys here as needed
 

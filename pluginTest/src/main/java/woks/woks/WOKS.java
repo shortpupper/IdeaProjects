@@ -23,6 +23,8 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import woks.woks.board.planes.commands.summonPlane;
+import woks.woks.board.planes.handlers.flying;
 import woks.woks.commands.*;
 import woks.woks.dam.bannedWhat;
 import woks.woks.handlers.*;
@@ -139,6 +141,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("Gui", true);
         config.addDefault("devQuestForTesting", true);
         config.addDefault("StorageManager_DONTCHANGE", true);
+        config.addDefault("planes", true);
 
         config.addDefault("log__", true);
         boolean clog__;
@@ -358,6 +361,11 @@ public final class WOKS extends JavaPlugin implements Listener {
 //            guiManager.registerGUI(2, "Current Quest", getItemsForCurrentQuestGUI());
 
             Bukkit.getLogger().info("[WOKS][v6.9.2023] GUI added.");
+        }
+
+        if (config.getBoolean("planes")) {
+            new summonPlane();
+            new flying(this);
         }
 
 
