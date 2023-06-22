@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -25,6 +26,10 @@ import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import woks.woks.board.planes.commands.summonPlane;
 import woks.woks.board.planes.handlers.flying;
+import woks.woks.board.server.util.commands.gravitys;
+import woks.woks.board.server.util.commands.pause;
+import woks.woks.board.server.util.commands.pauseSettings;
+import woks.woks.board.server.util.handlers.stopEvents;
 import woks.woks.commands.*;
 import woks.woks.dam.bannedWhat;
 import woks.woks.handlers.*;
@@ -71,7 +76,11 @@ public final class WOKS extends JavaPlugin implements Listener {
 
     // dev stuff / testing things
     public static boolean devQuestForTesting;
-//    public static BooleanPersistentDataType booleanDataType = new BooleanPersistentDataType();
+    public static Map<UUID, Boolean> IsIEffected;
+
+    public static boolean pausePlayer;
+
+    //    public static BooleanPersistentDataType booleanDataType = new BooleanPersistentDataType();
 
     public static PersistentDataType<Byte, Boolean> booleanT = new BooleanPersistentDataType();
 
@@ -139,31 +148,90 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("Killer", true);
         config.addDefault("Quests", true);
         config.addDefault("Gui", true);
-        config.addDefault("devQuestForTesting", true);
-        config.addDefault("StorageManager_DONTCHANGE", true);
+        config.addDefault("dev.this", true);
+        config.addDefault("dev.devQuestForTesting", true);
+        config.addDefault("dev.StorageManager_DONTCHANGE", true);
         config.addDefault("planes", true);
+        config.addDefault("util.this", true);
+        config.addDefault("util.commands.this", true);
+        config.addDefault("util.commands.gravitys", true);
 
-        config.addDefault("log__", true);
+        config.addDefault("log.this", true);
         boolean clog__;
-        clog__ = config.getBoolean("log__");
-        config.addDefault("LogDrag", clog__);
-        config.addDefault("LogMovement", clog__);
-        config.addDefault("LogQuestRegisterOnEnable", clog__);
-        config.addDefault("log__GUIManager_java_onInventoryClick__int_guiId_failed", clog__);
-        config.addDefault("log__GUIManager_java_onInventoryClick__int_id_failed", clog__);
-        config.addDefault("log__GUIManager_java_onInventoryClick__uhmm_the_guiId_is", clog__);
-        config.addDefault("log__GUIManager_java_onInventoryClick__CHEST", clog__);
-        config.addDefault("log__GUIManager_java_onInventoryClick__Should_work", clog__);
-        config.addDefault("log__GUIManager_java_onInventoryClick__marko", clog__);
+        clog__ = config.getBoolean("log.this");
+        config.addDefault("log.Drag", clog__);
+        config.addDefault("log.Movement", clog__);
+        config.addDefault("log.QuestRegisterOnEnable", clog__);
+        config.addDefault("log.GUIManager.int_guiId_failed", clog__);
+        config.addDefault("log.GUIManager.int_id_failed", clog__);
+        config.addDefault("log.GUIManager.uhmm_the_guiId_is", clog__);
+        config.addDefault("log.GUIManager.CHEST", clog__);
+        config.addDefault("log.GUIManager.Should_work", clog__);
+        config.addDefault("log.GUIManager.marko", clog__);
 
+        // logging ^^^^^^^^
+
+        // this is the pause settings lol
+        config.addDefault("pauseSettings.command.this", true);
+        config.addDefault("pauseSettings.command.pauseCommand", true);
+        config.addDefault("pauseSettings.Player.this", true);
+        // config.getBoolean("pauseSettings.Player.this");
+        config.addDefault("pauseSettings.Player.AnimationEvent", true);
+        config.addDefault("pauseSettings.Player.BedEnterEvent", true);
+        config.addDefault("pauseSettings.Player.BedLeaveEvent", true);
+        config.addDefault("pauseSettings.Player.BucketEntityEvent", true);
+        config.addDefault("pauseSettings.Player.BucketEvent.this", true);
+        config.addDefault("pauseSettings.Player.BucketEvent.BucketEmptyEvent", true);
+        config.addDefault("pauseSettings.Player.BucketEvent.BucketFillEvent", true);
+        config.addDefault("pauseSettings.Player.ChatEvent", true);
+        config.addDefault("pauseSettings.Player.CommandPreprocessEvent", true);
+        config.addDefault("pauseSettings.Player.DropItemEvent", true);
+        config.addDefault("pauseSettings.Player.EditBookEvent", true);
+        config.addDefault("pauseSettings.Player.EggThrowEvent", true);
+        config.addDefault("pauseSettings.Player.FishEvent", true);
+        config.addDefault("pauseSettings.Player.GameModeChangeEvent", true);
+        config.addDefault("pauseSettings.Player.HarvestBlockEvent", true);
+        config.addDefault("pauseSettings.Player.ItemConsumeEvent", true);
+        config.addDefault("pauseSettings.Player.ItemDamageEvent", true);
+        config.addDefault("pauseSettings.Player.ItemHeldEvent", true);
+        config.addDefault("pauseSettings.Player.ItemMendEvent", true);
+        config.addDefault("pauseSettings.Player.InteractEvent", true);
+        config.addDefault("pauseSettings.Player.InteractEntityEvent.this", true);
+        config.addDefault("pauseSettings.Player.InteractEntityEvent.ArmorStandManipulateEvent", true);
+        config.addDefault("pauseSettings.Player.InteractEntityEvent.InteractAtEntityEvent", true);
+        config.addDefault("pauseSettings.Player.JoinEvent", false);
+        config.addDefault("pauseSettings.Player.KickEvent", false);
+        config.addDefault("pauseSettings.Player.LeashEntityEvent", true);
+        config.addDefault("pauseSettings.Player.MoveEvent.this", true);
+        config.addDefault("pauseSettings.Player.MoveEvent.TeleportEvent.this", true);
+        config.addDefault("pauseSettings.Player.MoveEvent.TeleportEvent.PortalEvent", true);
+        config.addDefault("pauseSettings.Player.PickupItemEvent.this", true);
+        config.addDefault("pauseSettings.Player.PickupItemEvent.PickupArrowEvent", true);
+        config.addDefault("pauseSettings.Player.RecipeDiscoverEvent", true);
+        config.addDefault("pauseSettings.Player.ShearEntityEvent", true);
+        config.addDefault("pauseSettings.Player.StatisticIncrementEvent", true);
+        config.addDefault("pauseSettings.Player.SwapHandItemsEvent", true);
+        config.addDefault("pauseSettings.Player.TakeLecternBookEvent", true);
+        config.addDefault("pauseSettings.Player.ToggleFlightEvent", true);
+        config.addDefault("pauseSettings.Player.ToggleSneakEvent", true);
+        config.addDefault("pauseSettings.Player.ToggleSprintEvent", true);
+        config.addDefault("pauseSettings.Player.UnleashEntityEvent", true);
+        config.addDefault("pauseSettings.Player.VelocityEvent", true);
+
+        
+        
+
+        // save it
         config.options().copyDefaults(true);
         saveConfig();
 
 
+        pausePlayer = config.getBoolean("pauseSettings.Player.this");
 
-        // Logging stuff, really burning
-        LogDrag = config.getBoolean("LogDrag");
-        LogMovement = config.getBoolean("LogMovement");
+
+        // Logging stuff, really boar-ing
+        LogDrag = config.getBoolean("log.Drag");
+        LogMovement = config.getBoolean("log.Movement");
 
 
         // commands
@@ -368,6 +436,17 @@ public final class WOKS extends JavaPlugin implements Listener {
             new flying(this);
         }
 
+        if (config.getBoolean("pauseCommand")) {
+            IsIEffected = new HashMap<>();
+            new pause();
+            new stopEvents();
+            new pauseSettings();
+        }
+
+        if (config.getBoolean("util.commands.gravitys")) {
+            new gravitys();
+        }
+
 
 
 
@@ -378,6 +457,46 @@ public final class WOKS extends JavaPlugin implements Listener {
         Enchants();
 
         getServer().getPluginManager().registerEvents(this, this);
+    }
+
+    public static Boolean EmIEffected(UUID uuid) {
+        return IsIEffected.get(uuid);
+    }
+
+    public static void DontEffectMe(UUID uuid) {
+        IsIEffected.put(uuid, true);
+    }
+
+    public static void DoEffectMe(UUID uuid) {
+        IsIEffected.put(uuid, false);
+    }
+
+    public static Player getWhoEver(UUID uuid) {
+        try {
+            return Bukkit.getPlayer(uuid);
+        }
+        catch (Exception e) {
+            try {
+                return (Player) Bukkit.getOfflinePlayer(uuid);
+            }
+            catch (Exception e2) {
+                return null;
+            }
+        }
+    }
+
+    public static Player getWhoEver(String name) {
+        try {
+            return Bukkit.getPlayer(name);
+        }
+        catch (Exception e) {
+            for (OfflinePlayer offline : Bukkit.getOfflinePlayers()) {
+                if (Objects.equals(offline.getName(), name)) {
+                    return (Player) offline;
+                }
+            }
+            return null;
+        }
     }
 
     private ItemStack[] getItemsRegisterGUIExample() {
@@ -1248,6 +1367,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         if (config.getBoolean("Gui")) {
 
         }
+        IsIEffected.put(player.getUniqueId(), true);
 
 
         if (player.getName().equals("ShortPuppy14484")) {

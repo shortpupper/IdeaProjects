@@ -58,7 +58,7 @@ public class flying implements Listener {
                 boat.setVelocity(velocity);
 
                 // Set boat's rotation using Quaternion
-                boat.setRotation(yaw, pitch);
+                boat.setRotation(yaw-90, pitch);
 
                 updateTitle(player, velocity.length());
             }

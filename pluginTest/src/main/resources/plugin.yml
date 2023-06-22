@@ -108,6 +108,14 @@ commands:
     description: summon a plane to fly!?!?!?
     permission: op
 
+  pause:
+    description: Stops all in coming packets
+    permission: op
+
+  pauseConfig:
+    description: config the pause command
+    permission: op
+
 
 permissions:
   players:
