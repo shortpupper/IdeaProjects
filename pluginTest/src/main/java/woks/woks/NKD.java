@@ -28,6 +28,13 @@ public enum NKD {
     DONE_PAGE_INDEX("_quest_done_array_index", PersistentDataType.INTEGER),
     JSON_SMELLS("_jsonSmells", PersistentDataType.INTEGER),
     SPEED("_speed_at", PersistentDataType.DOUBLE),
+    ENTITY_SPEED_AMP("_entity_speed_at_amp", PersistentDataType.INTEGER),
+    ENTITY_SPEED_TIME("_entity_speed_at_time", PersistentDataType.INTEGER),
+    ENTITY_GRAVITY("_entity_gravity_at", booleanT),
+    ENTITY_JUMP_BOOST("_entity_jump_boost_at", PersistentDataType.DOUBLE),
+    ENTITY_PAUSED("_entity_paused", booleanT),
+    ENTITY_AI("_entity_paused_AI", booleanT),
+    ENTITY_pause_Collidable("_entity_paused_Collidable", booleanT),
     IS_ADMIN("_admin", booleanT);
     // Add more keys here as needed
 

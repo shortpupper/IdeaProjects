@@ -61,11 +61,11 @@ public class GUIManager implements Listener {
             NBTItem nbtItem = new NBTItem(item);
             guiId = (nbtItem.getInteger("GuiLoc") != null) ? nbtItem.getInteger("GuiLoc") : 0;
         } catch (Exception exception) {
-            if (config.getBoolean("log__GUIManager_java_onInventoryClick__int_guiId_failed")) {
+            if (config.getBoolean("log.GUIManager.int_guiId_failed")) {
                 Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]int guiId failed, " + exception);
             }
         }
-        if (config.getBoolean("log__GUIManager_java_onInventoryClick__uhmm_the_guiId_is") && guiId != 0) {
+        if (config.getBoolean("log.GUIManager.uhmm_the_guiId_is") && guiId != 0) {
             Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]uhmm the guiId is: " + guiId);
         }
         if (clickedInventory != null) { //  && guiMap.containsValue(clickedInventory)
@@ -143,7 +143,7 @@ public class GUIManager implements Listener {
                     items.add(customExpBottle(currentQuest.getExpAmount()));
 
                     RewardChestGUI.openGUIChest(player, "Current Quest Rewards", items, currentPage3, 2);
-                    if (config.getBoolean("log__GUIManager_java_onInventoryClick__CHEST")) {
+                    if (config.getBoolean("log.GUIManager.CHEST")) {
                         Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]CHEST");
                     }
                 } else if (item.getType() == Material.FEATHER) {
@@ -173,7 +173,7 @@ public class GUIManager implements Listener {
                     }
                 }
 //                        player.openInventory(createCurrentQuestInventory(player));
-                if (config.getBoolean("log__GUIManager_java_onInventoryClick__Should_work")) {
+                if (config.getBoolean("log.GUIManager.Should_work")) {
                     Bukkit.getLogger().info("[WOKS][GUIManager.java#onInventoryClick][v6.12.2023]Should work.");
                 }
             }
@@ -185,7 +185,7 @@ public class GUIManager implements Listener {
                 items.add(customExpBottle(currentQuest.getExpAmount()));
 
                 // something, like, current rewards
-                if (config.getBoolean("log__GUIManager_java_onInventoryClick__marko")) {
+                if (config.getBoolean("log.GUIManager.marko")) {
                     Bukkit.getLogger().info("[WOKS][GUIManager.java][v6.12.2023]marko");
                 }
 //                    ItemStack item = event.getCurrentItem().getType();
@@ -461,7 +461,7 @@ public class GUIManager implements Listener {
                 String title = event.getView().getTitle();
 
                 // something, like, current rewards
-                if (config.getBoolean("log__GUIManager_java_onInventoryClick__marko")) {
+                if (config.getBoolean("log.GUIManager.marko")) {
                     Bukkit.getLogger().info("[WOKS][GUIManager.java][v6.12.2023]marko");
                 }
 //                    ItemStack item = event.getCurrentItem().getType();
