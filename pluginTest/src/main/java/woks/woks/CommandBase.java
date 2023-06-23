@@ -62,7 +62,7 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
             Objects.requireNonNull(plugin.getCommand(command)).setTabCompleter(this);
             Bukkit.getLogger().info("[woks] " + command +  " Succeed.");
         } catch (Exception exception) {
-            Bukkit.getLogger().info("[woks] " + command +  " Failed.");
+            Bukkit.getLogger().warning("[woks] " + command +  " Failed.");
         }
         try {
             Bukkit.getPluginManager().registerEvents(this, plugin);

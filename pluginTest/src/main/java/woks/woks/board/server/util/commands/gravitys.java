@@ -36,7 +36,7 @@ public class gravitys {
                     }
                     return true;
                 }
-                boolean happens = arguments[1].equalsIgnoreCase("on");
+                boolean happens = arguments[0].equalsIgnoreCase("on");
                 if (arguments[1].equalsIgnoreCase("@a")) {
                     for (Player playerOn:
                          Bukkit.getOnlinePlayers()) {

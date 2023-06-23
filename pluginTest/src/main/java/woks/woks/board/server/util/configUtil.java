@@ -1,29 +1,33 @@
 package woks.woks.board.server.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.NotNull;
+import woks.woks.WOKS;
+import woks.woks.utils.ArrayUtils;
 
 public class configUtil {
-    public static boolean getBoolean(String Path, FileConfiguration config) {
+    public static boolean getBoolean(String Path) {
+        return getBoolean(Path, WOKS.config);
+    }
+    public static boolean getBoolean(String Path, @NotNull FileConfiguration config) {
         StringBuilder stringBuilder = new StringBuilder(Path);
         String[]      Paths         = Path.split("\\.");
         boolean       currentValue  = config.getBoolean(Path);
-        int           numberOfPaths = Paths.length;
-        /*
-        see if Path starts with '.this' (-0) or if it's the full path `.isCool` (-1)
-         ```yml
-         dev:
-           this: true
-           isCool: true
-         ```
-         */
-        int isThis = ( Path.endsWith(".this") ? 0 : 1);
+
+        if (!Path.endsWith(".this")) {
+            Paths = ArrayUtils.removeLastElement(Paths);
+        }
 
         for (String path : Paths) {
             stringBuilder.append(path).append(".");
+            Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][stringBuilder] " + stringBuilder);
             currentValue &= config.getBoolean(stringBuilder + "this");
+            Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][currentValue] " + currentValue);
         }
 
 
+        Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][currentValue][return] " + currentValue);
         return currentValue;
     }
 }

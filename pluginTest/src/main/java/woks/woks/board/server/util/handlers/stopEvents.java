@@ -9,6 +9,7 @@ import org.bukkit.event.player.*;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 import woks.woks.WOKS;
+import woks.woks.board.server.util.configUtil;
 
 import static woks.woks.WOKS.*;
 import static woks.woks.board.server.util.commands.pause.isPaused;
@@ -21,12 +22,10 @@ public class stopEvents implements Listener {
     }
 
 
-
     @EventHandler
     public void onEvent(PlayerMoveEvent event) {
-        event.setCancelled(pausePlayer &&
-                           isPaused &&
-                           config.getBoolean("pauseSettings.Player.MoveEvent.this") &&
+        event.setCancelled(isPaused &&
+                           configUtil.getBoolean("pauseSettings.Player.MoveEvent", config) &&
                            IsIEffected.get(event.getPlayer().getUniqueId()));
     }
     @EventHandler
@@ -77,7 +76,7 @@ public class stopEvents implements Listener {
     }
     @EventHandler
     public void onEvent(PlayerToggleSprintEvent event) {
-        if (pausePlayer && isPaused && config.getBoolean("pauseSettings.Player.ToggleSprintEvent")) {
+        if (isPaused && configUtil.getBoolean("pauseSettings.Player.ToggleSprintEvent")) {
             event.setCancelled(IsIEffected.get(event.getPlayer().getUniqueId()));
         }
     }

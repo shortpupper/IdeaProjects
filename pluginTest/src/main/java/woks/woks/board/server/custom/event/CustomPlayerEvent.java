@@ -1,4 +1,4 @@
-package woks.woks.board.server.util.event;
+package woks.woks.board.server.custom.event;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

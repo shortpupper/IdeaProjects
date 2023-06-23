@@ -19,4 +19,18 @@ public class ArrayUtils {
 
         return array;
     }
+
+    public static String[] removeLastElement(String[] array) {
+        if (array.length == 0) {
+            return array; // If the array is empty, return it as is
+        }
+
+        // Create a new array with a length one less than the original array
+        String[] result = new String[array.length - 1];
+
+        // Copy elements excluding the last one
+        System.arraycopy(array, 0, result, 0, array.length - 1);
+
+        return result;
+    }
 }

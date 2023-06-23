@@ -162,6 +162,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("log.Drag", clog__);
         config.addDefault("log.Movement", clog__);
         config.addDefault("log.QuestRegisterOnEnable", clog__);
+        config.addDefault("log.GUIManager.this", clog__);
         config.addDefault("log.GUIManager.int_guiId_failed", clog__);
         config.addDefault("log.GUIManager.int_id_failed", clog__);
         config.addDefault("log.GUIManager.uhmm_the_guiId_is", clog__);
@@ -172,6 +173,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         // logging ^^^^^^^^
 
         // this is the pause settings lol
+        config.addDefault("pauseSettings.this", true);
         config.addDefault("pauseSettings.command.this", true);
         config.addDefault("pauseSettings.command.pauseCommand", true);
         config.addDefault("pauseSettings.Player.this", true);
@@ -1263,6 +1265,9 @@ public final class WOKS extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        // reload the plugin to save stuff
+        //TODO make this do something
+        WOKS.getPlugin(WOKS.class).getLogger().info("Saving");
         // Plugin shutdown logic
         Bukkit.getLogger().info("Shutting down, ShortPuppy14484 plugin.");
     }
@@ -1340,6 +1345,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         extraDataContainer.give(NKD.GUI_8_CURRENT_PAGE_INDEX, 0);
         extraDataContainer.give(NKD.DONE_PAGE_INDEX, 0);
         extraDataContainer.give(NKD.IS_ADMIN, false);
+        extraDataContainer.give(NKD.Player_Effected_Pause, true);
 
         // ban him for why not, he called me a loser
 //        if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
@@ -1360,6 +1366,8 @@ public final class WOKS extends JavaPlugin implements Listener {
             }
         }
 
+
+        // what does this do? v2023.6.23
         if (player.getName().equals("air")) {
             extraDataContainer.set(NKD.HAS_BEEN_CLAIMED, true);
         }
@@ -1367,7 +1375,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         if (config.getBoolean("Gui")) {
 
         }
-        IsIEffected.put(player.getUniqueId(), true);
+        IsIEffected.put(player.getUniqueId(), extraDataContainer.get(NKD.Player_Effected_Pause));
 
 
         if (player.getName().equals("ShortPuppy14484")) {

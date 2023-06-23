@@ -35,6 +35,7 @@ public enum NKD {
     ENTITY_PAUSED("_entity_paused", booleanT),
     ENTITY_AI("_entity_paused_AI", booleanT),
     ENTITY_pause_Collidable("_entity_paused_Collidable", booleanT),
+    Player_Effected_Pause("_player_is_effected_by_pause", booleanT),
     IS_ADMIN("_admin", booleanT);
     // Add more keys here as needed
 
