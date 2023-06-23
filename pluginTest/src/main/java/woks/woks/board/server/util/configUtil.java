@@ -11,7 +11,7 @@ public class configUtil {
         return getBoolean(Path, WOKS.config);
     }
     public static boolean getBoolean(String Path, @NotNull FileConfiguration config) {
-        StringBuilder stringBuilder = new StringBuilder(Path);
+        StringBuilder stringBuilder = new StringBuilder();
         String[]      Paths         = Path.split("\\.");
         boolean       currentValue  = config.getBoolean(Path);
 
