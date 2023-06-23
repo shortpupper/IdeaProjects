@@ -29,9 +29,18 @@ public class stopEvents implements Listener {
                            IsIEffected.get(event.getPlayer().getUniqueId()));
     }
     @EventHandler
-    public void onEvent(PlayerInteractEvent event) {
-        event.setCancelled(IsIEffected.get(event.getPlayer().getUniqueId()) &&
-                           pausePlayer && isPaused && config.getBoolean("pauseSettings.Player.InteractEvent"));
+    public void onEvent(PlayerInteractEvent event) {//pauseSettings.Player.InteractEvent
+        WOKS.getInstance().getLogger().info("[v23.6.23][InteractEvent][isPaused] " + isPaused);
+
+        WOKS.getInstance().getLogger().info("[v23.6.23][InteractEvent][configUtil] " +
+                                            configUtil.getBoolean("pauseSettings.Player.InteractEvent", config));
+
+        WOKS.getInstance().getLogger().info("[v23.6.23][InteractEvent][IsIEffected] " +
+                                            IsIEffected.get(event.getPlayer().getUniqueId()));
+
+        event.setCancelled(isPaused &&
+                           configUtil.getBoolean("pauseSettings.Player.InteractEvent", config) &&
+                           IsIEffected.get(event.getPlayer().getUniqueId()));
     }
     @EventHandler
     public void onEvent(PlayerSwapHandItemsEvent event) {

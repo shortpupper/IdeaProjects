@@ -22,6 +22,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import woks.woks.board.planes.commands.summonPlane;
@@ -62,6 +63,7 @@ import static woks.woks.matthew.quest.rewordQuest.DefaultExpAmounts;
 
 public final class WOKS extends JavaPlugin implements Listener {
     private static WOKS instance;
+    private static PluginLogger pluginLogger;
     public static boolean AFC = false;
     public static FileConfiguration config;
 
@@ -121,7 +123,6 @@ public final class WOKS extends JavaPlugin implements Listener {
     public static WOKS getInstance() {
         return instance;
     }
-
 
     @Override
     public void onEnable() {
@@ -1346,6 +1347,8 @@ public final class WOKS extends JavaPlugin implements Listener {
         extraDataContainer.give(NKD.DONE_PAGE_INDEX, 0);
         extraDataContainer.give(NKD.IS_ADMIN, false);
         extraDataContainer.give(NKD.Player_Effected_Pause, true);
+        // how to get if paused
+//        extraDataContainer.get(NKD.Player_Effected_Pause);
 
         // ban him for why not, he called me a loser
 //        if (player.getName().equals("PlaneDestroyer") && player.isOp()) {
