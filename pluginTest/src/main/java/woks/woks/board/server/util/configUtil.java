@@ -1,6 +1,5 @@
 package woks.woks.board.server.util;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import woks.woks.WOKS;
@@ -21,13 +20,13 @@ public class configUtil {
 
         for (String path : Paths) {
             stringBuilder.append(path).append(".");
-            Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][stringBuilder] " + stringBuilder);
+//            Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][stringBuilder] " + stringBuilder);
             currentValue &= config.getBoolean(stringBuilder + "this");
-            Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][currentValue] " + currentValue);
+//            Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][currentValue] " + currentValue);
         }
 
 
-        Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][currentValue][return] " + currentValue);
+//        Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][currentValue][return] " + currentValue);
         return currentValue;
     }
 }

@@ -24,8 +24,11 @@ public class stopEvents implements Listener {
 
     @EventHandler
     public void onEvent(PlayerMoveEvent event) {
+        WOKS.getInstance().getLogger().info("[v23.6.23][Move][!this] " + config.getBoolean("pauseSettings.Player.MoveEvent"));
+        WOKS.getInstance().getLogger().info("[v23.6.23][Move][this] " + config.getBoolean("pauseSettings.Player.MoveEvent.this"));
         event.setCancelled(isPaused &&
-                           configUtil.getBoolean("pauseSettings.Player.MoveEvent", config) &&
+                           config.getBoolean("pauseSettings.Player.MoveEvent") &&
+                           config.getBoolean("pauseSettings.Player.MoveEvent.this") &&
                            IsIEffected.get(event.getPlayer().getUniqueId()));
     }
     @EventHandler
@@ -37,7 +40,6 @@ public class stopEvents implements Listener {
 
         WOKS.getInstance().getLogger().info("[v23.6.23][InteractEvent][IsIEffected] " +
                                             IsIEffected.get(event.getPlayer().getUniqueId()));
-
         event.setCancelled(isPaused &&
                            configUtil.getBoolean("pauseSettings.Player.InteractEvent", config) &&
                            IsIEffected.get(event.getPlayer().getUniqueId()));

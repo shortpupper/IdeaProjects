@@ -7,7 +7,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandMap;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
@@ -27,6 +26,7 @@ import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import woks.woks.board.planes.commands.summonPlane;
 import woks.woks.board.planes.handlers.flying;
+import woks.woks.board.server.custom.config.ExtraConfig;
 import woks.woks.board.server.util.commands.gravitys;
 import woks.woks.board.server.util.commands.pause;
 import woks.woks.board.server.util.commands.pauseSettings;
@@ -64,8 +64,9 @@ import static woks.woks.matthew.quest.rewordQuest.DefaultExpAmounts;
 public final class WOKS extends JavaPlugin implements Listener {
     private static WOKS instance;
     private static PluginLogger pluginLogger;
-    public static boolean AFC = false;
-    public static FileConfiguration config;
+    public static boolean     AFC = false;
+//    public static FileConfiguration config;
+    public static ExtraConfig config;
 
 
     public static QuestManager questManager;
@@ -126,7 +127,7 @@ public final class WOKS extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        config = this.getConfig();
+        config = new ExtraConfig(this.getConfig());
         instance = this;
         // Plugin startup logic
         Bukkit.getLogger().info("Starting, ShortPuppy14484 plugin.");
@@ -459,7 +460,24 @@ public final class WOKS extends JavaPlugin implements Listener {
         Recipes();
         Enchants();
 
+
+        if (!Bukkit.getOnlinePlayers().isEmpty()) {
+            WOKS.getInstance().getLogger().info("Reloading plugin.");
+            reloadPlugin();
+        }
+
         getServer().getPluginManager().registerEvents(this, this);
+    }
+
+    public static void reloadPlugin() {
+//        IsIEffected
+        if (config.getBoolean("pauseCommand")) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                IsIEffected.put(player.getUniqueId(), new ExtraDataContainer(player.getPersistentDataContainer()).get(NKD.Player_Effected_Pause));
+            }
+        }
+
+        WOKS.getInstance().getLogger().info("Reload done.");
     }
 
     public static Boolean EmIEffected(UUID uuid) {
