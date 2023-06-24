@@ -443,7 +443,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             new flying(this);
         }
 
-        if (config.getBoolean("pauseCommand")) {
+        if (config.getBoolean("pauseSettings.command.pauseCommand")) {
             new pause();
             new stopEvents();
             new pauseSettings();
