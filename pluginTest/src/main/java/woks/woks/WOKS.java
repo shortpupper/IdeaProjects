@@ -173,6 +173,8 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("log.GUIManager.marko", clog__);
 
         // logging ^^^^^^^^
+        config.setComments("pauseSettings", new ArrayList<>(List.of(new String[]{
+                        "\n", "This is for the pauseCommand so to disable it change the `.this` to false", "\n"})));
 
         // this is the pause settings lol
         config.addDefault("pauseSettings.this", true);
@@ -466,6 +468,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             reloadPlugin();
         }
 
+        WOKS.getInstance().getLogger().info("Done loading.");
         getServer().getPluginManager().registerEvents(this, this);
     }
 
@@ -473,7 +476,8 @@ public final class WOKS extends JavaPlugin implements Listener {
 //        IsIEffected
         if (config.getBoolean("pauseCommand")) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                IsIEffected.put(player.getUniqueId(), new ExtraDataContainer(player.getPersistentDataContainer()).get(NKD.Player_Effected_Pause));
+                IsIEffected.put(player.getUniqueId(),
+                                new ExtraDataContainer(player.getPersistentDataContainer()).get(NKD.Player_Effected_Pause));
             }
         }
 
@@ -1294,6 +1298,7 @@ public final class WOKS extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        // TODO maybe add the name spaces to the NKD.java file enum
         player.discoverRecipe(new NamespacedKey(this, "EnchantedLeather"));
 //        player.discoverRecipe(new NamespacedKey(this, "EnchantedDiamond"));
 //        player.discoverRecipe(new NamespacedKey(this, "EnchantedCrying_Obsidian"));

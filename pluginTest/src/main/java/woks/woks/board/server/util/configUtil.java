@@ -14,19 +14,15 @@ public class configUtil {
         String[]      Paths         = Path.split("\\.");
         boolean       currentValue  = config.getBoolean(Path);
 
-        if (!Path.endsWith(".this")) {
+        if (Path.endsWith(".this")) {
             Paths = ArrayUtils.removeLastElement(Paths);
         }
 
         for (String path : Paths) {
             stringBuilder.append(path).append(".");
-//            Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][stringBuilder] " + stringBuilder);
             currentValue &= config.getBoolean(stringBuilder + "this");
-//            Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][currentValue] " + currentValue);
         }
 
-
-//        Bukkit.getLogger().info("[WOKS][v2023.6.22][configUtil][currentValue][return] " + currentValue);
         return currentValue;
     }
 }

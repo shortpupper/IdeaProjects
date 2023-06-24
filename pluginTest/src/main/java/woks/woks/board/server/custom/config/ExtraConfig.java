@@ -40,7 +40,7 @@ public class ExtraConfig extends FileConfiguration {
         String[]      Paths         = Path.split("\\.");
         boolean       currentValue  = getBoolean(Path, (def instanceof Boolean) ? (Boolean) def : false);
 
-        if (!Path.endsWith(".this")) {
+        if (Path.endsWith(".this")) {
             Paths = ArrayUtils.removeLastElement(Paths);
         }
 

@@ -21,6 +21,7 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
     private List<String> delayedPlayers = null;
     private int delay = 0;
     private final WOKS plugin;
+    private       int  id = 0;
 
     public CommandBase(String command) {
         this(command, 0);
@@ -49,6 +50,7 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
         this.maxArguments = maxArguments;
         this.playerOnly = playerOnly;
         this.names = command;
+        this.id++;
 
         CommandMap commandMap = getCommandMap();
         if (commandMap != null) {
@@ -69,6 +71,10 @@ public abstract class CommandBase extends BukkitCommand implements CommandExecut
         } catch (Exception exception) {
             Bukkit.getLogger().info("[woks] THIS broke.");
         }
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public Command getThis() {
