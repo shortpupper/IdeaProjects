@@ -11,6 +11,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
@@ -79,10 +80,10 @@ public final class WOKS extends JavaPlugin implements Listener {
 
     // dev stuff / testing things
     public static boolean devQuestForTesting;
-    public static Map<UUID, Boolean> IsIEffected;
+    public static Map<UUID, Boolean> IsIEffected = new HashMap<>();
 
     public static boolean pausePlayer;
-
+    public static boolean isPaused = false;
     //    public static BooleanPersistentDataType booleanDataType = new BooleanPersistentDataType();
 
     public static PersistentDataType<Byte, Boolean> booleanT = new BooleanPersistentDataType();
@@ -130,7 +131,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         config = new ExtraConfig(this.getConfig());
         instance = this;
         // Plugin startup logic
-        Bukkit.getLogger().info("Starting, ShortPuppy14484 plugin.");
+        WOKS.getInstance().getLogger().info("Starting, ShortPuppy14484 plugin.");
         // Register the custom PersistentDataType
 
         booleanT = new BooleanPersistentDataType();
@@ -178,9 +179,9 @@ public final class WOKS extends JavaPlugin implements Listener {
 
         // this is the pause settings lol
         config.addDefault("pauseSettings.this", true);
+        config.addDefault("pauseSettings.Player.this", true);
         config.addDefault("pauseSettings.command.this", true);
         config.addDefault("pauseSettings.command.pauseCommand", true);
-        config.addDefault("pauseSettings.Player.this", true);
         // config.getBoolean("pauseSettings.Player.this");
         config.addDefault("pauseSettings.Player.AnimationEvent", true);
         config.addDefault("pauseSettings.Player.BedEnterEvent", true);
@@ -232,7 +233,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         saveConfig();
 
 
-        pausePlayer = config.getBoolean("pauseSettings.Player.this");
+        pausePlayer = config.getBoolean("pauseSettings.Player");
 
 
         // Logging stuff, really boar-ing
@@ -443,7 +444,6 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
 
         if (config.getBoolean("pauseCommand")) {
-            IsIEffected = new HashMap<>();
             new pause();
             new stopEvents();
             new pauseSettings();
@@ -454,7 +454,9 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
 
 
-
+        WOKS.getInstance().getLogger().info("pauseCommand: " + config.getBoolean("pauseCommand"));
+        WOKS.getInstance().getLogger().info("MoveEvent: " + config.getBoolean("pauseSettings.Player.MoveEvent"));
+        WOKS.getInstance().getLogger().info("MoveEvent.this: " + config.getBoolean("pauseSettings.Player.MoveEvent.this"));
 
 
         new AccessLegacyBackPack();
@@ -472,7 +474,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(this, this);
     }
 
-    public static void reloadPlugin() {
+    private static void reloadPlugin() {
 //        IsIEffected
         if (config.getBoolean("pauseCommand")) {
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -1295,7 +1297,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         Bukkit.getLogger().info("Shutting down, ShortPuppy14484 plugin.");
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         // TODO maybe add the name spaces to the NKD.java file enum
@@ -1369,7 +1371,6 @@ public final class WOKS extends JavaPlugin implements Listener {
         extraDataContainer.give(NKD.GUI_8_CURRENT_PAGE_INDEX, 0);
         extraDataContainer.give(NKD.DONE_PAGE_INDEX, 0);
         extraDataContainer.give(NKD.IS_ADMIN, false);
-        extraDataContainer.give(NKD.Player_Effected_Pause, true);
         // how to get if paused
 //        extraDataContainer.get(NKD.Player_Effected_Pause);
 
@@ -1401,6 +1402,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         if (config.getBoolean("Gui")) {
 
         }
+        extraDataContainer.give(NKD.Player_Effected_Pause, true);
         IsIEffected.put(player.getUniqueId(), extraDataContainer.get(NKD.Player_Effected_Pause));
 
 

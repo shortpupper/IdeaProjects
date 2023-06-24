@@ -35,18 +35,23 @@ public class ExtraConfig extends FileConfiguration {
 
     @Override
     public boolean getBoolean(@NotNull String Path) {
-        Object def = getDefault(Path);
-        StringBuilder stringBuilder = new StringBuilder();
-        String[]      Paths         = Path.split("\\.");
-        boolean       currentValue  = getBoolean(Path, (def instanceof Boolean) ? (Boolean) def : false);
+        Object        def           = getDefault(Path);
+        Object        def2          = getDefault(Path+".this");
+        boolean       currentValue  = getBoolean(Path + ".this", (def2 instanceof Boolean) ? (Boolean) def2 : false) ||
+                                      getBoolean(Path,                (def  instanceof Boolean) ? (Boolean) def  : false);
+        if (Path.contains(".")) {
+            StringBuilder stringBuilder = new StringBuilder();
+            String[]      Paths         = Path.split("\\.");
+            // FIXME change that to like true
 
-        if (Path.endsWith(".this")) {
-            Paths = ArrayUtils.removeLastElement(Paths);
-        }
+            if (Path.endsWith(".this")) {
+                Paths = ArrayUtils.removeLastElement(Paths);
+            }
 
-        for (String path : Paths) {
-            stringBuilder.append(path).append(".");
-            currentValue &= config.getBoolean(stringBuilder + "this");
+            for (String path : Paths) {
+                stringBuilder.append(path).append(".");
+                currentValue &= config.getBoolean(stringBuilder + "this");
+            }
         }
         return currentValue;
     }

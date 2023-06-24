@@ -11,11 +11,12 @@ import woks.woks.Msg;
 import java.util.ArrayList;
 import java.util.List;
 
+import static woks.woks.WOKS.isPaused;
 import static woks.woks.board.server.util.EntityUtils.pauseCurrentEntities;
 import static woks.woks.board.server.util.EntityUtils.unpauseCurrentEntities;
 
 public class pause {
-    public static boolean isPaused = false;
+
     public pause() {
         new CommandBase("pause", false) {
             @Override
