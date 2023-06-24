@@ -174,8 +174,6 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("log.GUIManager.marko", clog__);
 
         // logging ^^^^^^^^
-        config.setComments("pauseSettings", new ArrayList<>(List.of(new String[]{
-                        "\n", "This is for the pauseCommand so to disable it change the `.this` to false", "\n"})));
 
         // this is the pause settings lol
         config.addDefault("pauseSettings.this", true);
