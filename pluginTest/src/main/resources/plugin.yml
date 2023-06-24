@@ -11,7 +11,7 @@ version-stuff:
     month: &month '6'
     year: &year '2023'
 
-version: '2023.6.23.u102.lc7824'
+version: '2023.6.24.u103.lc7826'
 
 commands:
   savexp:

@@ -3,7 +3,8 @@ package woks.woks.board.server.custom.config;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
-import woks.woks.utils.ArrayUtils;
+
+import java.util.Arrays;
 
 public class ExtraConfig extends FileConfiguration {
     private final FileConfiguration config;
@@ -21,7 +22,7 @@ public class ExtraConfig extends FileConfiguration {
         config.loadFromString(contents);
     }
 
-    public boolean getBoolean2(@NotNull String path) {
+    protected boolean getBoolean2(@NotNull String path) {
         Object def = getDefault(path);
         return getBoolean(path, (def instanceof Boolean) ? (Boolean) def : false);
     }
@@ -33,24 +34,25 @@ public class ExtraConfig extends FileConfiguration {
     }
 
     @Override
-    public boolean getBoolean(@NotNull String Path) {
-        String[] Paths = Path.split("\\.");
-        if (Paths.length > 1) {
+    public boolean getBoolean(@NotNull String path) {
+        String[] paths = path.split("\\.");
+        if (paths.length > 1) {
             StringBuilder stringBuilder = new StringBuilder();
-            // FIXME change that to like true
-            boolean       currentValue  = getBoolean2(Path) || getBoolean2(Path + ".this");
+            // FIXME change that to something like true
+            boolean currentValue = getBoolean2(path) || getBoolean2(path + ".this");
 
-            if (Path.endsWith(".this")) {
-                Paths = ArrayUtils.removeLastElement(Paths);
+            if (path.endsWith(".this")) {
+                paths = Arrays.copyOf(paths, paths.length - 1);
             }
 
-            for (String path : Paths) {
-                stringBuilder.append(path).append(".");
-                currentValue &= config.getBoolean(stringBuilder + "this");
+            for (String p : paths) {
+                stringBuilder.append(p).append(".");
+                currentValue &= getBoolean2(stringBuilder + "this");
             }
             return currentValue;
         } else {
-            return getBoolean2(Path);
+            return getBoolean2(path);
         }
     }
+
 }
