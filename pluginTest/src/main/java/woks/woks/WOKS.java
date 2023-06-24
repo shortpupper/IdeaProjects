@@ -454,7 +454,8 @@ public final class WOKS extends JavaPlugin implements Listener {
         }
 
 
-        WOKS.getInstance().getLogger().info("pauseCommand: " + config.getBoolean("pauseCommand"));
+        WOKS.getInstance().getLogger().info("pauseCommand: " + config.getBoolean("pauseSettings.command.pauseCommand"));
+        WOKS.getInstance().getLogger().info("pauseCommand.this: " + config.getBoolean("pauseSettings.command.pauseCommand.this"));
         WOKS.getInstance().getLogger().info("MoveEvent: " + config.getBoolean("pauseSettings.Player.MoveEvent"));
         WOKS.getInstance().getLogger().info("MoveEvent.this: " + config.getBoolean("pauseSettings.Player.MoveEvent.this"));
 
