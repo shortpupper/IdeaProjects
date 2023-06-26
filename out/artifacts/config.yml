@@ -1,0 +1,91 @@
+util:
+  this: true
+  commands:
+    this: true
+    gravitys: true
+dev:
+  this: true
+  devQuestForTesting: true
+  StorageManager_DONTCHANGE: true
+
+log:
+  this: true
+  log: true
+  Drag: true
+  Movement: true
+  QuestRegisterOnEnable: true
+  GUIManager:
+    this: true
+    int_guiId_failed: true
+    int_id_failed: true
+    uhmm_the_guiId_is: true
+    CHEST: true
+    Should_work: true
+    marko: true
+
+pauseSettings:
+  command:
+    this: true
+    pauseCommand: true
+  this: true
+  Player:
+    this: true
+    AnimationEvent: true
+    BedEnterEvent: true
+    BedLeaveEvent: true
+    BucketEntityEvent: true
+    BucketEvent:
+      this: true
+      BucketEmptyEvent: true
+      BucketFillEvent: true
+    ChatEvent: true
+    CommandPreprocessEvent: false
+    DropItemEvent: true
+    EditBookEvent: true
+    EggThrowEvent: true
+    FishEvent: true
+    GameModeChangeEvent: true
+    HarvestBlockEvent: true
+    ItemConsumeEvent: true
+    ItemDamageEvent: true
+    ItemHeldEvent: true
+    ItemMendEvent: true
+    InteractEvent: true
+    InteractEntityEvent:
+      this: true
+      ArmorStandManipulateEvent: true
+      InteractAtEntityEvent: true
+    JoinEvent: false
+    KickEvent: false
+    LeashEntityEvent: true
+    MoveEvent:
+      this: true
+      TeleportEvent:
+        this: true
+        PortalEvent: true
+    PickupItemEvent:
+      this: true
+      PickupArrowEvent: true
+    RecipeDiscoverEvent: true
+    ShearEntityEvent: true
+    StatisticIncrementEvent: true
+    SwapHandItemsEvent: true
+    TakeLecternBookEvent: true
+    ToggleFlightEvent: true
+    ToggleSneakEvent: true
+    ToggleSprintEvent: true
+    UnleashEntityEvent: true
+    VelocityEvent: true
+
+planes: true
+StorageManager_DONTCHANGE: true
+LogQuestRegisterOnEnable: true
+devQuestForTesting: true
+Gui: true
+Quests: true
+PlayerWalkPath: false
+GoodDayMSG: true
+UnsafeEnchanting: true
+PaidRequests: true
+roles: true
+Killer: true

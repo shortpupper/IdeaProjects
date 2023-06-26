@@ -8,6 +8,7 @@ import org.bukkit.event.player.*;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 import woks.woks.WOKS;
+import woks.woks.board.server.custom.config.ExtraConfig;
 
 import static woks.woks.WOKS.*;
 
@@ -15,16 +16,18 @@ import static woks.woks.WOKS.*;
 public class stopEvents implements Listener {
 
     public stopEvents() {
+
         Bukkit.getPluginManager().registerEvents(this, WOKS.getInstance());
+
+        ExtraConfig config = new ExtraConfig(WOKS.config);
+
+        WOKS.getInstance().getLogger().info(String.valueOf(config.getBoolean("GoodDayMSG")));
 
 
         //TODO make this more efficient and DRY it a bit
-        WOKS.getInstance().getLogger().info("moveOnHope");
         if (config.getBoolean("pauseSettings.Player.MoveEvent")) {
-            WOKS.getInstance().getLogger().info("moveOn");
             registerCustomEvent(PlayerMoveEvent.class, this::onEvent);
         }
-        WOKS.getInstance().getLogger().info("moveAway");
         if (config.getBoolean("pauseSettings.Player.InteractEvent")) {
             registerCustomEvent(PlayerInteractEvent.class, this::onEvent);
         }

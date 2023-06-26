@@ -7,6 +7,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandMap;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
@@ -48,6 +49,8 @@ import woks.woks.matthew.roles;
 import woks.woks.matthew.util.BooleanPersistentDataType;
 import woks.woks.matthew.util.ExtraDataContainer;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -65,9 +68,8 @@ import static woks.woks.matthew.quest.rewordQuest.DefaultExpAmounts;
 public final class WOKS extends JavaPlugin implements Listener {
     private static WOKS instance;
     private static PluginLogger pluginLogger;
-    public static boolean     AFC = false;
-//    public static FileConfiguration config;
-    public static ExtraConfig config;
+    public static boolean           AFC = false;
+    public static FileConfiguration config;
 
 
     public static QuestManager questManager;
@@ -127,10 +129,31 @@ public final class WOKS extends JavaPlugin implements Listener {
     }
 
     @Override
+    public void onDisable() {
+        // reload the plugin to save stuff
+        WOKS.getInstance().getLogger().info("Saving");
+        ExtraConfig config = new ExtraConfig(WOKS.config);
+        if (config.getBoolean("Server.disableEvent.saveConfig")) {
+            WOKS.getInstance().getLogger().info("Copying Defaults");
+            config.options().copyDefaults(true);
+            WOKS.getInstance().getLogger().info("&2Done Copying Defaults");
+            WOKS.getInstance().getLogger().info("Saving config");
+//            reloadConfig();
+            saveExtraConfig();
+            WOKS.getInstance().getLogger().info("Done saving config");
+        }
+        // Plugin shutdown logic
+        WOKS.getInstance().getLogger().info("Done saving");
+        WOKS.getInstance().getLogger().info("Shutting down, ShortPuppy14484 plugin");
+    }
+
+    @Override
     public void onEnable() {
-        config = new ExtraConfig(this.getConfig());
-        instance = this;
         // Plugin startup logic
+
+        instance = this;
+        config = this.getConfig();
+//        config = (this.getConfig());
         WOKS.getInstance().getLogger().info("Starting, ShortPuppy14484 plugin.");
         // Register the custom PersistentDataType
 
@@ -155,9 +178,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("dev.devQuestForTesting", true);
         config.addDefault("dev.StorageManager_DONTCHANGE", true);
         config.addDefault("planes", true);
-        config.addDefault("util.this", true);
-        config.addDefault("util.commands.this", true);
-        config.addDefault("util.commands.gravitys", true);
+
 
         config.addDefault("log.this", true);
         boolean clog__;
@@ -189,7 +210,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("pauseSettings.Player.BucketEvent.BucketEmptyEvent", true);
         config.addDefault("pauseSettings.Player.BucketEvent.BucketFillEvent", true);
         config.addDefault("pauseSettings.Player.ChatEvent", true);
-        config.addDefault("pauseSettings.Player.CommandPreprocessEvent", true);
+        config.addDefault("pauseSettings.Player.CommandPreprocessEvent", false);
         config.addDefault("pauseSettings.Player.DropItemEvent", true);
         config.addDefault("pauseSettings.Player.EditBookEvent", true);
         config.addDefault("pauseSettings.Player.EggThrowEvent", true);
@@ -223,13 +244,19 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("pauseSettings.Player.UnleashEntityEvent", true);
         config.addDefault("pauseSettings.Player.VelocityEvent", true);
 
-        
-        
+        config.addDefault("Server.this", true);
+        config.addDefault("Server.commands.this", true);
+        config.addDefault("Server.commands.gravitys", true);
+        config.addDefault("Server.disableEvent.this", true);
+        config.addDefault("Server.disableEvent.saveConfig", false);
+
+
 
         // save it
         config.options().copyDefaults(true);
+//        saveExtraConfig();
         saveConfig();
-
+        ExtraConfig config = new ExtraConfig(WOKS.config);
 
         pausePlayer = config.getBoolean("pauseSettings.Player");
 
@@ -447,15 +474,15 @@ public final class WOKS extends JavaPlugin implements Listener {
             new pauseSettings();
         }
 
-        if (config.getBoolean("util.commands.gravitys")) {
+        if (config.getBoolean("Server.commands.gravitys")) {
             new gravitys();
         }
 
 
-        WOKS.getInstance().getLogger().info("pauseCommand: " + config.getBoolean("pauseSettings.command.pauseCommand"));
-        WOKS.getInstance().getLogger().info("pauseCommand.this: " + config.getBoolean("pauseSettings.command.pauseCommand.this"));
-        WOKS.getInstance().getLogger().info("MoveEvent: " + config.getBoolean("pauseSettings.Player.MoveEvent"));
-        WOKS.getInstance().getLogger().info("MoveEvent.this: " + config.getBoolean("pauseSettings.Player.MoveEvent.this"));
+//        WOKS.getInstance().getLogger().info("pauseCommand: " + config.getBoolean("pauseSettings.command.pauseCommand"));
+//        WOKS.getInstance().getLogger().info("pauseCommand.this: " + config.getBoolean("pauseSettings.command.pauseCommand.this"));
+//        WOKS.getInstance().getLogger().info("MoveEvent: " + config.getBoolean("pauseSettings.Player.MoveEvent"));
+//        WOKS.getInstance().getLogger().info("MoveEvent.this: " + config.getBoolean("pauseSettings.Player.MoveEvent.this"));
 
 
         new AccessLegacyBackPack();
@@ -472,10 +499,17 @@ public final class WOKS extends JavaPlugin implements Listener {
         WOKS.getInstance().getLogger().info("Done loading.");
         getServer().getPluginManager().registerEvents(this, this);
     }
-
+    private void saveExtraConfig() {
+        try {
+            config.save(new File(getDataFolder(), "config.yml"));
+        } catch (IOException e) {
+            // Handle the exception appropriately (e.g., logging, error handling)
+            e.printStackTrace();
+        }
+    }
     private static void reloadPlugin() {
 //        IsIEffected
-        if (config.getBoolean("pauseCommand")) {
+        if (config.getBoolean("pauseSettings.command.pauseCommand")) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 IsIEffected.put(player.getUniqueId(),
                                 new ExtraDataContainer(player.getPersistentDataContainer()).get(NKD.Player_Effected_Pause));
@@ -1287,14 +1321,7 @@ public final class WOKS extends JavaPlugin implements Listener {
     }
 
 
-    @Override
-    public void onDisable() {
-        // reload the plugin to save stuff
-        //TODO make this do something
-        WOKS.getPlugin(WOKS.class).getLogger().info("Saving");
-        // Plugin shutdown logic
-        Bukkit.getLogger().info("Shutting down, ShortPuppy14484 plugin.");
-    }
+
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
