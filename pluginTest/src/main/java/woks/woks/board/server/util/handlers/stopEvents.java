@@ -14,12 +14,13 @@ import static woks.woks.WOKS.*;
 
 
 public class stopEvents implements Listener {
+    private final ExtraConfig config;
 
     public stopEvents() {
 
         Bukkit.getPluginManager().registerEvents(this, WOKS.getInstance());
 
-        ExtraConfig config = new ExtraConfig(WOKS.config);
+        this.config = new ExtraConfig(WOKS.config);
 
         WOKS.getInstance().getLogger().info(String.valueOf(config.getBoolean("GoodDayMSG")));
 
@@ -140,6 +141,49 @@ public class stopEvents implements Listener {
         if (config.getBoolean("pauseSettings.Player.EditBookEvent")) {
             registerCustomEvent(PlayerEditBookEvent.class, this::onEvent);
         }
+
+        registerCustomEvent(EntityExplodeEvent.class, this::onEvent, "pauseSettings.Entity.ExplodeEvent");
+        registerCustomEvent(EntityAirChangeEvent.class, this::onEvent, "pauseSettings.Entity.AirChangeEvent");
+        registerCustomEvent(EntityBreedEvent.class, this::onEvent, "pauseSettings.Entity.BreedEvent");
+        registerCustomEvent(EntityBlockFormEvent.class, this::onEvent, "pauseSettings.Entity.BlockFormEvent");
+        registerCustomEvent(EntityChangeBlockEvent.class, this::onEvent, "pauseSettings.Entity.ChangeBlockEvent");
+        registerCustomEvent(EntityBreakDoorEvent.class, this::onEvent, "pauseSettings.Entity.ChangeBlockEvent.BreakDoorEvent");
+        registerCustomEvent(EntityCombustEvent.class, this::onEvent, "pauseSettings.Entity.CombustEvent");
+        registerCustomEvent(EntityCombustByBlockEvent.class, this::onEvent, "pauseSettings.Entity.CombustEvent.CombustByBlockEvent");
+        registerCustomEvent(EntityCombustByEntityEvent.class, this::onEvent, "pauseSettings.Entity.CombustEvent.CombustByEntityEvent");
+        registerCustomEvent(EntitySpellCastEvent.class, this::onEvent, "pauseSettings.Entity.SpellCastEvent");
+        registerCustomEvent(EntityDamageEvent.class, this::onEvent, "pauseSettings.Entity.DamageEvent");
+        registerCustomEvent(EntityDamageByBlockEvent.class, this::onEvent, "pauseSettings.Entity.DamageEvent.DamageByBlockEvent");
+        registerCustomEvent(EntityDamageByEntityEvent.class, this::onEvent, "pauseSettings.Entity.DamageEvent.DamageByEntityEvent");
+        registerCustomEvent(EntityDismountEvent.class, this::onEvent, "pauseSettings.Entity.DismountEvent");
+        registerCustomEvent(EntityDropItemEvent.class, this::onEvent, "pauseSettings.Entity.DropItemEvent");
+        registerCustomEvent(EntityEnterBlockEvent.class, this::onEvent, "pauseSettings.Entity.EnterBlockEvent");
+        registerCustomEvent(EntityEnterLoveModeEvent.class, this::onEvent, "pauseSettings.Entity.EnterLoveModeEvent");
+        registerCustomEvent(EntityExhaustionEvent.class, this::onEvent, "pauseSettings.Entity.ExhaustionEvent");
+        registerCustomEvent(EntityInteractEvent.class, this::onEvent, "pauseSettings.Entity.InteractEvent");
+        registerCustomEvent(EntityPlaceEvent.class, this::onEvent, "pauseSettings.Entity.PlaceEvent");
+        registerCustomEvent(EntityPotionEffectEvent.class, this::onEvent, "pauseSettings.Entity.PotionEffectEvent");
+        registerCustomEvent(EntityResurrectEvent.class, this::onEvent, "pauseSettings.Entity.ResurrectEvent");
+        registerCustomEvent(EntitySpawnEvent.class, this::onEvent, "pauseSettings.Entity.SpawnEvent");
+        registerCustomEvent(EntityTameEvent.class, this::onEvent, "pauseSettings.Entity.TameEvent");
+        registerCustomEvent(EntityTargetEvent.class, this::onEvent, "pauseSettings.Entity.TargetEvent");
+        registerCustomEvent(EntityPortalEvent.class, this::onEvent, "pauseSettings.Entity.TeleportEvent.PortalEvent");
+        registerCustomEvent(EntityPortalExitEvent.class, this::onEvent, "pauseSettings.Entity.TeleportEvent.PortalEvent.PortalExitEvent");
+        registerCustomEvent(EntityTeleportEvent.class, this::onEvent, "pauseSettings.Entity.TeleportEvent");
+        registerCustomEvent(EntityTransformEvent.class, this::onEvent, "pauseSettings.Entity.TransformEvent");
+        registerCustomEvent(EntityMountEvent.class, this::onEvent, "pauseSettings.Entity.MountEvent");
+        registerCustomEvent(EntityPickupItemEvent.class, this::onEvent, "pauseSettings.Entity.PickupItemEvent");
+        registerCustomEvent(EntityRegainHealthEvent.class, this::onEvent, "pauseSettings.Entity.RegainHealthEvent");
+        registerCustomEvent(EntityShootBowEvent.class, this::onEvent, "pauseSettings.Entity.ShootBowEvent");
+        registerCustomEvent(EntityTargetLivingEntityEvent.class, this::onEvent, "pauseSettings.Entity.TargetEvent.TargetLivingEntityEvent");
+        registerCustomEvent(EntityToggleGlideEvent.class, this::onEvent, "pauseSettings.Entity.ToggleGlideEvent");
+        registerCustomEvent(EntityToggleSwimEvent.class, this::onEvent, "pauseSettings.Entity.ToggleSwimEvent");
+
+
+
+        // this is now the block events
+
+//        registerCustomEvent(EntityToggleSwimEvent.class, this::onEvent, "pauseSettings.Entity.ToggleSwimEvent");
     }
 
     private <T extends Event> void registerCustomEvent(Class<T> eventClass, EventConsumer<T> eventConsumer) {
@@ -155,11 +199,19 @@ public class stopEvents implements Listener {
                 WOKS.getInstance()
         );
     }
+    private <T extends Event> void registerCustomEvent(Class<T> eventClass, EventConsumer<T> eventConsumer, String configPath) {
+        if (config.getBoolean(configPath)) {
+            registerCustomEvent(eventClass, eventConsumer);
+        }
+    }
 
     private void onEvent(Event event1) {
         if (event1 instanceof Cancellable event2) {
             if (event1 instanceof PlayerEvent event3) {
                 event2.setCancelled(isPaused && IsIEffected.get(event3.getPlayer().getUniqueId()));
+            }
+            else if (event1 instanceof EntityEvent) {
+                event2.setCancelled(isPaused);
             }
         }
     }
@@ -181,153 +233,4 @@ public class stopEvents implements Listener {
             event.getEgg().setBounce(true);
         }
     }
-
-
-
-    @EventHandler
-    public void onEvent(EntityExplodeEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityAirChangeEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityBreedEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityBreakDoorEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityBlockFormEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityChangeBlockEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityCombustEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityCombustByBlockEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityCombustByEntityEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntitySpellCastEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityDamageEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityDamageByBlockEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityDamageByEntityEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityDismountEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityDropItemEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityEnterBlockEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityEnterLoveModeEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityExhaustionEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityInteractEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityPlaceEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityPortalEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityPortalExitEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityPotionEffectEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityResurrectEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntitySpawnEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityTameEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityTargetEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityTeleportEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityTransformEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityMountEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityPickupItemEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityRegainHealthEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityShootBowEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityTargetLivingEntityEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityToggleGlideEvent event) {
-        event.setCancelled(isPaused);
-    }
-    @EventHandler
-    public void onEvent(EntityToggleSwimEvent event) {
-        event.setCancelled(isPaused);
-    }
-
-
 }

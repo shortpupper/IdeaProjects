@@ -243,6 +243,49 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("pauseSettings.Player.ToggleSprintEvent", true);
         config.addDefault("pauseSettings.Player.UnleashEntityEvent", true);
         config.addDefault("pauseSettings.Player.VelocityEvent", true);
+        // now entitys
+        config.addDefault("pauseSettings.Entity.ExplodeEvent", true);
+        config.addDefault("pauseSettings.Entity.AirChangeEvent", true);
+        config.addDefault("pauseSettings.Entity.BreedEvent", true);
+        config.addDefault("pauseSettings.Entity.BlockFormEvent", true);
+        config.addDefault("pauseSettings.Entity.ChangeBlockEvent.this", true);
+        config.addDefault("pauseSettings.Entity.ChangeBlockEvent.BreakDoorEvent", true);
+        config.addDefault("pauseSettings.Entity.CombustEvent.this", true);
+        config.addDefault("pauseSettings.Entity.CombustEvent.CombustByBlockEvent", true);
+        config.addDefault("pauseSettings.Entity.CombustEvent.CombustByEntityEvent", true);
+        config.addDefault("pauseSettings.Entity.SpellCastEvent", true);
+        config.addDefault("pauseSettings.Entity.DamageEvent.this", true);
+        config.addDefault("pauseSettings.Entity.DamageEvent.DamageByBlockEvent", true);
+        config.addDefault("pauseSettings.Entity.DamageEvent.DamageByEntityEvent", true);
+        config.addDefault("pauseSettings.Entity.DismountEvent", true);
+        config.addDefault("pauseSettings.Entity.DropItemEvent", true);
+        config.addDefault("pauseSettings.Entity.EnterBlockEvent", true);
+        config.addDefault("pauseSettings.Entity.EnterLoveModeEvent", true);
+        config.addDefault("pauseSettings.Entity.ExhaustionEvent", true);
+        config.addDefault("pauseSettings.Entity.InteractEvent", true);
+        config.addDefault("pauseSettings.Entity.PlaceEvent", true);
+        config.addDefault("pauseSettings.Entity.TeleportEvent.this", true);
+        config.addDefault("pauseSettings.Entity.TeleportEvent.PortalEvent.this", true);
+        config.addDefault("pauseSettings.EntityTeleportEvent.PortalEvent.PortalExitEvent", true);
+        config.addDefault("pauseSettings.Entity.PotionEffectEvent", true);
+        config.addDefault("pauseSettings.Entity.ResurrectEvent", true);
+        config.addDefault("pauseSettings.Entity.SpawnEvent", true);
+        config.addDefault("pauseSettings.Entity.TameEvent", true);
+        config.addDefault("pauseSettings.Entity.TransformEvent", true);
+        config.addDefault("pauseSettings.Entity.MountEvent", true);
+        config.addDefault("pauseSettings.Entity.PickupItemEvent", true);
+        config.addDefault("pauseSettings.Entity.RegainHealthEvent", true);
+        config.addDefault("pauseSettings.Entity.ShootBowEvent", true);
+        config.addDefault("pauseSettings.Entity.TargetEvent.this", true);
+        config.addDefault("pauseSettings.Entity.TargetEvent.TargetLivingEntityEvent", true);
+        config.addDefault("pauseSettings.Entity.ToggleGlideEvent", true);
+        config.addDefault("pauseSettings.Entity.ToggleSwimEvent", true);
+
+
+
+
+
+
 
         config.addDefault("Server.this", true);
         config.addDefault("Server.commands.this", true);
