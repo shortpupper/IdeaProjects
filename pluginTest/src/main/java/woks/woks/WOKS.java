@@ -244,6 +244,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("pauseSettings.Player.UnleashEntityEvent", true);
         config.addDefault("pauseSettings.Player.VelocityEvent", true);
         // now entitys
+        config.addDefault("pauseSettings.Entity.this", true);
         config.addDefault("pauseSettings.Entity.ExplodeEvent", true);
         config.addDefault("pauseSettings.Entity.AirChangeEvent", true);
         config.addDefault("pauseSettings.Entity.BreedEvent", true);
@@ -266,7 +267,7 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("pauseSettings.Entity.PlaceEvent", true);
         config.addDefault("pauseSettings.Entity.TeleportEvent.this", true);
         config.addDefault("pauseSettings.Entity.TeleportEvent.PortalEvent.this", true);
-        config.addDefault("pauseSettings.EntityTeleportEvent.PortalEvent.PortalExitEvent", true);
+        config.addDefault("pauseSettings.Entity.TeleportEvent.PortalEvent.PortalExitEvent", true);
         config.addDefault("pauseSettings.Entity.PotionEffectEvent", true);
         config.addDefault("pauseSettings.Entity.ResurrectEvent", true);
         config.addDefault("pauseSettings.Entity.SpawnEvent", true);
@@ -282,28 +283,29 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("pauseSettings.Entity.ToggleSwimEvent", true);
 
         // BLOCK EVENTS
+        config.addDefault("pauseSettings.Block.this", true);
         config.addDefault("pauseSettings.Block.ExplodeEvent", true);
-        config.addDefault("pauseSettings.Block.ExpEvent", true);
-        config.addDefault("pauseSettings.Block.DamageAbortEvent", true);
-        config.addDefault("pauseSettings.Block.DispenseEvent.DispenseArmorEvent", true);
+        config.addDefault("pauseSettings.Block.ExpEvent.this", true);
         config.addDefault("pauseSettings.Block.ExpEvent.BreakEvent", true);
+        config.addDefault("pauseSettings.Block.DamageAbortEvent", true);
         config.addDefault("pauseSettings.Block.BurnEvent", true);
         config.addDefault("pauseSettings.Block.CanBuildEvent", true);
         config.addDefault("pauseSettings.Block.CookEvent", true);
         config.addDefault("pauseSettings.Block.DamageEvent", true);
-        config.addDefault("pauseSettings.Block.DispenseEvent", true);
+        config.addDefault("pauseSettings.Block.DispenseEvent.this", true);
+        config.addDefault("pauseSettings.Block.DispenseEvent.DispenseArmorEvent", true);
         config.addDefault("pauseSettings.Block.DropItemEvent", true);
         config.addDefault("pauseSettings.Block.FadeEvent", true);
         config.addDefault("pauseSettings.Block.FertilizeEvent", true);
-        config.addDefault("pauseSettings.Block.GrowEvent.FormEvent", true);
+        config.addDefault("pauseSettings.Block.GrowEvent.this", true);
+        config.addDefault("pauseSettings.Block.GrowEvent.FormEvent.this", true);
         config.addDefault("pauseSettings.Block.GrowEvent.FormEvent.EntityBlockFormEvent", true);
-        config.addDefault("pauseSettings.Block.GrowEvent", true);
         config.addDefault("pauseSettings.Block.ReceiveGameEvent", true);
         config.addDefault("pauseSettings.Block.IgniteEvent", true);
         config.addDefault("pauseSettings.Block.PlaceEvent.MultiPlaceEvent", true);
-        config.addDefault("pauseSettings.Block.PlaceEvent", true);
+        config.addDefault("pauseSettings.Block.PlaceEvent.this", true);
         config.addDefault("pauseSettings.Block.PhysicsEvent", true);
-        config.addDefault("pauseSettings.Block.PistonEvent", true);
+        config.addDefault("pauseSettings.Block.PistonEvent.this", true);
         config.addDefault("pauseSettings.Block.PistonEvent.PistonExtend", true);
         config.addDefault("pauseSettings.Block.PistonEvent.PistonRetract", true);
         config.addDefault("pauseSettings.Block.ShearEntityEvent", true);
@@ -317,6 +319,62 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("pauseSettings.Block.SignChangeEvent", true);
         config.addDefault("pauseSettings.Block.SpongeAbsorbEvent", true);
 
+        config.addDefault("pauseSettings.World.this", true);
+        config.addDefault("pauseSettings.World.WorldEvent", true);
+        config.addDefault("pauseSettings.World.WorldLoadEvent", true);
+        config.addDefault("pauseSettings.World.WorldUnloadEvent", true);
+        config.addDefault("pauseSettings.World.ChunkEvent", true);
+        config.addDefault("pauseSettings.World.ChunkLoadEvent", true);
+        config.addDefault("pauseSettings.World.ChunkUnloadEvent", true);
+        config.addDefault("pauseSettings.World.PortalCreateEvent", true);
+        config.addDefault("pauseSettings.World.SpawnChangeEvent", true);
+        config.addDefault("pauseSettings.World.StructureGrowEvent", true);
+        config.addDefault("pauseSettings.World.WorldInitEvent", true);
+        config.addDefault("pauseSettings.World.WorldSaveEvent", true);
+
+        config.addDefault("pauseSettings.Enchantment.this", true);
+        config.addDefault("pauseSettings.Enchantment.EnchantItemEvent", true);
+        config.addDefault("pauseSettings.Enchantment.PrepareItemEnchantEvent", true);
+
+        config.addDefault("pauseSettings.Vehicle.this", true);
+        config.addDefault("pauseSettings.Vehicle.CreateEvent", true);
+        config.addDefault("pauseSettings.Vehicle.DestroyEvent", true);
+        config.addDefault("pauseSettings.Vehicle.EnterEvent", true);
+        config.addDefault("pauseSettings.Vehicle.ExitEvent", true);
+        config.addDefault("pauseSettings.Vehicle.MoveEvent", true);
+        config.addDefault("pauseSettings.Vehicle.UpdateEvent", true);
+        config.addDefault("pauseSettings.Vehicle.CollisionEvent.this", true);
+        config.addDefault("pauseSettings.Vehicle.CollisionEvent.BlockCollisionEvent", true);
+        config.addDefault("pauseSettings.Vehicle.CollisionEvent.EntityCollisionEvent", true);
+        config.addDefault("pauseSettings.Vehicle.DamageEvent", true);
+
+        config.addDefault("pauseSettings.Raid.this", true);
+        config.addDefault("pauseSettings.Raid.RaidSpawnWaveEvent", true);
+        config.addDefault("pauseSettings.Raid.RaidStopEvent", true);
+        config.addDefault("pauseSettings.Raid.RaidFinishEvent", true);
+        config.addDefault("pauseSettings.Raid.RaidTriggerEvent", true);
+
+        config.addDefault("pauseSettings.Inventory.this", true);
+        config.addDefault("pauseSettings.Inventory.ClickEvent", true);
+        config.addDefault("pauseSettings.Inventory.DragEvent", true);
+        config.addDefault("pauseSettings.Inventory.OpenEvent", true);
+        config.addDefault("pauseSettings.Inventory.CloseEvent", true);
+        config.addDefault("pauseSettings.Inventory.MoveItemEvent", true);
+        config.addDefault("pauseSettings.Inventory.PickupItemEvent", true);
+        config.addDefault("pauseSettings.Inventory.InteractEvent", true);
+        config.addDefault("pauseSettings.Inventory.CreativeEvent", true);
+
+        config.addDefault("pauseSettings.Weather.this", true);
+        config.addDefault("pauseSettings.Weather.ChangeEvent", true);
+        config.addDefault("pauseSettings.Weather.ThunderChangeEvent", true);
+        config.addDefault("pauseSettings.Weather.LightningStrikeEvent", true);
+        config.addDefault("pauseSettings.Weather.WeatherEvent", true);
+
+        config.addDefault("pauseSettings.Hanging.this", true);
+        config.addDefault("pauseSettings.Hanging.BreakByEntityEvent", true);
+        config.addDefault("pauseSettings.Hanging.BreakEvent", true);
+        config.addDefault("pauseSettings.Hanging.Event", true);
+        config.addDefault("pauseSettings.Hanging.PlaceEvent", true);
 
 
 

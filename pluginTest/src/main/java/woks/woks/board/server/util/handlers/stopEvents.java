@@ -1,10 +1,25 @@
 package woks.woks.board.server.util.handlers;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.*;
 import org.bukkit.event.block.*;
+import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.hanging.HangingEvent;
+import org.bukkit.event.hanging.HangingPlaceEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
+import org.bukkit.event.raid.*;
+import org.bukkit.event.vehicle.*;
+import org.bukkit.event.weather.LightningStrikeEvent;
+import org.bukkit.event.weather.ThunderChangeEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.event.weather.WeatherEvent;
+import org.bukkit.event.world.*;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 import woks.woks.WOKS;
@@ -196,15 +211,15 @@ public class stopEvents implements Listener {
         registerCustomEvent(BlockDropItemEvent.class, this::onEvent, "pauseSettings.Block.DropItemEvent");
         registerCustomEvent(BlockFadeEvent.class, this::onEvent, "pauseSettings.Block.FadeEvent");
         registerCustomEvent(BlockFertilizeEvent.class, this::onEvent, "pauseSettings.Block.FertilizeEvent");
-        registerCustomEvent(BlockFormEvent.class, this::onEvent, "pauseSettings.Block.GrowEvent.FormEvent");
 //        registerCustomEvent(EntityBlockFormEvent.class, this::onEvent, "pauseSettings.Block.GrowEvent.FormEvent.EntityBlockFormEvent");
         registerCustomEvent(BlockGrowEvent.class, this::onEvent, "pauseSettings.Block.GrowEvent");
+        registerCustomEvent(BlockFormEvent.class, this::onEvent, "pauseSettings.Block.GrowEvent.FormEvent");
         registerCustomEvent(BlockReceiveGameEvent.class, this::onEvent, "pauseSettings.Block.ReceiveGameEvent");
         registerCustomEvent(BlockIgniteEvent.class, this::onEvent, "pauseSettings.Block.IgniteEvent");
 //        registerCustomEvent(BlockMultiPlaceEvent.class, this::onEvent, "pauseSettings.Block.PlaceEvent.MultiPlaceEvent");
         registerCustomEvent(BlockPlaceEvent.class, this::onEvent, "pauseSettings.Block.PlaceEvent");
         registerCustomEvent(BlockPhysicsEvent.class, this::onEvent, "pauseSettings.Block.PhysicsEvent");
-        registerCustomEvent(BlockPistonEvent.class, this::onEvent, "pauseSettings.Block.PistonEvent");
+//        registerCustomEvent(BlockPistonEvent.class, this::onEvent, "pauseSettings.Block.PistonEvent");
         registerCustomEvent(BlockPistonExtendEvent.class, this::onEvent, "pauseSettings.Block.PistonEvent.PistonExtend");
 //        registerCustomEvent(BlockPistonRetractEvent.class, this::onEvent, "pauseSettings.Block.PistonEvent.PistonRetract");
         registerCustomEvent(BlockShearEntityEvent.class, this::onEvent, "pauseSettings.Block.ShearEntityEvent");
@@ -218,13 +233,72 @@ public class stopEvents implements Listener {
         registerCustomEvent(SignChangeEvent.class, this::onEvent, "pauseSettings.Block.SignChangeEvent");
         registerCustomEvent(SpongeAbsorbEvent.class, this::onEvent, "pauseSettings.Block.SpongeAbsorbEvent");
 
+
+        // world events yay says sar cast i cally
+//        registerCustomEvent(WorldEvent.class, this::onEvent, "pauseSettings.World.WorldEvent");
+        registerCustomEvent(WorldLoadEvent.class, this::onEvent, "pauseSettings.World.WorldLoadEvent");
+        registerCustomEvent(WorldUnloadEvent.class, this::onEvent, "pauseSettings.World.WorldUnloadEvent");
+//        registerCustomEvent(ChunkEvent.class, this::onEvent, "pauseSettings.World.ChunkEvent");
+        registerCustomEvent(ChunkLoadEvent.class, this::onEvent, "pauseSettings.World.ChunkLoadEvent");
+        registerCustomEvent(ChunkUnloadEvent.class, this::onEvent, "pauseSettings.World.ChunkUnloadEvent");
+        registerCustomEvent(PortalCreateEvent.class, this::onEvent, "pauseSettings.World.PortalCreateEvent");
+        registerCustomEvent(SpawnChangeEvent.class, this::onEvent, "pauseSettings.World.SpawnChangeEvent");
+        registerCustomEvent(StructureGrowEvent.class, this::onEvent, "pauseSettings.World.StructureGrowEvent");
+        registerCustomEvent(WorldInitEvent.class, this::onEvent, "pauseSettings.World.WorldInitEvent");
+        registerCustomEvent(WorldSaveEvent.class, this::onEvent, "pauseSettings.World.WorldSaveEvent");
+
+        // now all the enchant
+        registerCustomEvent(EnchantItemEvent.class, this::onEvent, "pauseSettings.Enchantment.EnchantItemEvent");
+        registerCustomEvent(PrepareItemEnchantEvent.class, this::onEvent, "pauseSettings.Enchantment.PrepareItemEnchantEvent");
+
+        // now the vehicle events
+        registerCustomEvent(VehicleCreateEvent.class, this::onEvent, "pauseSettings.Vehicle.CreateEvent");
+        registerCustomEvent(VehicleDestroyEvent.class, this::onEvent, "pauseSettings.Vehicle.DestroyEvent");
+        registerCustomEvent(VehicleEnterEvent.class, this::onEvent, "pauseSettings.Vehicle.EnterEvent");
+        registerCustomEvent(VehicleExitEvent.class, this::onEvent, "pauseSettings.Vehicle.ExitEvent");
+        registerCustomEvent(VehicleMoveEvent.class, this::onEvent, "pauseSettings.Vehicle.MoveEvent");
+        registerCustomEvent(VehicleUpdateEvent.class, this::onEvent, "pauseSettings.Vehicle.UpdateEvent");
+        registerCustomEvent(VehicleBlockCollisionEvent.class, this::onEvent, "pauseSettings.Vehicle.CollisionEvent.BlockCollisionEvent");
+        registerCustomEvent(VehicleEntityCollisionEvent.class, this::onEvent, "pauseSettings.Vehicle.CollisionEvent.EntityCollisionEvent");
+        registerCustomEvent(VehicleDamageEvent.class, this::onEvent, "pauseSettings.Vehicle.DamageEvent");
+//        registerCustomEvent(VehicleCollisionEvent.class, this::onEvent, "pauseSettings.Vehicle.CollisionEvent");
+
+        // now all the raid events
+        registerCustomEvent(RaidSpawnWaveEvent.class, this::onEvent, "pauseSettings.Raid.RaidSpawnWaveEvent");
+        registerCustomEvent(RaidStopEvent.class, this::onEvent, "pauseSettings.Raid.RaidStopEvent");
+        registerCustomEvent(RaidFinishEvent.class, this::onEvent, "pauseSettings.Raid.RaidFinishEvent");
+        registerCustomEvent(RaidTriggerEvent.class, this::onEvent, "pauseSettings.Raid.RaidTriggerEvent");
+
+        // now all the
+        //TODO MAKE SURE ALL OF THEM ARE HERE IT DIDN'T DO A GOOD JOB
+        registerCustomEvent(InventoryClickEvent.class, this::onEvent, "pauseSettings.Inventory.ClickEvent");
+        registerCustomEvent(InventoryDragEvent.class, this::onEvent, "pauseSettings.Inventory.DragEvent");
+        registerCustomEvent(InventoryOpenEvent.class, this::onEvent, "pauseSettings.Inventory.OpenEvent");
+        registerCustomEvent(InventoryCloseEvent.class, this::onEvent, "pauseSettings.Inventory.CloseEvent");
+        registerCustomEvent(InventoryMoveItemEvent.class, this::onEvent, "pauseSettings.Inventory.MoveItemEvent");
+        registerCustomEvent(InventoryPickupItemEvent.class, this::onEvent, "pauseSettings.Inventory.PickupItemEvent");
+        registerCustomEvent(InventoryInteractEvent.class, this::onEvent, "pauseSettings.Inventory.InteractEvent");
+        registerCustomEvent(InventoryCreativeEvent.class, this::onEvent, "pauseSettings.Inventory.CreativeEvent");
+
+        // fief
+        registerCustomEvent(WeatherChangeEvent.class, this::onEvent, "pauseSettings.Weather.ChangeEvent");
+        registerCustomEvent(ThunderChangeEvent.class, this::onEvent, "pauseSettings.Weather.ThunderChangeEvent");
+        registerCustomEvent(LightningStrikeEvent.class, this::onEvent, "pauseSettings.Weather.LightningStrikeEvent");
+//        registerCustomEvent(WeatherEvent.class, this::onEvent, "pauseSettings.Weather.WeatherEvent");
+
+        // hangers
+        registerCustomEvent(HangingBreakByEntityEvent.class, this::onEvent, "pauseSettings.Hanging.BreakByEntityEvent");
+        registerCustomEvent(HangingBreakEvent.class, this::onEvent, "pauseSettings.Hanging.BreakEvent");
+//        registerCustomEvent(HangingEvent.class, this::onEvent, "pauseSettings.Hanging.Event");
+        registerCustomEvent(HangingPlaceEvent.class, this::onEvent, "pauseSettings.Hanging.PlaceEvent");
+
     }
 
     private <T extends Event> void registerCustomEvent(Class<T> eventClass, EventConsumer<T> eventConsumer) {
         WOKS.getInstance().getServer().getPluginManager().registerEvent(
                 eventClass,
                 this,
-                EventPriority.NORMAL,
+                EventPriority.LOW,
                 (listener, event) -> {
                     if (eventClass.isInstance((event))) {
                         eventConsumer.accept(eventClass.cast(event));
@@ -245,6 +319,29 @@ public class stopEvents implements Listener {
                 event2.setCancelled(isPaused && IsIEffected.get(event3.getPlayer().getUniqueId()));
             }
             else if (event1 instanceof EntityEvent) {
+                if (!(((EntityEvent) event1).getEntity() instanceof Player)) {
+                    event2.setCancelled(isPaused);
+                }
+            }
+            else if (event1 instanceof BlockEvent) {
+                event2.setCancelled(isPaused);
+            }
+            else if (event1 instanceof WeatherEvent) {
+                event2.setCancelled(isPaused);
+            }
+            else if (event1 instanceof RaidEvent) {
+                event2.setCancelled(isPaused);
+            }
+            else if (event1 instanceof HangingEvent) {
+                event2.setCancelled(isPaused);
+            }
+            else if (event1 instanceof VehicleEvent) {
+                event2.setCancelled(isPaused);
+            }
+            else if (event1 instanceof InventoryEvent) {
+                event2.setCancelled(isPaused);
+            }
+            else if (event1 instanceof WorldEvent) {
                 event2.setCancelled(isPaused);
             }
         }
