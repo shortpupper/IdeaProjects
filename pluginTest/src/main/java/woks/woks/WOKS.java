@@ -281,6 +281,42 @@ public final class WOKS extends JavaPlugin implements Listener {
         config.addDefault("pauseSettings.Entity.ToggleGlideEvent", true);
         config.addDefault("pauseSettings.Entity.ToggleSwimEvent", true);
 
+        // BLOCK EVENTS
+        config.addDefault("pauseSettings.Block.ExplodeEvent", true);
+        config.addDefault("pauseSettings.Block.ExpEvent", true);
+        config.addDefault("pauseSettings.Block.DamageAbortEvent", true);
+        config.addDefault("pauseSettings.Block.DispenseEvent.DispenseArmorEvent", true);
+        config.addDefault("pauseSettings.Block.ExpEvent.BreakEvent", true);
+        config.addDefault("pauseSettings.Block.BurnEvent", true);
+        config.addDefault("pauseSettings.Block.CanBuildEvent", true);
+        config.addDefault("pauseSettings.Block.CookEvent", true);
+        config.addDefault("pauseSettings.Block.DamageEvent", true);
+        config.addDefault("pauseSettings.Block.DispenseEvent", true);
+        config.addDefault("pauseSettings.Block.DropItemEvent", true);
+        config.addDefault("pauseSettings.Block.FadeEvent", true);
+        config.addDefault("pauseSettings.Block.FertilizeEvent", true);
+        config.addDefault("pauseSettings.Block.GrowEvent.FormEvent", true);
+        config.addDefault("pauseSettings.Block.GrowEvent.FormEvent.EntityBlockFormEvent", true);
+        config.addDefault("pauseSettings.Block.GrowEvent", true);
+        config.addDefault("pauseSettings.Block.ReceiveGameEvent", true);
+        config.addDefault("pauseSettings.Block.IgniteEvent", true);
+        config.addDefault("pauseSettings.Block.PlaceEvent.MultiPlaceEvent", true);
+        config.addDefault("pauseSettings.Block.PlaceEvent", true);
+        config.addDefault("pauseSettings.Block.PhysicsEvent", true);
+        config.addDefault("pauseSettings.Block.PistonEvent", true);
+        config.addDefault("pauseSettings.Block.PistonEvent.PistonExtend", true);
+        config.addDefault("pauseSettings.Block.PistonEvent.PistonRetract", true);
+        config.addDefault("pauseSettings.Block.ShearEntityEvent", true);
+        config.addDefault("pauseSettings.Block.SpreadEvent", true);
+        config.addDefault("pauseSettings.Block.FromToEvent", true);
+        config.addDefault("pauseSettings.Block.CauldronLevelChangeEvent", true);
+        config.addDefault("pauseSettings.Block.FluidLevelChangeEvent", true);
+        config.addDefault("pauseSettings.Block.LeavesDecayEvent", true);
+        config.addDefault("pauseSettings.Block.MoistureChangeEvent", true);
+        config.addDefault("pauseSettings.Block.NotePlayEvent", true);
+        config.addDefault("pauseSettings.Block.SignChangeEvent", true);
+        config.addDefault("pauseSettings.Block.SpongeAbsorbEvent", true);
+
 
 
 

@@ -2,7 +2,7 @@ package woks.woks.board.server.util.handlers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
-import org.bukkit.event.block.EntityBlockFormEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.spigotmc.event.entity.EntityDismountEvent;
@@ -10,7 +10,8 @@ import org.spigotmc.event.entity.EntityMountEvent;
 import woks.woks.WOKS;
 import woks.woks.board.server.custom.config.ExtraConfig;
 
-import static woks.woks.WOKS.*;
+import static woks.woks.WOKS.IsIEffected;
+import static woks.woks.WOKS.isPaused;
 
 
 public class stopEvents implements Listener {
@@ -182,8 +183,41 @@ public class stopEvents implements Listener {
 
 
         // this is now the block events
+        registerCustomEvent(BlockExplodeEvent.class, this::onEvent, "pauseSettings.Block.ExplodeEvent");
+//        registerCustomEvent(BlockExpEvent.class, this::onEvent, "pauseSettings.Block.ExpEvent");
+        registerCustomEvent(BlockDamageAbortEvent.class, this::onEvent, "pauseSettings.Block.DamageAbortEvent");
+        registerCustomEvent(BlockDispenseArmorEvent.class, this::onEvent, "pauseSettings.Block.DispenseEvent.DispenseArmorEvent");
+        registerCustomEvent(BlockBreakEvent.class, this::onEvent, "pauseSettings.Block.ExpEvent.BreakEvent");
+        registerCustomEvent(BlockBurnEvent.class, this::onEvent, "pauseSettings.Block.BurnEvent");
+//        registerCustomEvent(BlockCanBuildEvent.class, this::onEvent, "pauseSettings.Block.CanBuildEvent");
+        registerCustomEvent(BlockCookEvent.class, this::onEvent, "pauseSettings.Block.CookEvent");
+        registerCustomEvent(BlockDamageEvent.class, this::onEvent, "pauseSettings.Block.DamageEvent");
+        registerCustomEvent(BlockDispenseEvent.class, this::onEvent, "pauseSettings.Block.DispenseEvent");
+        registerCustomEvent(BlockDropItemEvent.class, this::onEvent, "pauseSettings.Block.DropItemEvent");
+        registerCustomEvent(BlockFadeEvent.class, this::onEvent, "pauseSettings.Block.FadeEvent");
+        registerCustomEvent(BlockFertilizeEvent.class, this::onEvent, "pauseSettings.Block.FertilizeEvent");
+        registerCustomEvent(BlockFormEvent.class, this::onEvent, "pauseSettings.Block.GrowEvent.FormEvent");
+//        registerCustomEvent(EntityBlockFormEvent.class, this::onEvent, "pauseSettings.Block.GrowEvent.FormEvent.EntityBlockFormEvent");
+        registerCustomEvent(BlockGrowEvent.class, this::onEvent, "pauseSettings.Block.GrowEvent");
+        registerCustomEvent(BlockReceiveGameEvent.class, this::onEvent, "pauseSettings.Block.ReceiveGameEvent");
+        registerCustomEvent(BlockIgniteEvent.class, this::onEvent, "pauseSettings.Block.IgniteEvent");
+//        registerCustomEvent(BlockMultiPlaceEvent.class, this::onEvent, "pauseSettings.Block.PlaceEvent.MultiPlaceEvent");
+        registerCustomEvent(BlockPlaceEvent.class, this::onEvent, "pauseSettings.Block.PlaceEvent");
+        registerCustomEvent(BlockPhysicsEvent.class, this::onEvent, "pauseSettings.Block.PhysicsEvent");
+        registerCustomEvent(BlockPistonEvent.class, this::onEvent, "pauseSettings.Block.PistonEvent");
+        registerCustomEvent(BlockPistonExtendEvent.class, this::onEvent, "pauseSettings.Block.PistonEvent.PistonExtend");
+//        registerCustomEvent(BlockPistonRetractEvent.class, this::onEvent, "pauseSettings.Block.PistonEvent.PistonRetract");
+        registerCustomEvent(BlockShearEntityEvent.class, this::onEvent, "pauseSettings.Block.ShearEntityEvent");
+        registerCustomEvent(BlockSpreadEvent.class, this::onEvent, "pauseSettings.Block.SpreadEvent");
+        registerCustomEvent(BlockFromToEvent.class, this::onEvent, "pauseSettings.Block.FromToEvent");
+        registerCustomEvent(CauldronLevelChangeEvent.class, this::onEvent, "pauseSettings.Block.CauldronLevelChangeEvent");
+        registerCustomEvent(FluidLevelChangeEvent.class, this::onEvent, "pauseSettings.Block.FluidLevelChangeEvent");
+        registerCustomEvent(LeavesDecayEvent.class, this::onEvent, "pauseSettings.Block.LeavesDecayEvent");
+        registerCustomEvent(MoistureChangeEvent.class, this::onEvent, "pauseSettings.Block.MoistureChangeEvent");
+        registerCustomEvent(NotePlayEvent.class, this::onEvent, "pauseSettings.Block.NotePlayEvent");
+        registerCustomEvent(SignChangeEvent.class, this::onEvent, "pauseSettings.Block.SignChangeEvent");
+        registerCustomEvent(SpongeAbsorbEvent.class, this::onEvent, "pauseSettings.Block.SpongeAbsorbEvent");
 
-//        registerCustomEvent(EntityToggleSwimEvent.class, this::onEvent, "pauseSettings.Entity.ToggleSwimEvent");
     }
 
     private <T extends Event> void registerCustomEvent(Class<T> eventClass, EventConsumer<T> eventConsumer) {
