@@ -1533,6 +1533,10 @@ public final class WOKS extends JavaPlugin implements Listener {
         extraDataContainer.give(NKD.GUI_7_CURRENT_PAGE_INDEX_CHEST_REWARDS, 0);
         extraDataContainer.give(NKD.GUI_8_CURRENT_PAGE_INDEX, 0);
         extraDataContainer.give(NKD.DONE_PAGE_INDEX, 0);
+
+        extraDataContainer.give(NKD.Player_HAS_OPEN_GUI, true);
+        extraDataContainer.give(NKD.Player_OPEN_GUI_ID, -1);
+
         extraDataContainer.give(NKD.IS_ADMIN, false);
         // how to get if paused
 //        extraDataContainer.get(NKD.Player_Effected_Pause);
