@@ -503,13 +503,13 @@ public final class WOKS extends JavaPlugin implements Listener {
             items = new ItemStack[]{new ItemStack(Material.SPRUCE_LOG, 16)};
             expAmount = 5;
             
-            Material[] DEVSTACKm;
-            DEVSTACKm = (Material.values());
-
-            ItemStack[] DEVSTACK = new ItemStack[DEVSTACKm.length-1];
-            for (int i = 0; i < DEVSTACKm.length-1; i++) {
-                DEVSTACK[i] = new ItemStack(DEVSTACKm[i], 1);
-            }
+//            Material[] DEVSTACKm;
+//            DEVSTACKm = (Material.values());
+//
+//            ItemStack[] DEVSTACK = new ItemStack[DEVSTACKm.length-1];
+//            for (int i = 0; i < DEVSTACKm.length-1; i++) {
+//                DEVSTACK[i] = new ItemStack(DEVSTACKm[i], 1);
+//            }
 
             questManager.registerQuest(
                     "Join_sever_first_time",
@@ -526,7 +526,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             questManager.registerQuest(
                     "Say_Hello",
                     2,
-                    DEVSTACK,
+                    new ItemStack[] {new ItemStack(Material.FEATHER, 21)},
                     DefaultExpAmounts,
                     "Talking In Chat",
                     new Integer[]{1},
@@ -538,7 +538,7 @@ public final class WOKS extends JavaPlugin implements Listener {
             questManager.registerQuest(
                     "Quest_Help",
                     3,
-                    new ItemStack[]{},
+                    new ItemStack[]{new ItemStack(Material.FEATHER, 21)},
                     1,
                     "/questhelp",
                     new Integer[]{1,2},
@@ -551,7 +551,7 @@ public final class WOKS extends JavaPlugin implements Listener {
                 questManager.registerQuest(
                         "DevQuestForTesting_a",
                         4,
-                        new ItemStack[]{},
+                        new ItemStack[]{new ItemStack(Material.FEATHER, 21)},
                         1,
                         "/next plz",
                         new Integer[]{},
@@ -563,7 +563,7 @@ public final class WOKS extends JavaPlugin implements Listener {
                 questManager.registerQuest(
                         "DevQuestForTesting_b",
                         5,
-                        new ItemStack[]{},
+                        new ItemStack[]{new ItemStack(Material.FEATHER, 21)},
                         1,
                         "/next plz",
                         new Integer[]{},
@@ -575,7 +575,7 @@ public final class WOKS extends JavaPlugin implements Listener {
                 questManager.registerQuest(
                         "DevQuestForTesting_c",
                         6,
-                        new ItemStack[]{},
+                        new ItemStack[]{new ItemStack(Material.FEATHER, 21)},
                         1,
                         "/next plz",
                         new Integer[]{},
